@@ -6,9 +6,13 @@
  */
 
 import { Config } from "@remotion/cli/config";
-import { enableTailwind } from '@remotion/tailwind-v4';
+import { enableTailwind } from "@remotion/tailwind-v4";
 
 Config.setRspack(true);
 Config.setVideoImageFormat("jpeg");
 Config.setOverwriteOutput(true);
+// Fix the software GL backend to reduce hardware-dependent raster differences.
+Config.setChromiumOpenGlRenderer("swangle");
+// Keep workstation previews usable during full-resolution renders.
+Config.setConcurrency(2);
 Config.overrideBundlerConfig(enableTailwind);

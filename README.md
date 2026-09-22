@@ -1,54 +1,69 @@
-# Remotion video
+# Dr. Health Motion & Design Engine
 
-<p align="center">
-  <a href="https://github.com/remotion-dev/logo">
-    <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="https://github.com/remotion-dev/logo/raw/main/animated-logo-banner-dark.apng">
-      <img alt="Animated Remotion Logo" src="https://github.com/remotion-dev/logo/raw/main/animated-logo-banner-light.gif">
-    </picture>
-  </a>
-</p>
+Independent, JSON-driven Remotion 4.0.527 / React 19 / strict TypeScript foundation. Portable tokens, a typed asset registry and validated content/design configuration feed a reusable 15-second template in three native formats.
 
-Welcome to your Remotion project!
+**Development branding and fictional demo data only.** The clinician is an original labelled illustration. Booking screens are concepts. No appointment is booked, and no ERP or Flutter application is connected or modified.
 
-## Commands
+## Windows commands
 
-**Install Dependencies**
-
-```console
-npm i
+```powershell
+npm.cmd ci
+npm.cmd run studio
+npm.cmd run check
+npm.cmd run build
+npm.cmd run render:vertical
+npm.cmd run render:square
+npm.cmd run render:landscape
 ```
 
-**Start Preview**
+Outputs: `out/dr-health-vertical.mp4`, `out/dr-health-square.mp4`, `out/dr-health-landscape.mp4`. Each is 450 frames, 30 fps, 15 seconds. Studio registrations end in `-Vertical`, `-Square` and `-Landscape` after `DrHealthServicePromo15`.
 
-```console
-npm run dev
+Use installed Chrome instead of downloading a managed browser:
+
+```powershell
+npm.cmd run render:vertical -- --browser-executable="C:\Program Files\Google\Chrome\Application\chrome.exe"
 ```
 
-**Render video**
+Change content/design through Studio props or JSON:
 
-```console
-npx remotion render
+```powershell
+npm.cmd run render:square -- --props=examples/hero.json
+npx.cmd remotion still src/index.ts DrHealthServicePromo15-Square out/hero.png --frame=165 --props=examples/hero.json
 ```
 
-**Upgrade Remotion**
+Studio saves per-format defaults in `src/Root.tsx`. After editing the canonical `demo.json`, run `npm.cmd run sync:defaults` to refresh all three inline snapshots. This explicit command replaces saved Studio defaults; build/start never do so automatically. Use `--props=src/brands/dr-health/data/demo.json` to render directly from the fixture.
 
-```console
-npx remotion upgrade
+Repeated render scripts overwrite their output, matching the existing Remotion config. Use a different CLI output path to preserve comparisons. No dependency upgrades were made. Zod and renderer are explicitly declared at their already installed versions.
+
+## Verification
+
+```powershell
+npm.cmd run typecheck
+npm.cmd run lint
+npm.cmd test
+npm.cmd run verify:visual
 ```
 
-## Docs
+`check` combines TypeScript, ESLint and contract tests. Visual verification builds, samples each scene/transition in all formats, renders alternate JSON, checks all 12 design controls, checks repeated frames, rejects invalid input and captures unexpected browser errors. Results are under `out/qa/`. Installed Chrome/Edge is detected on Windows; `REMOTION_BROWSER_EXECUTABLE` overrides detection. Human review is still required.
 
-Get started with Remotion by reading the [fundamentals page](https://www.remotion.dev/docs/the-fundamentals).
+The npm wrapper can start slowly on this host. Equivalent direct entry points: `node node_modules/typescript/bin/tsc --noEmit`, `node node_modules/eslint/bin/eslint.js src`, `node node_modules/@remotion/cli/remotion-cli.js <command>`. No global npm/Git changes are required.
 
-## Help
+## Edit points
 
-We provide help on our [Discord server](https://discord.gg/6VzzNDwUwV).
+- Content: `src/brands/dr-health/data/demo.json`
+- Contract: `src/engine/schemas/promo.ts`
+- Theme: `src/brands/dr-health/theme/tokens.ts`
+- Assets: `src/brands/dr-health/assets/manifest.ts` and `public/brands/dr-health/`
+- Timeline/scenes: `src/brands/dr-health/compositions/` and `scenes/`
+- Reusable visuals/motion: `src/components/`
 
-## Issues
+## Documentation
 
-Found an issue with Remotion? [File an issue here](https://github.com/remotion-dev/remotion/issues/new).
+- [Baseline audit](docs/baseline.md)
+- [Architecture](docs/architecture.md)
+- [Asset guide](docs/asset-guide.md)
+- [Template system](docs/template-system.md)
+- [Future ERP integration](docs/erp-integration.md)
+- [Verification evidence](docs/verification.md)
 
-## License
-
-Note that for some entities a company license is needed. [Read the terms here](https://github.com/remotion-dev/remotion/blob/main/LICENSE.md).
+The project remains private/UNLICENSED. Bundled fonts include their licenses; Remotion's [licensing terms](https://www.remotion.dev/docs/license) also apply.

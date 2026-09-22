@@ -1,0 +1,20 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "noEmit": false,
+    "outDir": ".cache/tests",
+    "rootDir": "src"
+  },
+  "include": [
+    "src/engine/assets/**/*.ts",
+    "src/engine/schemas/**/*.ts",
+    "src/engine/layout/**/*.ts",
+    "src/engine/motion/**/*.ts",
+    "src/brands/dr-health/assets/**/*.ts",
+    "src/brands/dr-health/theme/**/*.ts",
+    "src/brands/dr-health/data/**/*",
+    "src/brands/dr-health/compositions/timeline.ts"
+  ]
+}

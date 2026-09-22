@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="720" viewBox="0 0 600 720" fill="none">
+  <title>Abstract clinician demo illustration — not a real person</title>
+  <path d="M92 720V516c0-111 91-172 208-172s208 61 208 172v204" fill="#F9FAF4"/>
+  <path d="m254 331-26 92 72 185 72-185-26-92" fill="#CADCD1"/>
+  <ellipse cx="300" cy="237" rx="107" ry="134" fill="#91B5A4"/>
+  <path d="M193 233c-27-106 18-165 105-165 89 0 139 56 109 165l-19-87c-47 20-91 25-143 16l-36 71" fill="#265D4E"/>
+  <path d="m228 420-63 36 55 70-26 38 106 108-72-252Zm144 0 63 36-55 70 26 38-106 108 72-252Z" fill="#DEE9DF"/>
+  <path d="M232 435v49c0 84 138 84 138 0v-49" stroke="#387461" stroke-width="12" stroke-linecap="round"/>
+  <path d="M370 502v72" stroke="#387461" stroke-width="10"/>
+  <circle cx="370" cy="590" r="25" fill="#387461"/><circle cx="370" cy="590" r="13" fill="#D8EB95"/>
+  <rect x="141" y="584" width="60" height="8" rx="4" fill="#CADCD1"/>
+</svg>

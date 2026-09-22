@@ -1,7 +1,7 @@
 {
   "name": "drhealth-motion",
   "version": "1.0.0",
-  "description": "My Remotion video",
+  "description": "Dr. Health programmable motion and design engine",
   "repository": {},
   "license": "UNLICENSED",
   "private": true,
@@ -11,7 +11,8 @@
     "react-dom": "19.2.3",
     "remotion": "4.0.527",
     "@remotion/tailwind-v4": "4.0.527",
-    "tailwindcss": "4.0.0"
+    "tailwindcss": "4.0.0",
+    "zod": "4.5.4"
   },
   "devDependencies": {
     "@remotion/eslint-config-flat": "4.0.527",
@@ -19,13 +20,23 @@
     "@types/web": "0.0.166",
     "eslint": "9.19.0",
     "prettier": "3.8.1",
-    "typescript": "5.9.3"
+    "typescript": "5.9.3",
+    "@remotion/renderer": "4.0.527"
   },
   "scripts": {
     "dev": "remotion studio",
     "build": "remotion bundle",
     "upgrade": "remotion upgrade",
-    "lint": "eslint src && tsc"
+    "lint": "eslint src",
+    "studio": "remotion studio",
+    "typecheck": "tsc --noEmit",
+    "test": "tsc -p tsconfig.test.json && node --test tests/*.test.cjs",
+    "check": "npm run typecheck && npm run lint && npm test",
+    "render:vertical": "remotion render src/index.ts DrHealthServicePromo15-Vertical out/dr-health-vertical.mp4",
+    "render:square": "remotion render src/index.ts DrHealthServicePromo15-Square out/dr-health-square.mp4",
+    "render:landscape": "remotion render src/index.ts DrHealthServicePromo15-Landscape out/dr-health-landscape.mp4",
+    "verify:visual": "npm run build && node scripts/verify-visual.mjs",
+    "sync:defaults": "node scripts/sync-defaults.mjs && prettier --write src/Root.tsx"
   },
   "sideEffects": [
     "*.css"
