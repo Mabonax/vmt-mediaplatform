@@ -2,6 +2,7 @@ import {
   createAssetRegistry,
   type CreativeAsset,
 } from "../../../engine/assets/registry";
+import { brandingAssets } from "./branding";
 
 export const drHealthAssets = [
   {
@@ -26,5 +27,6 @@ export const drHealthAssets = [
       brightness: "light",
     },
   },
+  ...Object.values(brandingAssets),
 ] as const satisfies readonly CreativeAsset[];
 export const assetRegistry = createAssetRegistry(drHealthAssets);

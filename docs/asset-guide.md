@@ -1,6 +1,6 @@
 # Asset guide
 
-No approved Dr. Health branding was supplied. The wordmark, care motif, palette and typography are development proposals. The original clinician SVG is an abstract labelled placeholder, not a real practitioner. No stock previews, internet portraits or patient data were added.
+The user supplied the existing DrHealth branding from `C:\xampp\htdocs\gperp-clinic\public\branding\png`. All six PNGs are copied byte-for-byte into this project's `logos/` folder and registered with source provenance. The wordmark, round icon and Gperp lockup now replace the development marks; teal `#005B6C` and green `#10BA31` are sampled from the logos. See [branding.md](branding.md). Supporting tints and fonts remain template choices. The original clinician SVG remains a labelled fictional illustration and has been recoloured to match the palette.
 
 ## Organization and production exports
 

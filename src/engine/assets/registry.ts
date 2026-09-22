@@ -19,6 +19,15 @@ export interface CreativeAsset {
   alt: string;
   status: "placeholder" | "approved";
   provenance: { creator: string; license: string; sourceReference: string };
+  /** Presentation window into an unmodified export with transparent margins. */
+  artwork?: {
+    canvasWidth: number;
+    canvasHeight: number;
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+  };
   properties?: {
     orientation?: "portrait" | "square" | "landscape";
     transparent?: boolean;
@@ -64,6 +73,21 @@ export const createAssetRegistry = (assets: readonly CreativeAsset[]) => {
     const extension = asset.source.split(".").pop()?.toLowerCase() ?? "";
     if (!extensions[asset.type].includes(extension))
       throw new Error(`Unsupported render format: ${asset.source}`);
+    if (asset.artwork) {
+      const box = asset.artwork;
+      if (
+        ![box.canvasWidth, box.canvasHeight, box.width, box.height].every(
+          (value) => Number.isFinite(value) && value > 0,
+        ) ||
+        ![box.x, box.y].every(
+          (value) => Number.isFinite(value) && value >= 0,
+        ) ||
+        box.x + box.width > box.canvasWidth ||
+        box.y + box.height > box.canvasHeight
+      ) {
+        throw new Error(`Invalid artwork bounds: ${asset.id}`);
+      }
+    }
     byId.set(asset.id, asset);
   }
   const select = (requirement: AssetRequirement = {}) =>

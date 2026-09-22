@@ -1,6 +1,6 @@
 import type { PromoContent } from "../../engine/schemas/promo";
 import { useCreative } from "../layout/CreativeContext";
-import { CareMark } from "../brand/BrandLogo";
+import { BrandLogo } from "../brand/BrandLogo";
 
 /** A concept interface, with no backend interaction or claim of a real booking. */
 export const DeviceFrame = ({ content }: { content: PromoContent }) => {
@@ -61,8 +61,7 @@ export const DeviceFrame = ({ content }: { content: PromoContent }) => {
               fontWeight: theme.typography.weight.bold,
             }}
           >
-            <CareMark size={36} />
-            Dr. Health
+            <BrandLogo width={150} />
           </div>
           <div
             style={{

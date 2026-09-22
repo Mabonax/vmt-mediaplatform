@@ -1,6 +1,6 @@
 /** Portable design language: no React, browser, or Remotion imports. */
 export interface DesignTheme {
-  status: "development" | "approved";
+  status: "development" | "source-aligned" | "approved";
   colors: {
     primary: string;
     ink: string;

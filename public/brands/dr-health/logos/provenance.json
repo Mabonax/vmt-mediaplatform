@@ -1,0 +1,53 @@
+{
+  "sourceDirectory": "C:\\xampp\\htdocs\\gperp-clinic\\public\\branding\\png",
+  "palette": {
+    "teal": "#005B6C",
+    "green": "#10BA31",
+    "black": "#000000",
+    "white": "#FFFFFF"
+  },
+  "files": [
+    {
+      "sourceName": "app-icon.png",
+      "file": "app-icon.png",
+      "width": 1080,
+      "height": 1080,
+      "sha256": "f2e3cefa0200c4e62a21238214e2f27f2ba876064e17f18b6ab6f019a92e0902"
+    },
+    {
+      "sourceName": "drhealth.png",
+      "file": "drhealth.png",
+      "width": 1080,
+      "height": 1080,
+      "sha256": "e907837e7d7e3f601c2eef62f892370ee9d0048fdbc9aff863958e9d856785c7"
+    },
+    {
+      "sourceName": "glass- icon.png",
+      "file": "glass-icon.png",
+      "width": 1028,
+      "height": 1137,
+      "sha256": "a0739dd322a6077f1986a0e05b4d6f386cf7d10cd07da150ef8845a3c32def20"
+    },
+    {
+      "sourceName": "logo-icon.png",
+      "file": "logo-icon.png",
+      "width": 1080,
+      "height": 1080,
+      "sha256": "3b6e08a1f36d9ac3c127a9c028b737f5fb5f06377ef800d1f54235743f60a9cc"
+    },
+    {
+      "sourceName": "logo.png",
+      "file": "logo.png",
+      "width": 1080,
+      "height": 1080,
+      "sha256": "89663cbf094befc170a5f43f6bcfe5a790147257cb4222e2dc99acd9e0050ef5"
+    },
+    {
+      "sourceName": "powered-by-gperp.png",
+      "file": "powered-by-gperp.png",
+      "width": 914,
+      "height": 299,
+      "sha256": "13f027d30ec18419fd3a181d6dc39e5ce6fd9c57cb9232d0850fba7ad0984e2f"
+    }
+  ]
+}

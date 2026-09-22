@@ -99,7 +99,14 @@ test("registry filters intersect requirements and distinguish approval from exis
     assetRegistry.select({ type: "person", transparent: true }).length,
     1,
   );
-  assert.equal(assetRegistry.select({ approvedOnly: true }).length, 0);
+  assert.equal(
+    assetRegistry.select({ approvedOnly: true, type: "person" }).length,
+    0,
+  );
+  assert.equal(
+    assetRegistry.select({ approvedOnly: true, type: "logo" }).length,
+    6,
+  );
 });
 test("registry rejects duplicates, authoring files, remote URLs and path traversal", () => {
   assert.throws(

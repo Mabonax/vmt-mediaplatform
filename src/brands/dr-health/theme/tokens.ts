@@ -1,18 +1,20 @@
 import type { DesignTheme } from "../../../engine/themes/types";
 
-/** DEVELOPMENT VALUES. Replace together after Dr. Health brand approval. */
+/** Logo colours sampled from the user-supplied gperp-clinic branding exports.
+ * Supporting tints, typography and motion remain template design choices.
+ */
 export const drHealthTheme = {
-  status: "development",
+  status: "source-aligned",
   colors: {
-    primary: "#126958",
-    ink: "#153D36",
-    muted: "#527169",
-    paper: "#F5F5ED",
+    primary: "#005B6C",
+    ink: "#003F4B",
+    muted: "#47666B",
+    paper: "#F5FAFA",
     white: "#FFFFFF",
-    mint: "#DCEDE2",
-    accent: "#D8EB95",
-    line: "#CAD8CC",
-    dark: "#103E35",
+    mint: "#E0F1EF",
+    accent: "#10BA31",
+    line: "#C2DDDE",
+    dark: "#00252C",
   },
   typography: {
     body: '"Manrope", Arial, sans-serif',
@@ -25,8 +27,8 @@ export const drHealthTheme = {
   spacing: { xs: 12, sm: 20, md: 32, lg: 48, xl: 64, xxl: 96 },
   radius: { small: 18, card: 36, large: 64, pill: 999 },
   shadow: {
-    card: "0 24px 64px #103E3514, 0 2px 4px #103E3508",
-    floating: "0 46px 96px #103E3526, 0 6px 18px #103E3514",
+    card: "0 24px 64px #005B6C14, 0 2px 4px #005B6C08",
+    floating: "0 46px 96px #005B6C26, 0 6px 18px #005B6C14",
   },
   opacity: { quiet: 0.55, decorative: 0.22, glass: 0.92 },
   layout: { maxCopyWidth: 820, border: 2, rule: 3 },

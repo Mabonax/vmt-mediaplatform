@@ -63,4 +63,4 @@ The initial CLI discovery and fallback checks also used direct Node entry points
 
 ## Remaining development material
 
-Palette, wordmark, motif and type choices await brand approval. The clinician illustration, names, clinic, service and times are demo content; the booking/confirmation interface is conceptual. No actual stock photography, soundtrack, real booking destination or API integration is provided. The next step is an approved brand/asset pack, then an editorial review of this template with real, authorized marketing copy before adding another template or ERP integration.
+The supplied DrHealth logos and teal/green palette now replace development branding; see [branding.md](branding.md). Fonts and supporting tints remain template choices. The clinician illustration, names, clinic, service and times remain demo content; booking/confirmation is conceptual. No actual stock photography, soundtrack, real booking destination or API integration is provided. The next step is an editorial review with authorized practitioner images and marketing copy.

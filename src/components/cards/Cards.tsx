@@ -207,7 +207,7 @@ export const CTA = ({
         justifyContent: "space-between",
         gap: theme.spacing.md * unit,
         background: inverse ? theme.colors.accent : theme.colors.primary,
-        color: inverse ? theme.colors.ink : theme.colors.paper,
+        color: inverse ? theme.colors.dark : theme.colors.paper,
         borderRadius: theme.radius.pill,
         padding: `${theme.spacing.sm * unit}px ${theme.spacing.md * unit}px`,
         fontSize: theme.typography.size.body * unit,

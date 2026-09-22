@@ -148,7 +148,7 @@ const Chrome = ({ content }: ServicePromoProps) => {
           color: inverse ? theme.colors.mint : theme.colors.muted,
         }}
       >
-        DEVELOPMENT BRANDING ·{" "}
+        DEMO CAMPAIGN ·{" "}
         {content.dataMode === "demo"
           ? "FICTIONAL PRACTICE & DOCTOR"
           : "CONCEPT INTERFACE"}

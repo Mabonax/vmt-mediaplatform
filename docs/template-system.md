@@ -6,7 +6,7 @@
 
 Version 1 contains data mode, practice, doctor, optional portrait ID, service, one to four unique 24-hour `HH:MM` times, an availability label, CTA and campaign copy. Text limits are template constraints, not clinical rules. Zod strips unknown object properties.
 
-Demo mode visibly labels fictional information. `approved` changes the data label only; it does not establish legal, clinical, brand or asset approval. Development-branding and concept-interface notices remain. Booking/confirmation scenes always state that no appointment is booked.
+Demo mode visibly labels fictional information. `approved` changes the data label only; it does not establish legal, clinical, brand or asset approval. Demo-campaign and concept-interface notices remain. Booking/confirmation scenes always state that no appointment is booked. The logos and primary palette are sourced from the user's existing branding.
 
 ## Working design controls
 

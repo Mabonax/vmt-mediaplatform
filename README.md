@@ -2,7 +2,7 @@
 
 Independent, JSON-driven Remotion 4.0.527 / React 19 / strict TypeScript foundation. Portable tokens, a typed asset registry and validated content/design configuration feed a reusable 15-second template in three native formats.
 
-**Development branding and fictional demo data only.** The clinician is an original labelled illustration. Booking screens are concepts. No appointment is booked, and no ERP or Flutter application is connected or modified.
+**Uses the supplied DrHealth logos and their teal/green palette.** See [branding sources](docs/branding.md). Practitioner/practice content remains fictional, the clinician is a labelled illustration, and booking screens are concepts. No appointment is booked, and no ERP or Flutter application is connected or modified.
 
 ## Windows commands
 
@@ -62,6 +62,7 @@ The npm wrapper can start slowly on this host. Equivalent direct entry points: `
 - [Baseline audit](docs/baseline.md)
 - [Architecture](docs/architecture.md)
 - [Asset guide](docs/asset-guide.md)
+- [Branding sources and palette](docs/branding.md)
 - [Template system](docs/template-system.md)
 - [Future ERP integration](docs/erp-integration.md)
 - [Verification evidence](docs/verification.md)

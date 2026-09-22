@@ -16,17 +16,17 @@ Portable tokens + asset manifest + versioned content + design configuration
 
 ## Boundaries
 
-| Location                                          | Responsibility                                                                                          |
-| ------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
-| `src/engine/themes/types.ts`                      | Portable typed design vocabulary; no React or Remotion                                                  |
-| `src/brands/dr-health/theme/tokens.ts`            | Central development colors, typography, spacing, elevation, images, shapes and motion timing in seconds |
-| `src/engine/assets/registry.ts`                   | Asset identity, provenance, safe paths and requirement filtering; no renderer dependency                |
-| `src/engine/schemas/promo.ts`                     | Version 1 content/configuration contract and Zod validation                                             |
-| `src/engine/layout/formats.ts`                    | Native format dimensions, safe areas and layout metrics                                                 |
-| `src/components/`                                 | Context-themed reusable visuals; cards accept resolved assets rather than choosing brand data           |
-| `src/engine/motion/` and `src/components/motion/` | Deterministic Remotion adapters                                                                         |
-| `src/engine/typography/fonts.ts`                  | Browser/Remotion font-loading boundary                                                                  |
-| `src/brands/dr-health/`                           | Brand manifest, demo fixture, scenes and composition                                                    |
+| Location                                          | Responsibility                                                                                     |
+| ------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| `src/engine/themes/types.ts`                      | Portable typed design vocabulary; no React or Remotion                                             |
+| `src/brands/dr-health/theme/tokens.ts`            | Source-aligned brand palette, typography, spacing, elevation, images, shapes and timing in seconds |
+| `src/engine/assets/registry.ts`                   | Asset identity, provenance, safe paths and requirement filtering; no renderer dependency           |
+| `src/engine/schemas/promo.ts`                     | Version 1 content/configuration contract and Zod validation                                        |
+| `src/engine/layout/formats.ts`                    | Native format dimensions, safe areas and layout metrics                                            |
+| `src/components/`                                 | Context-themed reusable visuals; cards accept resolved assets rather than choosing brand data      |
+| `src/engine/motion/` and `src/components/motion/` | Deterministic Remotion adapters                                                                    |
+| `src/engine/typography/fonts.ts`                  | Browser/Remotion font-loading boundary                                                             |
+| `src/brands/dr-health/`                           | Brand manifest, demo fixture, scenes and composition                                               |
 
 `Root.tsx` registers three native compositions with editable inline snapshots generated from the JSON fixture. This accommodates Remotion's source-based Studio save mechanism without embedding content in scenes. `npm run sync:defaults` explicitly regenerates the snapshots; builds preserve Studio edits. The original unused blank `Composition.tsx` is retained as a starter reference. No second project exists.
 
