@@ -7,21 +7,23 @@
   "private": true,
   "dependencies": {
     "@remotion/cli": "4.0.527",
+    "@remotion/tailwind-v4": "4.0.527",
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "remotion": "4.0.527",
-    "@remotion/tailwind-v4": "4.0.527",
     "tailwindcss": "4.0.0",
     "zod": "4.5.4"
   },
   "devDependencies": {
     "@remotion/eslint-config-flat": "4.0.527",
+    "@remotion/renderer": "4.0.527",
+    "@rspack/core": "1.7.11",
     "@types/react": "19.2.7",
+    "@types/react-dom": "19.2.3",
     "@types/web": "0.0.166",
     "eslint": "9.19.0",
     "prettier": "3.8.1",
-    "typescript": "5.9.3",
-    "@remotion/renderer": "4.0.527"
+    "typescript": "5.9.3"
   },
   "scripts": {
     "dev": "remotion studio",
@@ -36,7 +38,11 @@
     "render:square": "remotion render src/index.ts DrHealthServicePromo15-Square out/dr-health-square.mp4",
     "render:landscape": "remotion render src/index.ts DrHealthServicePromo15-Landscape out/dr-health-landscape.mp4",
     "verify:visual": "npm run build && node scripts/verify-visual.mjs",
-    "sync:defaults": "node scripts/sync-defaults.mjs && prettier --write src/Root.tsx"
+    "sync:defaults": "node scripts/sync-defaults.mjs && prettier --write src/Root.tsx",
+    "gallery:build": "node scripts/build-gallery.mjs",
+    "gallery": "npm run gallery:build && node scripts/serve-gallery.mjs",
+    "sync:grammar": "node scripts/sync-grammar-examples.mjs",
+    "verify:grammar": "npm run build && node scripts/verify-grammar.mjs"
   },
   "sideEffects": [
     "*.css"

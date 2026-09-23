@@ -275,7 +275,7 @@ const ConfirmationScene = ({ content }: { content: PromoContent }) => {
                   height={66 * unit}
                   viewBox="0 0 60 60"
                   fill="none"
-                  aria-label="Concept confirmation"
+                  aria-label="Example request acknowledgement"
                 >
                   <path
                     d="m12 30 12 12 25-25"
@@ -302,7 +302,7 @@ const ConfirmationScene = ({ content }: { content: PromoContent }) => {
               <br />
               {content.availability[0]}
             </BodyText>
-            <Eyebrow>Booking concept</Eyebrow>
+            <Eyebrow>Practice review follows</Eyebrow>
             <div
               style={{
                 fontSize: theme.typography.size.micro * unit,
@@ -321,7 +321,7 @@ const CtaScene = ({ content }: { content: PromoContent }) => {
   const { theme, metrics, format } = useCreative();
   return (
     <AbsoluteFill
-      style={{ background: theme.colors.dark, color: theme.colors.paper }}
+      style={{ background: theme.colors.white, color: theme.colors.ink }}
     >
       <div
         style={{
@@ -336,13 +336,13 @@ const CtaScene = ({ content }: { content: PromoContent }) => {
         }}
       />
       <Center>
-        <BrandLogo large inverse />
+        <BrandLogo large />
         <DisplayText style={{ maxWidth: format === "landscape" ? 1400 : 900 }}>
           {content.cta.subtitle}
         </DisplayText>
-        <CTA title={content.cta.title} inverse />
+        <CTA title={content.cta.title} />
         <BodyText
-          style={{ color: theme.colors.mint, fontSize: metrics.body * 0.85 }}
+          style={{ color: theme.colors.muted, fontSize: metrics.body * 0.85 }}
         >
           {content.cta.destinationLabel}
         </BodyText>

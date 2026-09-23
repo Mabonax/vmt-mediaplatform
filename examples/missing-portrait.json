@@ -12,27 +12,27 @@
     },
     "service": {
       "name": "General Consultation",
-      "description": "A little time for your health. A clearer path to care."
+      "description": "Choose a service offered by your connected clinic."
     },
     "availability": ["09:00", "11:30", "14:30"],
     "availabilityLabel": "Example appointment times",
     "cta": {
-      "title": "Book with Dr. Health",
-      "subtitle": "Healthcare when you need it.",
-      "destinationLabel": "Find your next moment of care"
+      "title": "Request an appointment",
+      "subtitle": "Your clinic. Your next appointment.",
+      "destinationLabel": "Choose a service and an available time"
     },
     "copy": {
-      "brandHeadline": "Care that fits your day.",
-      "brandSupporting": "Your health. Your time. A simpler way to connect.",
+      "brandHeadline": "Your next visit starts here.",
+      "brandSupporting": "Choose a service. Find a practitioner. Request a time.",
       "serviceQuestion": "What care do you need?",
-      "doctorHeadline": "A human connection.",
-      "availabilityHeadline": "Make time for you.",
-      "bookingHeadline": "One step closer to care.",
-      "bookingSupporting": "Choose a time. Review your visit. Take the next step.",
-      "confirmationHeadline": "More clarity. Less effort.",
-      "confirmationSupporting": "A simple journey from finding care to planning your visit.",
+      "doctorHeadline": "Choose your practitioner.",
+      "availabilityHeadline": "Find an available time.",
+      "bookingHeadline": "Review your request.",
+      "bookingSupporting": "Check your service, practitioner and time before sending.",
+      "confirmationHeadline": "Stay informed about your visit.",
+      "confirmationSupporting": "View appointments and request changes where available.",
       "bookingAction": "Request appointment",
-      "confirmationLabel": "Your visit, planned"
+      "confirmationLabel": "Awaiting confirmation"
     }
   },
   "design": {

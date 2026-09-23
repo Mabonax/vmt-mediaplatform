@@ -1,7 +1,9 @@
 // Initial snapshots generated from data/demo.json by npm run sync:defaults.
 // Studio can save per-format edits here. Sync is explicit because it replaces those edits.
 import "./index.css";
-import { Composition } from "remotion";
+import { Composition, Folder } from "remotion";
+import { GrammarPromo, calculateGrammarMetadata } from "./renderers/remotion/GrammarPromo";
+import { grammarPromoSchema } from "./engine/grammar/models";
 import {
   DrHealthServicePromo15,
   calculatePromoMetadata,
@@ -33,30 +35,30 @@ export const RemotionRoot = () => (
           service: {
             name: "General Consultation",
             description:
-              "A little time for your health. A clearer path to care.",
+              "Choose a service offered by your connected clinic.",
           },
           availability: ["09:00", "11:30", "14:30"],
           availabilityLabel: "Example appointment times",
           cta: {
-            title: "Book with Dr. Health",
-            subtitle: "Healthcare when you need it.",
-            destinationLabel: "Find your next moment of care",
+            title: "Request an appointment",
+            subtitle: "Your clinic. Your next appointment.",
+            destinationLabel: "Choose a service and an available time",
           },
           copy: {
-            brandHeadline: "Care that fits your day.",
+            brandHeadline: "Your next visit starts here.",
             brandSupporting:
-              "Your health. Your time. A simpler way to connect.",
+              "Choose a service. Find a practitioner. Request a time.",
             serviceQuestion: "What care do you need?",
-            doctorHeadline: "A human connection.",
-            availabilityHeadline: "Make time for you.",
-            bookingHeadline: "One step closer to care.",
+            doctorHeadline: "Choose your practitioner.",
+            availabilityHeadline: "Find an available time.",
+            bookingHeadline: "Review your request.",
             bookingSupporting:
-              "Choose a time. Review your visit. Take the next step.",
-            confirmationHeadline: "More clarity. Less effort.",
+              "Check your service, practitioner and time before sending.",
+            confirmationHeadline: "Stay informed about your visit.",
             confirmationSupporting:
-              "A simple journey from finding care to planning your visit.",
+              "View appointments and request changes where available.",
             bookingAction: "Request appointment",
-            confirmationLabel: "Your visit, planned",
+            confirmationLabel: "Awaiting confirmation",
           },
         },
         design: {
@@ -99,30 +101,30 @@ export const RemotionRoot = () => (
           service: {
             name: "General Consultation",
             description:
-              "A little time for your health. A clearer path to care.",
+              "Choose a service offered by your connected clinic.",
           },
           availability: ["09:00", "11:30", "14:30"],
           availabilityLabel: "Example appointment times",
           cta: {
-            title: "Book with Dr. Health",
-            subtitle: "Healthcare when you need it.",
-            destinationLabel: "Find your next moment of care",
+            title: "Request an appointment",
+            subtitle: "Your clinic. Your next appointment.",
+            destinationLabel: "Choose a service and an available time",
           },
           copy: {
-            brandHeadline: "Care that fits your day.",
+            brandHeadline: "Your next visit starts here.",
             brandSupporting:
-              "Your health. Your time. A simpler way to connect.",
+              "Choose a service. Find a practitioner. Request a time.",
             serviceQuestion: "What care do you need?",
-            doctorHeadline: "A human connection.",
-            availabilityHeadline: "Make time for you.",
-            bookingHeadline: "One step closer to care.",
+            doctorHeadline: "Choose your practitioner.",
+            availabilityHeadline: "Find an available time.",
+            bookingHeadline: "Review your request.",
             bookingSupporting:
-              "Choose a time. Review your visit. Take the next step.",
-            confirmationHeadline: "More clarity. Less effort.",
+              "Check your service, practitioner and time before sending.",
+            confirmationHeadline: "Stay informed about your visit.",
             confirmationSupporting:
-              "A simple journey from finding care to planning your visit.",
+              "View appointments and request changes where available.",
             bookingAction: "Request appointment",
-            confirmationLabel: "Your visit, planned",
+            confirmationLabel: "Awaiting confirmation",
           },
         },
         design: {
@@ -165,30 +167,30 @@ export const RemotionRoot = () => (
           service: {
             name: "General Consultation",
             description:
-              "A little time for your health. A clearer path to care.",
+              "Choose a service offered by your connected clinic.",
           },
           availability: ["09:00", "11:30", "14:30"],
           availabilityLabel: "Example appointment times",
           cta: {
-            title: "Book with Dr. Health",
-            subtitle: "Healthcare when you need it.",
-            destinationLabel: "Find your next moment of care",
+            title: "Request an appointment",
+            subtitle: "Your clinic. Your next appointment.",
+            destinationLabel: "Choose a service and an available time",
           },
           copy: {
-            brandHeadline: "Care that fits your day.",
+            brandHeadline: "Your next visit starts here.",
             brandSupporting:
-              "Your health. Your time. A simpler way to connect.",
+              "Choose a service. Find a practitioner. Request a time.",
             serviceQuestion: "What care do you need?",
-            doctorHeadline: "A human connection.",
-            availabilityHeadline: "Make time for you.",
-            bookingHeadline: "One step closer to care.",
+            doctorHeadline: "Choose your practitioner.",
+            availabilityHeadline: "Find an available time.",
+            bookingHeadline: "Review your request.",
             bookingSupporting:
-              "Choose a time. Review your visit. Take the next step.",
-            confirmationHeadline: "More clarity. Less effort.",
+              "Check your service, practitioner and time before sending.",
+            confirmationHeadline: "Stay informed about your visit.",
             confirmationSupporting:
-              "A simple journey from finding care to planning your visit.",
+              "View appointments and request changes where available.",
             bookingAction: "Request appointment",
-            confirmationLabel: "Your visit, planned",
+            confirmationLabel: "Awaiting confirmation",
           },
         },
         design: {
@@ -208,5 +210,2535 @@ export const RemotionRoot = () => (
       }}
       calculateMetadata={calculatePromoMetadata}
     />
+    {/* Grammar examples start: explicit sync only */}
+    <Folder name="Design-Grammar">
+      <Folder name="editorial-health">
+        <Composition
+          id="Grammar-editorial-health-split-subtle-Vertical"
+          component={GrammarPromo}
+          width={1080}
+          height={1920}
+          fps={30}
+          durationInFrames={180}
+          schema={grammarPromoSchema}
+          calculateMetadata={calculateGrammarMetadata}
+          defaultProps={{
+            schemaVersion: 1,
+            familyId: "editorial-health",
+            variation: {
+              layoutVariant: "split",
+              typographyScale: 1,
+              imageScale: 1,
+              whitespace: 0.5,
+              shapeDensity: 0.5,
+              depth: 0.5,
+              expressiveness: 0.5,
+            },
+            axes: {
+              expressive: 0.5,
+              friendly: 0.5,
+              dimensional: 0.5,
+              spacious: 0.5,
+              dynamic: 0.5,
+            },
+            motionId: "subtle",
+            content: {
+              schemaVersion: 1,
+              dataMode: "demo",
+              practice: {
+                name: "Grace Doctor Clinic",
+              },
+              doctor: {
+                name: "Dr Naledi Mokoena",
+                speciality: "General Practitioner",
+                imageAssetId: "doctor-demo-01",
+              },
+              service: {
+                name: "General Consultation",
+                description: "Choose a service offered by your connected clinic.",
+              },
+              availability: ["09:00", "11:30", "14:30"],
+              availabilityLabel: "Example appointment times",
+              cta: {
+                title: "Request an appointment",
+                subtitle: "Your clinic. Your next appointment.",
+                destinationLabel: "Choose a service and an available time",
+              },
+              copy: {
+                brandHeadline: "Your next visit starts here.",
+                brandSupporting:
+                  "Choose a service. Find a practitioner. Request a time.",
+                serviceQuestion: "What care do you need?",
+                doctorHeadline: "Choose your practitioner.",
+                availabilityHeadline: "Find an available time.",
+                bookingHeadline: "Review your request.",
+                bookingSupporting:
+                  "Check your service, practitioner and time before sending.",
+                confirmationHeadline: "Stay informed about your visit.",
+                confirmationSupporting:
+                  "View appointments and request changes where available.",
+                bookingAction: "Request appointment",
+                confirmationLabel: "Awaiting confirmation",
+              },
+            },
+          }}
+        />
+        <Composition
+          id="Grammar-editorial-health-split-subtle-Square"
+          component={GrammarPromo}
+          width={1080}
+          height={1080}
+          fps={30}
+          durationInFrames={180}
+          schema={grammarPromoSchema}
+          calculateMetadata={calculateGrammarMetadata}
+          defaultProps={{
+            schemaVersion: 1,
+            familyId: "editorial-health",
+            variation: {
+              layoutVariant: "split",
+              typographyScale: 1,
+              imageScale: 1,
+              whitespace: 0.5,
+              shapeDensity: 0.5,
+              depth: 0.5,
+              expressiveness: 0.5,
+            },
+            axes: {
+              expressive: 0.5,
+              friendly: 0.5,
+              dimensional: 0.5,
+              spacious: 0.5,
+              dynamic: 0.5,
+            },
+            motionId: "subtle",
+            content: {
+              schemaVersion: 1,
+              dataMode: "demo",
+              practice: {
+                name: "Grace Doctor Clinic",
+              },
+              doctor: {
+                name: "Dr Naledi Mokoena",
+                speciality: "General Practitioner",
+                imageAssetId: "doctor-demo-01",
+              },
+              service: {
+                name: "General Consultation",
+                description: "Choose a service offered by your connected clinic.",
+              },
+              availability: ["09:00", "11:30", "14:30"],
+              availabilityLabel: "Example appointment times",
+              cta: {
+                title: "Request an appointment",
+                subtitle: "Your clinic. Your next appointment.",
+                destinationLabel: "Choose a service and an available time",
+              },
+              copy: {
+                brandHeadline: "Your next visit starts here.",
+                brandSupporting:
+                  "Choose a service. Find a practitioner. Request a time.",
+                serviceQuestion: "What care do you need?",
+                doctorHeadline: "Choose your practitioner.",
+                availabilityHeadline: "Find an available time.",
+                bookingHeadline: "Review your request.",
+                bookingSupporting:
+                  "Check your service, practitioner and time before sending.",
+                confirmationHeadline: "Stay informed about your visit.",
+                confirmationSupporting:
+                  "View appointments and request changes where available.",
+                bookingAction: "Request appointment",
+                confirmationLabel: "Awaiting confirmation",
+              },
+            },
+          }}
+        />
+        <Composition
+          id="Grammar-editorial-health-split-subtle-Landscape"
+          component={GrammarPromo}
+          width={1920}
+          height={1080}
+          fps={30}
+          durationInFrames={180}
+          schema={grammarPromoSchema}
+          calculateMetadata={calculateGrammarMetadata}
+          defaultProps={{
+            schemaVersion: 1,
+            familyId: "editorial-health",
+            variation: {
+              layoutVariant: "split",
+              typographyScale: 1,
+              imageScale: 1,
+              whitespace: 0.5,
+              shapeDensity: 0.5,
+              depth: 0.5,
+              expressiveness: 0.5,
+            },
+            axes: {
+              expressive: 0.5,
+              friendly: 0.5,
+              dimensional: 0.5,
+              spacious: 0.5,
+              dynamic: 0.5,
+            },
+            motionId: "subtle",
+            content: {
+              schemaVersion: 1,
+              dataMode: "demo",
+              practice: {
+                name: "Grace Doctor Clinic",
+              },
+              doctor: {
+                name: "Dr Naledi Mokoena",
+                speciality: "General Practitioner",
+                imageAssetId: "doctor-demo-01",
+              },
+              service: {
+                name: "General Consultation",
+                description: "Choose a service offered by your connected clinic.",
+              },
+              availability: ["09:00", "11:30", "14:30"],
+              availabilityLabel: "Example appointment times",
+              cta: {
+                title: "Request an appointment",
+                subtitle: "Your clinic. Your next appointment.",
+                destinationLabel: "Choose a service and an available time",
+              },
+              copy: {
+                brandHeadline: "Your next visit starts here.",
+                brandSupporting:
+                  "Choose a service. Find a practitioner. Request a time.",
+                serviceQuestion: "What care do you need?",
+                doctorHeadline: "Choose your practitioner.",
+                availabilityHeadline: "Find an available time.",
+                bookingHeadline: "Review your request.",
+                bookingSupporting:
+                  "Check your service, practitioner and time before sending.",
+                confirmationHeadline: "Stay informed about your visit.",
+                confirmationSupporting:
+                  "View appointments and request changes where available.",
+                bookingAction: "Request appointment",
+                confirmationLabel: "Awaiting confirmation",
+              },
+            },
+          }}
+        />
+        <Composition
+          id="Grammar-editorial-health-split-premium-Vertical"
+          component={GrammarPromo}
+          width={1080}
+          height={1920}
+          fps={30}
+          durationInFrames={180}
+          schema={grammarPromoSchema}
+          calculateMetadata={calculateGrammarMetadata}
+          defaultProps={{
+            schemaVersion: 1,
+            familyId: "editorial-health",
+            variation: {
+              layoutVariant: "split",
+              typographyScale: 1,
+              imageScale: 1,
+              whitespace: 0.5,
+              shapeDensity: 0.5,
+              depth: 0.5,
+              expressiveness: 0.5,
+            },
+            axes: {
+              expressive: 0.5,
+              friendly: 0.5,
+              dimensional: 0.5,
+              spacious: 0.5,
+              dynamic: 0.5,
+            },
+            motionId: "premium",
+            content: {
+              schemaVersion: 1,
+              dataMode: "demo",
+              practice: {
+                name: "Grace Doctor Clinic",
+              },
+              doctor: {
+                name: "Dr Naledi Mokoena",
+                speciality: "General Practitioner",
+                imageAssetId: "doctor-demo-01",
+              },
+              service: {
+                name: "General Consultation",
+                description: "Choose a service offered by your connected clinic.",
+              },
+              availability: ["09:00", "11:30", "14:30"],
+              availabilityLabel: "Example appointment times",
+              cta: {
+                title: "Request an appointment",
+                subtitle: "Your clinic. Your next appointment.",
+                destinationLabel: "Choose a service and an available time",
+              },
+              copy: {
+                brandHeadline: "Your next visit starts here.",
+                brandSupporting:
+                  "Choose a service. Find a practitioner. Request a time.",
+                serviceQuestion: "What care do you need?",
+                doctorHeadline: "Choose your practitioner.",
+                availabilityHeadline: "Find an available time.",
+                bookingHeadline: "Review your request.",
+                bookingSupporting:
+                  "Check your service, practitioner and time before sending.",
+                confirmationHeadline: "Stay informed about your visit.",
+                confirmationSupporting:
+                  "View appointments and request changes where available.",
+                bookingAction: "Request appointment",
+                confirmationLabel: "Awaiting confirmation",
+              },
+            },
+          }}
+        />
+        <Composition
+          id="Grammar-editorial-health-split-premium-Square"
+          component={GrammarPromo}
+          width={1080}
+          height={1080}
+          fps={30}
+          durationInFrames={180}
+          schema={grammarPromoSchema}
+          calculateMetadata={calculateGrammarMetadata}
+          defaultProps={{
+            schemaVersion: 1,
+            familyId: "editorial-health",
+            variation: {
+              layoutVariant: "split",
+              typographyScale: 1,
+              imageScale: 1,
+              whitespace: 0.5,
+              shapeDensity: 0.5,
+              depth: 0.5,
+              expressiveness: 0.5,
+            },
+            axes: {
+              expressive: 0.5,
+              friendly: 0.5,
+              dimensional: 0.5,
+              spacious: 0.5,
+              dynamic: 0.5,
+            },
+            motionId: "premium",
+            content: {
+              schemaVersion: 1,
+              dataMode: "demo",
+              practice: {
+                name: "Grace Doctor Clinic",
+              },
+              doctor: {
+                name: "Dr Naledi Mokoena",
+                speciality: "General Practitioner",
+                imageAssetId: "doctor-demo-01",
+              },
+              service: {
+                name: "General Consultation",
+                description: "Choose a service offered by your connected clinic.",
+              },
+              availability: ["09:00", "11:30", "14:30"],
+              availabilityLabel: "Example appointment times",
+              cta: {
+                title: "Request an appointment",
+                subtitle: "Your clinic. Your next appointment.",
+                destinationLabel: "Choose a service and an available time",
+              },
+              copy: {
+                brandHeadline: "Your next visit starts here.",
+                brandSupporting:
+                  "Choose a service. Find a practitioner. Request a time.",
+                serviceQuestion: "What care do you need?",
+                doctorHeadline: "Choose your practitioner.",
+                availabilityHeadline: "Find an available time.",
+                bookingHeadline: "Review your request.",
+                bookingSupporting:
+                  "Check your service, practitioner and time before sending.",
+                confirmationHeadline: "Stay informed about your visit.",
+                confirmationSupporting:
+                  "View appointments and request changes where available.",
+                bookingAction: "Request appointment",
+                confirmationLabel: "Awaiting confirmation",
+              },
+            },
+          }}
+        />
+        <Composition
+          id="Grammar-editorial-health-split-premium-Landscape"
+          component={GrammarPromo}
+          width={1920}
+          height={1080}
+          fps={30}
+          durationInFrames={180}
+          schema={grammarPromoSchema}
+          calculateMetadata={calculateGrammarMetadata}
+          defaultProps={{
+            schemaVersion: 1,
+            familyId: "editorial-health",
+            variation: {
+              layoutVariant: "split",
+              typographyScale: 1,
+              imageScale: 1,
+              whitespace: 0.5,
+              shapeDensity: 0.5,
+              depth: 0.5,
+              expressiveness: 0.5,
+            },
+            axes: {
+              expressive: 0.5,
+              friendly: 0.5,
+              dimensional: 0.5,
+              spacious: 0.5,
+              dynamic: 0.5,
+            },
+            motionId: "premium",
+            content: {
+              schemaVersion: 1,
+              dataMode: "demo",
+              practice: {
+                name: "Grace Doctor Clinic",
+              },
+              doctor: {
+                name: "Dr Naledi Mokoena",
+                speciality: "General Practitioner",
+                imageAssetId: "doctor-demo-01",
+              },
+              service: {
+                name: "General Consultation",
+                description: "Choose a service offered by your connected clinic.",
+              },
+              availability: ["09:00", "11:30", "14:30"],
+              availabilityLabel: "Example appointment times",
+              cta: {
+                title: "Request an appointment",
+                subtitle: "Your clinic. Your next appointment.",
+                destinationLabel: "Choose a service and an available time",
+              },
+              copy: {
+                brandHeadline: "Your next visit starts here.",
+                brandSupporting:
+                  "Choose a service. Find a practitioner. Request a time.",
+                serviceQuestion: "What care do you need?",
+                doctorHeadline: "Choose your practitioner.",
+                availabilityHeadline: "Find an available time.",
+                bookingHeadline: "Review your request.",
+                bookingSupporting:
+                  "Check your service, practitioner and time before sending.",
+                confirmationHeadline: "Stay informed about your visit.",
+                confirmationSupporting:
+                  "View appointments and request changes where available.",
+                bookingAction: "Request appointment",
+                confirmationLabel: "Awaiting confirmation",
+              },
+            },
+          }}
+        />
+        <Composition
+          id="Grammar-editorial-health-portrait-first-subtle-Vertical"
+          component={GrammarPromo}
+          width={1080}
+          height={1920}
+          fps={30}
+          durationInFrames={180}
+          schema={grammarPromoSchema}
+          calculateMetadata={calculateGrammarMetadata}
+          defaultProps={{
+            schemaVersion: 1,
+            familyId: "editorial-health",
+            variation: {
+              layoutVariant: "portrait-first",
+              typographyScale: 1,
+              imageScale: 1,
+              whitespace: 0.5,
+              shapeDensity: 0.5,
+              depth: 0.5,
+              expressiveness: 0.5,
+            },
+            axes: {
+              expressive: 0.5,
+              friendly: 0.5,
+              dimensional: 0.5,
+              spacious: 0.5,
+              dynamic: 0.5,
+            },
+            motionId: "subtle",
+            content: {
+              schemaVersion: 1,
+              dataMode: "demo",
+              practice: {
+                name: "Grace Doctor Clinic",
+              },
+              doctor: {
+                name: "Dr Naledi Mokoena",
+                speciality: "General Practitioner",
+                imageAssetId: "doctor-demo-01",
+              },
+              service: {
+                name: "General Consultation",
+                description: "Choose a service offered by your connected clinic.",
+              },
+              availability: ["09:00", "11:30", "14:30"],
+              availabilityLabel: "Example appointment times",
+              cta: {
+                title: "Request an appointment",
+                subtitle: "Your clinic. Your next appointment.",
+                destinationLabel: "Choose a service and an available time",
+              },
+              copy: {
+                brandHeadline: "Your next visit starts here.",
+                brandSupporting:
+                  "Choose a service. Find a practitioner. Request a time.",
+                serviceQuestion: "What care do you need?",
+                doctorHeadline: "Choose your practitioner.",
+                availabilityHeadline: "Find an available time.",
+                bookingHeadline: "Review your request.",
+                bookingSupporting:
+                  "Check your service, practitioner and time before sending.",
+                confirmationHeadline: "Stay informed about your visit.",
+                confirmationSupporting:
+                  "View appointments and request changes where available.",
+                bookingAction: "Request appointment",
+                confirmationLabel: "Awaiting confirmation",
+              },
+            },
+          }}
+        />
+        <Composition
+          id="Grammar-editorial-health-portrait-first-subtle-Square"
+          component={GrammarPromo}
+          width={1080}
+          height={1080}
+          fps={30}
+          durationInFrames={180}
+          schema={grammarPromoSchema}
+          calculateMetadata={calculateGrammarMetadata}
+          defaultProps={{
+            schemaVersion: 1,
+            familyId: "editorial-health",
+            variation: {
+              layoutVariant: "portrait-first",
+              typographyScale: 1,
+              imageScale: 1,
+              whitespace: 0.5,
+              shapeDensity: 0.5,
+              depth: 0.5,
+              expressiveness: 0.5,
+            },
+            axes: {
+              expressive: 0.5,
+              friendly: 0.5,
+              dimensional: 0.5,
+              spacious: 0.5,
+              dynamic: 0.5,
+            },
+            motionId: "subtle",
+            content: {
+              schemaVersion: 1,
+              dataMode: "demo",
+              practice: {
+                name: "Grace Doctor Clinic",
+              },
+              doctor: {
+                name: "Dr Naledi Mokoena",
+                speciality: "General Practitioner",
+                imageAssetId: "doctor-demo-01",
+              },
+              service: {
+                name: "General Consultation",
+                description: "Choose a service offered by your connected clinic.",
+              },
+              availability: ["09:00", "11:30", "14:30"],
+              availabilityLabel: "Example appointment times",
+              cta: {
+                title: "Request an appointment",
+                subtitle: "Your clinic. Your next appointment.",
+                destinationLabel: "Choose a service and an available time",
+              },
+              copy: {
+                brandHeadline: "Your next visit starts here.",
+                brandSupporting:
+                  "Choose a service. Find a practitioner. Request a time.",
+                serviceQuestion: "What care do you need?",
+                doctorHeadline: "Choose your practitioner.",
+                availabilityHeadline: "Find an available time.",
+                bookingHeadline: "Review your request.",
+                bookingSupporting:
+                  "Check your service, practitioner and time before sending.",
+                confirmationHeadline: "Stay informed about your visit.",
+                confirmationSupporting:
+                  "View appointments and request changes where available.",
+                bookingAction: "Request appointment",
+                confirmationLabel: "Awaiting confirmation",
+              },
+            },
+          }}
+        />
+        <Composition
+          id="Grammar-editorial-health-portrait-first-subtle-Landscape"
+          component={GrammarPromo}
+          width={1920}
+          height={1080}
+          fps={30}
+          durationInFrames={180}
+          schema={grammarPromoSchema}
+          calculateMetadata={calculateGrammarMetadata}
+          defaultProps={{
+            schemaVersion: 1,
+            familyId: "editorial-health",
+            variation: {
+              layoutVariant: "portrait-first",
+              typographyScale: 1,
+              imageScale: 1,
+              whitespace: 0.5,
+              shapeDensity: 0.5,
+              depth: 0.5,
+              expressiveness: 0.5,
+            },
+            axes: {
+              expressive: 0.5,
+              friendly: 0.5,
+              dimensional: 0.5,
+              spacious: 0.5,
+              dynamic: 0.5,
+            },
+            motionId: "subtle",
+            content: {
+              schemaVersion: 1,
+              dataMode: "demo",
+              practice: {
+                name: "Grace Doctor Clinic",
+              },
+              doctor: {
+                name: "Dr Naledi Mokoena",
+                speciality: "General Practitioner",
+                imageAssetId: "doctor-demo-01",
+              },
+              service: {
+                name: "General Consultation",
+                description: "Choose a service offered by your connected clinic.",
+              },
+              availability: ["09:00", "11:30", "14:30"],
+              availabilityLabel: "Example appointment times",
+              cta: {
+                title: "Request an appointment",
+                subtitle: "Your clinic. Your next appointment.",
+                destinationLabel: "Choose a service and an available time",
+              },
+              copy: {
+                brandHeadline: "Your next visit starts here.",
+                brandSupporting:
+                  "Choose a service. Find a practitioner. Request a time.",
+                serviceQuestion: "What care do you need?",
+                doctorHeadline: "Choose your practitioner.",
+                availabilityHeadline: "Find an available time.",
+                bookingHeadline: "Review your request.",
+                bookingSupporting:
+                  "Check your service, practitioner and time before sending.",
+                confirmationHeadline: "Stay informed about your visit.",
+                confirmationSupporting:
+                  "View appointments and request changes where available.",
+                bookingAction: "Request appointment",
+                confirmationLabel: "Awaiting confirmation",
+              },
+            },
+          }}
+        />
+        <Composition
+          id="Grammar-editorial-health-portrait-first-premium-Vertical"
+          component={GrammarPromo}
+          width={1080}
+          height={1920}
+          fps={30}
+          durationInFrames={180}
+          schema={grammarPromoSchema}
+          calculateMetadata={calculateGrammarMetadata}
+          defaultProps={{
+            schemaVersion: 1,
+            familyId: "editorial-health",
+            variation: {
+              layoutVariant: "portrait-first",
+              typographyScale: 1,
+              imageScale: 1,
+              whitespace: 0.5,
+              shapeDensity: 0.5,
+              depth: 0.5,
+              expressiveness: 0.5,
+            },
+            axes: {
+              expressive: 0.5,
+              friendly: 0.5,
+              dimensional: 0.5,
+              spacious: 0.5,
+              dynamic: 0.5,
+            },
+            motionId: "premium",
+            content: {
+              schemaVersion: 1,
+              dataMode: "demo",
+              practice: {
+                name: "Grace Doctor Clinic",
+              },
+              doctor: {
+                name: "Dr Naledi Mokoena",
+                speciality: "General Practitioner",
+                imageAssetId: "doctor-demo-01",
+              },
+              service: {
+                name: "General Consultation",
+                description: "Choose a service offered by your connected clinic.",
+              },
+              availability: ["09:00", "11:30", "14:30"],
+              availabilityLabel: "Example appointment times",
+              cta: {
+                title: "Request an appointment",
+                subtitle: "Your clinic. Your next appointment.",
+                destinationLabel: "Choose a service and an available time",
+              },
+              copy: {
+                brandHeadline: "Your next visit starts here.",
+                brandSupporting:
+                  "Choose a service. Find a practitioner. Request a time.",
+                serviceQuestion: "What care do you need?",
+                doctorHeadline: "Choose your practitioner.",
+                availabilityHeadline: "Find an available time.",
+                bookingHeadline: "Review your request.",
+                bookingSupporting:
+                  "Check your service, practitioner and time before sending.",
+                confirmationHeadline: "Stay informed about your visit.",
+                confirmationSupporting:
+                  "View appointments and request changes where available.",
+                bookingAction: "Request appointment",
+                confirmationLabel: "Awaiting confirmation",
+              },
+            },
+          }}
+        />
+        <Composition
+          id="Grammar-editorial-health-portrait-first-premium-Square"
+          component={GrammarPromo}
+          width={1080}
+          height={1080}
+          fps={30}
+          durationInFrames={180}
+          schema={grammarPromoSchema}
+          calculateMetadata={calculateGrammarMetadata}
+          defaultProps={{
+            schemaVersion: 1,
+            familyId: "editorial-health",
+            variation: {
+              layoutVariant: "portrait-first",
+              typographyScale: 1,
+              imageScale: 1,
+              whitespace: 0.5,
+              shapeDensity: 0.5,
+              depth: 0.5,
+              expressiveness: 0.5,
+            },
+            axes: {
+              expressive: 0.5,
+              friendly: 0.5,
+              dimensional: 0.5,
+              spacious: 0.5,
+              dynamic: 0.5,
+            },
+            motionId: "premium",
+            content: {
+              schemaVersion: 1,
+              dataMode: "demo",
+              practice: {
+                name: "Grace Doctor Clinic",
+              },
+              doctor: {
+                name: "Dr Naledi Mokoena",
+                speciality: "General Practitioner",
+                imageAssetId: "doctor-demo-01",
+              },
+              service: {
+                name: "General Consultation",
+                description: "Choose a service offered by your connected clinic.",
+              },
+              availability: ["09:00", "11:30", "14:30"],
+              availabilityLabel: "Example appointment times",
+              cta: {
+                title: "Request an appointment",
+                subtitle: "Your clinic. Your next appointment.",
+                destinationLabel: "Choose a service and an available time",
+              },
+              copy: {
+                brandHeadline: "Your next visit starts here.",
+                brandSupporting:
+                  "Choose a service. Find a practitioner. Request a time.",
+                serviceQuestion: "What care do you need?",
+                doctorHeadline: "Choose your practitioner.",
+                availabilityHeadline: "Find an available time.",
+                bookingHeadline: "Review your request.",
+                bookingSupporting:
+                  "Check your service, practitioner and time before sending.",
+                confirmationHeadline: "Stay informed about your visit.",
+                confirmationSupporting:
+                  "View appointments and request changes where available.",
+                bookingAction: "Request appointment",
+                confirmationLabel: "Awaiting confirmation",
+              },
+            },
+          }}
+        />
+        <Composition
+          id="Grammar-editorial-health-portrait-first-premium-Landscape"
+          component={GrammarPromo}
+          width={1920}
+          height={1080}
+          fps={30}
+          durationInFrames={180}
+          schema={grammarPromoSchema}
+          calculateMetadata={calculateGrammarMetadata}
+          defaultProps={{
+            schemaVersion: 1,
+            familyId: "editorial-health",
+            variation: {
+              layoutVariant: "portrait-first",
+              typographyScale: 1,
+              imageScale: 1,
+              whitespace: 0.5,
+              shapeDensity: 0.5,
+              depth: 0.5,
+              expressiveness: 0.5,
+            },
+            axes: {
+              expressive: 0.5,
+              friendly: 0.5,
+              dimensional: 0.5,
+              spacious: 0.5,
+              dynamic: 0.5,
+            },
+            motionId: "premium",
+            content: {
+              schemaVersion: 1,
+              dataMode: "demo",
+              practice: {
+                name: "Grace Doctor Clinic",
+              },
+              doctor: {
+                name: "Dr Naledi Mokoena",
+                speciality: "General Practitioner",
+                imageAssetId: "doctor-demo-01",
+              },
+              service: {
+                name: "General Consultation",
+                description: "Choose a service offered by your connected clinic.",
+              },
+              availability: ["09:00", "11:30", "14:30"],
+              availabilityLabel: "Example appointment times",
+              cta: {
+                title: "Request an appointment",
+                subtitle: "Your clinic. Your next appointment.",
+                destinationLabel: "Choose a service and an available time",
+              },
+              copy: {
+                brandHeadline: "Your next visit starts here.",
+                brandSupporting:
+                  "Choose a service. Find a practitioner. Request a time.",
+                serviceQuestion: "What care do you need?",
+                doctorHeadline: "Choose your practitioner.",
+                availabilityHeadline: "Find an available time.",
+                bookingHeadline: "Review your request.",
+                bookingSupporting:
+                  "Check your service, practitioner and time before sending.",
+                confirmationHeadline: "Stay informed about your visit.",
+                confirmationSupporting:
+                  "View appointments and request changes where available.",
+                bookingAction: "Request appointment",
+                confirmationLabel: "Awaiting confirmation",
+              },
+            },
+          }}
+        />
+      </Folder>
+      <Folder name="minimal-clinical">
+        <Composition
+          id="Grammar-minimal-clinical-split-subtle-Vertical"
+          component={GrammarPromo}
+          width={1080}
+          height={1920}
+          fps={30}
+          durationInFrames={180}
+          schema={grammarPromoSchema}
+          calculateMetadata={calculateGrammarMetadata}
+          defaultProps={{
+            schemaVersion: 1,
+            familyId: "minimal-clinical",
+            variation: {
+              layoutVariant: "split",
+              typographyScale: 1,
+              imageScale: 1,
+              whitespace: 0.5,
+              shapeDensity: 0.5,
+              depth: 0.5,
+              expressiveness: 0.5,
+            },
+            axes: {
+              expressive: 0.5,
+              friendly: 0.5,
+              dimensional: 0.5,
+              spacious: 0.5,
+              dynamic: 0.5,
+            },
+            motionId: "subtle",
+            content: {
+              schemaVersion: 1,
+              dataMode: "demo",
+              practice: {
+                name: "Grace Doctor Clinic",
+              },
+              doctor: {
+                name: "Dr Naledi Mokoena",
+                speciality: "General Practitioner",
+                imageAssetId: "doctor-demo-01",
+              },
+              service: {
+                name: "General Consultation",
+                description: "Choose a service offered by your connected clinic.",
+              },
+              availability: ["09:00", "11:30", "14:30"],
+              availabilityLabel: "Example appointment times",
+              cta: {
+                title: "Request an appointment",
+                subtitle: "Your clinic. Your next appointment.",
+                destinationLabel: "Choose a service and an available time",
+              },
+              copy: {
+                brandHeadline: "Your next visit starts here.",
+                brandSupporting:
+                  "Choose a service. Find a practitioner. Request a time.",
+                serviceQuestion: "What care do you need?",
+                doctorHeadline: "Choose your practitioner.",
+                availabilityHeadline: "Find an available time.",
+                bookingHeadline: "Review your request.",
+                bookingSupporting:
+                  "Check your service, practitioner and time before sending.",
+                confirmationHeadline: "Stay informed about your visit.",
+                confirmationSupporting:
+                  "View appointments and request changes where available.",
+                bookingAction: "Request appointment",
+                confirmationLabel: "Awaiting confirmation",
+              },
+            },
+          }}
+        />
+        <Composition
+          id="Grammar-minimal-clinical-split-subtle-Square"
+          component={GrammarPromo}
+          width={1080}
+          height={1080}
+          fps={30}
+          durationInFrames={180}
+          schema={grammarPromoSchema}
+          calculateMetadata={calculateGrammarMetadata}
+          defaultProps={{
+            schemaVersion: 1,
+            familyId: "minimal-clinical",
+            variation: {
+              layoutVariant: "split",
+              typographyScale: 1,
+              imageScale: 1,
+              whitespace: 0.5,
+              shapeDensity: 0.5,
+              depth: 0.5,
+              expressiveness: 0.5,
+            },
+            axes: {
+              expressive: 0.5,
+              friendly: 0.5,
+              dimensional: 0.5,
+              spacious: 0.5,
+              dynamic: 0.5,
+            },
+            motionId: "subtle",
+            content: {
+              schemaVersion: 1,
+              dataMode: "demo",
+              practice: {
+                name: "Grace Doctor Clinic",
+              },
+              doctor: {
+                name: "Dr Naledi Mokoena",
+                speciality: "General Practitioner",
+                imageAssetId: "doctor-demo-01",
+              },
+              service: {
+                name: "General Consultation",
+                description: "Choose a service offered by your connected clinic.",
+              },
+              availability: ["09:00", "11:30", "14:30"],
+              availabilityLabel: "Example appointment times",
+              cta: {
+                title: "Request an appointment",
+                subtitle: "Your clinic. Your next appointment.",
+                destinationLabel: "Choose a service and an available time",
+              },
+              copy: {
+                brandHeadline: "Your next visit starts here.",
+                brandSupporting:
+                  "Choose a service. Find a practitioner. Request a time.",
+                serviceQuestion: "What care do you need?",
+                doctorHeadline: "Choose your practitioner.",
+                availabilityHeadline: "Find an available time.",
+                bookingHeadline: "Review your request.",
+                bookingSupporting:
+                  "Check your service, practitioner and time before sending.",
+                confirmationHeadline: "Stay informed about your visit.",
+                confirmationSupporting:
+                  "View appointments and request changes where available.",
+                bookingAction: "Request appointment",
+                confirmationLabel: "Awaiting confirmation",
+              },
+            },
+          }}
+        />
+        <Composition
+          id="Grammar-minimal-clinical-split-subtle-Landscape"
+          component={GrammarPromo}
+          width={1920}
+          height={1080}
+          fps={30}
+          durationInFrames={180}
+          schema={grammarPromoSchema}
+          calculateMetadata={calculateGrammarMetadata}
+          defaultProps={{
+            schemaVersion: 1,
+            familyId: "minimal-clinical",
+            variation: {
+              layoutVariant: "split",
+              typographyScale: 1,
+              imageScale: 1,
+              whitespace: 0.5,
+              shapeDensity: 0.5,
+              depth: 0.5,
+              expressiveness: 0.5,
+            },
+            axes: {
+              expressive: 0.5,
+              friendly: 0.5,
+              dimensional: 0.5,
+              spacious: 0.5,
+              dynamic: 0.5,
+            },
+            motionId: "subtle",
+            content: {
+              schemaVersion: 1,
+              dataMode: "demo",
+              practice: {
+                name: "Grace Doctor Clinic",
+              },
+              doctor: {
+                name: "Dr Naledi Mokoena",
+                speciality: "General Practitioner",
+                imageAssetId: "doctor-demo-01",
+              },
+              service: {
+                name: "General Consultation",
+                description: "Choose a service offered by your connected clinic.",
+              },
+              availability: ["09:00", "11:30", "14:30"],
+              availabilityLabel: "Example appointment times",
+              cta: {
+                title: "Request an appointment",
+                subtitle: "Your clinic. Your next appointment.",
+                destinationLabel: "Choose a service and an available time",
+              },
+              copy: {
+                brandHeadline: "Your next visit starts here.",
+                brandSupporting:
+                  "Choose a service. Find a practitioner. Request a time.",
+                serviceQuestion: "What care do you need?",
+                doctorHeadline: "Choose your practitioner.",
+                availabilityHeadline: "Find an available time.",
+                bookingHeadline: "Review your request.",
+                bookingSupporting:
+                  "Check your service, practitioner and time before sending.",
+                confirmationHeadline: "Stay informed about your visit.",
+                confirmationSupporting:
+                  "View appointments and request changes where available.",
+                bookingAction: "Request appointment",
+                confirmationLabel: "Awaiting confirmation",
+              },
+            },
+          }}
+        />
+        <Composition
+          id="Grammar-minimal-clinical-split-premium-Vertical"
+          component={GrammarPromo}
+          width={1080}
+          height={1920}
+          fps={30}
+          durationInFrames={180}
+          schema={grammarPromoSchema}
+          calculateMetadata={calculateGrammarMetadata}
+          defaultProps={{
+            schemaVersion: 1,
+            familyId: "minimal-clinical",
+            variation: {
+              layoutVariant: "split",
+              typographyScale: 1,
+              imageScale: 1,
+              whitespace: 0.5,
+              shapeDensity: 0.5,
+              depth: 0.5,
+              expressiveness: 0.5,
+            },
+            axes: {
+              expressive: 0.5,
+              friendly: 0.5,
+              dimensional: 0.5,
+              spacious: 0.5,
+              dynamic: 0.5,
+            },
+            motionId: "premium",
+            content: {
+              schemaVersion: 1,
+              dataMode: "demo",
+              practice: {
+                name: "Grace Doctor Clinic",
+              },
+              doctor: {
+                name: "Dr Naledi Mokoena",
+                speciality: "General Practitioner",
+                imageAssetId: "doctor-demo-01",
+              },
+              service: {
+                name: "General Consultation",
+                description: "Choose a service offered by your connected clinic.",
+              },
+              availability: ["09:00", "11:30", "14:30"],
+              availabilityLabel: "Example appointment times",
+              cta: {
+                title: "Request an appointment",
+                subtitle: "Your clinic. Your next appointment.",
+                destinationLabel: "Choose a service and an available time",
+              },
+              copy: {
+                brandHeadline: "Your next visit starts here.",
+                brandSupporting:
+                  "Choose a service. Find a practitioner. Request a time.",
+                serviceQuestion: "What care do you need?",
+                doctorHeadline: "Choose your practitioner.",
+                availabilityHeadline: "Find an available time.",
+                bookingHeadline: "Review your request.",
+                bookingSupporting:
+                  "Check your service, practitioner and time before sending.",
+                confirmationHeadline: "Stay informed about your visit.",
+                confirmationSupporting:
+                  "View appointments and request changes where available.",
+                bookingAction: "Request appointment",
+                confirmationLabel: "Awaiting confirmation",
+              },
+            },
+          }}
+        />
+        <Composition
+          id="Grammar-minimal-clinical-split-premium-Square"
+          component={GrammarPromo}
+          width={1080}
+          height={1080}
+          fps={30}
+          durationInFrames={180}
+          schema={grammarPromoSchema}
+          calculateMetadata={calculateGrammarMetadata}
+          defaultProps={{
+            schemaVersion: 1,
+            familyId: "minimal-clinical",
+            variation: {
+              layoutVariant: "split",
+              typographyScale: 1,
+              imageScale: 1,
+              whitespace: 0.5,
+              shapeDensity: 0.5,
+              depth: 0.5,
+              expressiveness: 0.5,
+            },
+            axes: {
+              expressive: 0.5,
+              friendly: 0.5,
+              dimensional: 0.5,
+              spacious: 0.5,
+              dynamic: 0.5,
+            },
+            motionId: "premium",
+            content: {
+              schemaVersion: 1,
+              dataMode: "demo",
+              practice: {
+                name: "Grace Doctor Clinic",
+              },
+              doctor: {
+                name: "Dr Naledi Mokoena",
+                speciality: "General Practitioner",
+                imageAssetId: "doctor-demo-01",
+              },
+              service: {
+                name: "General Consultation",
+                description: "Choose a service offered by your connected clinic.",
+              },
+              availability: ["09:00", "11:30", "14:30"],
+              availabilityLabel: "Example appointment times",
+              cta: {
+                title: "Request an appointment",
+                subtitle: "Your clinic. Your next appointment.",
+                destinationLabel: "Choose a service and an available time",
+              },
+              copy: {
+                brandHeadline: "Your next visit starts here.",
+                brandSupporting:
+                  "Choose a service. Find a practitioner. Request a time.",
+                serviceQuestion: "What care do you need?",
+                doctorHeadline: "Choose your practitioner.",
+                availabilityHeadline: "Find an available time.",
+                bookingHeadline: "Review your request.",
+                bookingSupporting:
+                  "Check your service, practitioner and time before sending.",
+                confirmationHeadline: "Stay informed about your visit.",
+                confirmationSupporting:
+                  "View appointments and request changes where available.",
+                bookingAction: "Request appointment",
+                confirmationLabel: "Awaiting confirmation",
+              },
+            },
+          }}
+        />
+        <Composition
+          id="Grammar-minimal-clinical-split-premium-Landscape"
+          component={GrammarPromo}
+          width={1920}
+          height={1080}
+          fps={30}
+          durationInFrames={180}
+          schema={grammarPromoSchema}
+          calculateMetadata={calculateGrammarMetadata}
+          defaultProps={{
+            schemaVersion: 1,
+            familyId: "minimal-clinical",
+            variation: {
+              layoutVariant: "split",
+              typographyScale: 1,
+              imageScale: 1,
+              whitespace: 0.5,
+              shapeDensity: 0.5,
+              depth: 0.5,
+              expressiveness: 0.5,
+            },
+            axes: {
+              expressive: 0.5,
+              friendly: 0.5,
+              dimensional: 0.5,
+              spacious: 0.5,
+              dynamic: 0.5,
+            },
+            motionId: "premium",
+            content: {
+              schemaVersion: 1,
+              dataMode: "demo",
+              practice: {
+                name: "Grace Doctor Clinic",
+              },
+              doctor: {
+                name: "Dr Naledi Mokoena",
+                speciality: "General Practitioner",
+                imageAssetId: "doctor-demo-01",
+              },
+              service: {
+                name: "General Consultation",
+                description: "Choose a service offered by your connected clinic.",
+              },
+              availability: ["09:00", "11:30", "14:30"],
+              availabilityLabel: "Example appointment times",
+              cta: {
+                title: "Request an appointment",
+                subtitle: "Your clinic. Your next appointment.",
+                destinationLabel: "Choose a service and an available time",
+              },
+              copy: {
+                brandHeadline: "Your next visit starts here.",
+                brandSupporting:
+                  "Choose a service. Find a practitioner. Request a time.",
+                serviceQuestion: "What care do you need?",
+                doctorHeadline: "Choose your practitioner.",
+                availabilityHeadline: "Find an available time.",
+                bookingHeadline: "Review your request.",
+                bookingSupporting:
+                  "Check your service, practitioner and time before sending.",
+                confirmationHeadline: "Stay informed about your visit.",
+                confirmationSupporting:
+                  "View appointments and request changes where available.",
+                bookingAction: "Request appointment",
+                confirmationLabel: "Awaiting confirmation",
+              },
+            },
+          }}
+        />
+        <Composition
+          id="Grammar-minimal-clinical-portrait-first-subtle-Vertical"
+          component={GrammarPromo}
+          width={1080}
+          height={1920}
+          fps={30}
+          durationInFrames={180}
+          schema={grammarPromoSchema}
+          calculateMetadata={calculateGrammarMetadata}
+          defaultProps={{
+            schemaVersion: 1,
+            familyId: "minimal-clinical",
+            variation: {
+              layoutVariant: "portrait-first",
+              typographyScale: 1,
+              imageScale: 1,
+              whitespace: 0.5,
+              shapeDensity: 0.5,
+              depth: 0.5,
+              expressiveness: 0.5,
+            },
+            axes: {
+              expressive: 0.5,
+              friendly: 0.5,
+              dimensional: 0.5,
+              spacious: 0.5,
+              dynamic: 0.5,
+            },
+            motionId: "subtle",
+            content: {
+              schemaVersion: 1,
+              dataMode: "demo",
+              practice: {
+                name: "Grace Doctor Clinic",
+              },
+              doctor: {
+                name: "Dr Naledi Mokoena",
+                speciality: "General Practitioner",
+                imageAssetId: "doctor-demo-01",
+              },
+              service: {
+                name: "General Consultation",
+                description: "Choose a service offered by your connected clinic.",
+              },
+              availability: ["09:00", "11:30", "14:30"],
+              availabilityLabel: "Example appointment times",
+              cta: {
+                title: "Request an appointment",
+                subtitle: "Your clinic. Your next appointment.",
+                destinationLabel: "Choose a service and an available time",
+              },
+              copy: {
+                brandHeadline: "Your next visit starts here.",
+                brandSupporting:
+                  "Choose a service. Find a practitioner. Request a time.",
+                serviceQuestion: "What care do you need?",
+                doctorHeadline: "Choose your practitioner.",
+                availabilityHeadline: "Find an available time.",
+                bookingHeadline: "Review your request.",
+                bookingSupporting:
+                  "Check your service, practitioner and time before sending.",
+                confirmationHeadline: "Stay informed about your visit.",
+                confirmationSupporting:
+                  "View appointments and request changes where available.",
+                bookingAction: "Request appointment",
+                confirmationLabel: "Awaiting confirmation",
+              },
+            },
+          }}
+        />
+        <Composition
+          id="Grammar-minimal-clinical-portrait-first-subtle-Square"
+          component={GrammarPromo}
+          width={1080}
+          height={1080}
+          fps={30}
+          durationInFrames={180}
+          schema={grammarPromoSchema}
+          calculateMetadata={calculateGrammarMetadata}
+          defaultProps={{
+            schemaVersion: 1,
+            familyId: "minimal-clinical",
+            variation: {
+              layoutVariant: "portrait-first",
+              typographyScale: 1,
+              imageScale: 1,
+              whitespace: 0.5,
+              shapeDensity: 0.5,
+              depth: 0.5,
+              expressiveness: 0.5,
+            },
+            axes: {
+              expressive: 0.5,
+              friendly: 0.5,
+              dimensional: 0.5,
+              spacious: 0.5,
+              dynamic: 0.5,
+            },
+            motionId: "subtle",
+            content: {
+              schemaVersion: 1,
+              dataMode: "demo",
+              practice: {
+                name: "Grace Doctor Clinic",
+              },
+              doctor: {
+                name: "Dr Naledi Mokoena",
+                speciality: "General Practitioner",
+                imageAssetId: "doctor-demo-01",
+              },
+              service: {
+                name: "General Consultation",
+                description: "Choose a service offered by your connected clinic.",
+              },
+              availability: ["09:00", "11:30", "14:30"],
+              availabilityLabel: "Example appointment times",
+              cta: {
+                title: "Request an appointment",
+                subtitle: "Your clinic. Your next appointment.",
+                destinationLabel: "Choose a service and an available time",
+              },
+              copy: {
+                brandHeadline: "Your next visit starts here.",
+                brandSupporting:
+                  "Choose a service. Find a practitioner. Request a time.",
+                serviceQuestion: "What care do you need?",
+                doctorHeadline: "Choose your practitioner.",
+                availabilityHeadline: "Find an available time.",
+                bookingHeadline: "Review your request.",
+                bookingSupporting:
+                  "Check your service, practitioner and time before sending.",
+                confirmationHeadline: "Stay informed about your visit.",
+                confirmationSupporting:
+                  "View appointments and request changes where available.",
+                bookingAction: "Request appointment",
+                confirmationLabel: "Awaiting confirmation",
+              },
+            },
+          }}
+        />
+        <Composition
+          id="Grammar-minimal-clinical-portrait-first-subtle-Landscape"
+          component={GrammarPromo}
+          width={1920}
+          height={1080}
+          fps={30}
+          durationInFrames={180}
+          schema={grammarPromoSchema}
+          calculateMetadata={calculateGrammarMetadata}
+          defaultProps={{
+            schemaVersion: 1,
+            familyId: "minimal-clinical",
+            variation: {
+              layoutVariant: "portrait-first",
+              typographyScale: 1,
+              imageScale: 1,
+              whitespace: 0.5,
+              shapeDensity: 0.5,
+              depth: 0.5,
+              expressiveness: 0.5,
+            },
+            axes: {
+              expressive: 0.5,
+              friendly: 0.5,
+              dimensional: 0.5,
+              spacious: 0.5,
+              dynamic: 0.5,
+            },
+            motionId: "subtle",
+            content: {
+              schemaVersion: 1,
+              dataMode: "demo",
+              practice: {
+                name: "Grace Doctor Clinic",
+              },
+              doctor: {
+                name: "Dr Naledi Mokoena",
+                speciality: "General Practitioner",
+                imageAssetId: "doctor-demo-01",
+              },
+              service: {
+                name: "General Consultation",
+                description: "Choose a service offered by your connected clinic.",
+              },
+              availability: ["09:00", "11:30", "14:30"],
+              availabilityLabel: "Example appointment times",
+              cta: {
+                title: "Request an appointment",
+                subtitle: "Your clinic. Your next appointment.",
+                destinationLabel: "Choose a service and an available time",
+              },
+              copy: {
+                brandHeadline: "Your next visit starts here.",
+                brandSupporting:
+                  "Choose a service. Find a practitioner. Request a time.",
+                serviceQuestion: "What care do you need?",
+                doctorHeadline: "Choose your practitioner.",
+                availabilityHeadline: "Find an available time.",
+                bookingHeadline: "Review your request.",
+                bookingSupporting:
+                  "Check your service, practitioner and time before sending.",
+                confirmationHeadline: "Stay informed about your visit.",
+                confirmationSupporting:
+                  "View appointments and request changes where available.",
+                bookingAction: "Request appointment",
+                confirmationLabel: "Awaiting confirmation",
+              },
+            },
+          }}
+        />
+        <Composition
+          id="Grammar-minimal-clinical-portrait-first-premium-Vertical"
+          component={GrammarPromo}
+          width={1080}
+          height={1920}
+          fps={30}
+          durationInFrames={180}
+          schema={grammarPromoSchema}
+          calculateMetadata={calculateGrammarMetadata}
+          defaultProps={{
+            schemaVersion: 1,
+            familyId: "minimal-clinical",
+            variation: {
+              layoutVariant: "portrait-first",
+              typographyScale: 1,
+              imageScale: 1,
+              whitespace: 0.5,
+              shapeDensity: 0.5,
+              depth: 0.5,
+              expressiveness: 0.5,
+            },
+            axes: {
+              expressive: 0.5,
+              friendly: 0.5,
+              dimensional: 0.5,
+              spacious: 0.5,
+              dynamic: 0.5,
+            },
+            motionId: "premium",
+            content: {
+              schemaVersion: 1,
+              dataMode: "demo",
+              practice: {
+                name: "Grace Doctor Clinic",
+              },
+              doctor: {
+                name: "Dr Naledi Mokoena",
+                speciality: "General Practitioner",
+                imageAssetId: "doctor-demo-01",
+              },
+              service: {
+                name: "General Consultation",
+                description: "Choose a service offered by your connected clinic.",
+              },
+              availability: ["09:00", "11:30", "14:30"],
+              availabilityLabel: "Example appointment times",
+              cta: {
+                title: "Request an appointment",
+                subtitle: "Your clinic. Your next appointment.",
+                destinationLabel: "Choose a service and an available time",
+              },
+              copy: {
+                brandHeadline: "Your next visit starts here.",
+                brandSupporting:
+                  "Choose a service. Find a practitioner. Request a time.",
+                serviceQuestion: "What care do you need?",
+                doctorHeadline: "Choose your practitioner.",
+                availabilityHeadline: "Find an available time.",
+                bookingHeadline: "Review your request.",
+                bookingSupporting:
+                  "Check your service, practitioner and time before sending.",
+                confirmationHeadline: "Stay informed about your visit.",
+                confirmationSupporting:
+                  "View appointments and request changes where available.",
+                bookingAction: "Request appointment",
+                confirmationLabel: "Awaiting confirmation",
+              },
+            },
+          }}
+        />
+        <Composition
+          id="Grammar-minimal-clinical-portrait-first-premium-Square"
+          component={GrammarPromo}
+          width={1080}
+          height={1080}
+          fps={30}
+          durationInFrames={180}
+          schema={grammarPromoSchema}
+          calculateMetadata={calculateGrammarMetadata}
+          defaultProps={{
+            schemaVersion: 1,
+            familyId: "minimal-clinical",
+            variation: {
+              layoutVariant: "portrait-first",
+              typographyScale: 1,
+              imageScale: 1,
+              whitespace: 0.5,
+              shapeDensity: 0.5,
+              depth: 0.5,
+              expressiveness: 0.5,
+            },
+            axes: {
+              expressive: 0.5,
+              friendly: 0.5,
+              dimensional: 0.5,
+              spacious: 0.5,
+              dynamic: 0.5,
+            },
+            motionId: "premium",
+            content: {
+              schemaVersion: 1,
+              dataMode: "demo",
+              practice: {
+                name: "Grace Doctor Clinic",
+              },
+              doctor: {
+                name: "Dr Naledi Mokoena",
+                speciality: "General Practitioner",
+                imageAssetId: "doctor-demo-01",
+              },
+              service: {
+                name: "General Consultation",
+                description: "Choose a service offered by your connected clinic.",
+              },
+              availability: ["09:00", "11:30", "14:30"],
+              availabilityLabel: "Example appointment times",
+              cta: {
+                title: "Request an appointment",
+                subtitle: "Your clinic. Your next appointment.",
+                destinationLabel: "Choose a service and an available time",
+              },
+              copy: {
+                brandHeadline: "Your next visit starts here.",
+                brandSupporting:
+                  "Choose a service. Find a practitioner. Request a time.",
+                serviceQuestion: "What care do you need?",
+                doctorHeadline: "Choose your practitioner.",
+                availabilityHeadline: "Find an available time.",
+                bookingHeadline: "Review your request.",
+                bookingSupporting:
+                  "Check your service, practitioner and time before sending.",
+                confirmationHeadline: "Stay informed about your visit.",
+                confirmationSupporting:
+                  "View appointments and request changes where available.",
+                bookingAction: "Request appointment",
+                confirmationLabel: "Awaiting confirmation",
+              },
+            },
+          }}
+        />
+        <Composition
+          id="Grammar-minimal-clinical-portrait-first-premium-Landscape"
+          component={GrammarPromo}
+          width={1920}
+          height={1080}
+          fps={30}
+          durationInFrames={180}
+          schema={grammarPromoSchema}
+          calculateMetadata={calculateGrammarMetadata}
+          defaultProps={{
+            schemaVersion: 1,
+            familyId: "minimal-clinical",
+            variation: {
+              layoutVariant: "portrait-first",
+              typographyScale: 1,
+              imageScale: 1,
+              whitespace: 0.5,
+              shapeDensity: 0.5,
+              depth: 0.5,
+              expressiveness: 0.5,
+            },
+            axes: {
+              expressive: 0.5,
+              friendly: 0.5,
+              dimensional: 0.5,
+              spacious: 0.5,
+              dynamic: 0.5,
+            },
+            motionId: "premium",
+            content: {
+              schemaVersion: 1,
+              dataMode: "demo",
+              practice: {
+                name: "Grace Doctor Clinic",
+              },
+              doctor: {
+                name: "Dr Naledi Mokoena",
+                speciality: "General Practitioner",
+                imageAssetId: "doctor-demo-01",
+              },
+              service: {
+                name: "General Consultation",
+                description: "Choose a service offered by your connected clinic.",
+              },
+              availability: ["09:00", "11:30", "14:30"],
+              availabilityLabel: "Example appointment times",
+              cta: {
+                title: "Request an appointment",
+                subtitle: "Your clinic. Your next appointment.",
+                destinationLabel: "Choose a service and an available time",
+              },
+              copy: {
+                brandHeadline: "Your next visit starts here.",
+                brandSupporting:
+                  "Choose a service. Find a practitioner. Request a time.",
+                serviceQuestion: "What care do you need?",
+                doctorHeadline: "Choose your practitioner.",
+                availabilityHeadline: "Find an available time.",
+                bookingHeadline: "Review your request.",
+                bookingSupporting:
+                  "Check your service, practitioner and time before sending.",
+                confirmationHeadline: "Stay informed about your visit.",
+                confirmationSupporting:
+                  "View appointments and request changes where available.",
+                bookingAction: "Request appointment",
+                confirmationLabel: "Awaiting confirmation",
+              },
+            },
+          }}
+        />
+      </Folder>
+      <Folder name="technology-health">
+        <Composition
+          id="Grammar-technology-health-split-subtle-Vertical"
+          component={GrammarPromo}
+          width={1080}
+          height={1920}
+          fps={30}
+          durationInFrames={180}
+          schema={grammarPromoSchema}
+          calculateMetadata={calculateGrammarMetadata}
+          defaultProps={{
+            schemaVersion: 1,
+            familyId: "technology-health",
+            variation: {
+              layoutVariant: "split",
+              typographyScale: 1,
+              imageScale: 1,
+              whitespace: 0.5,
+              shapeDensity: 0.5,
+              depth: 0.5,
+              expressiveness: 0.5,
+            },
+            axes: {
+              expressive: 0.5,
+              friendly: 0.5,
+              dimensional: 0.5,
+              spacious: 0.5,
+              dynamic: 0.5,
+            },
+            motionId: "subtle",
+            content: {
+              schemaVersion: 1,
+              dataMode: "demo",
+              practice: {
+                name: "Grace Doctor Clinic",
+              },
+              doctor: {
+                name: "Dr Naledi Mokoena",
+                speciality: "General Practitioner",
+                imageAssetId: "doctor-demo-01",
+              },
+              service: {
+                name: "General Consultation",
+                description: "Choose a service offered by your connected clinic.",
+              },
+              availability: ["09:00", "11:30", "14:30"],
+              availabilityLabel: "Example appointment times",
+              cta: {
+                title: "Request an appointment",
+                subtitle: "Your clinic. Your next appointment.",
+                destinationLabel: "Choose a service and an available time",
+              },
+              copy: {
+                brandHeadline: "Your next visit starts here.",
+                brandSupporting:
+                  "Choose a service. Find a practitioner. Request a time.",
+                serviceQuestion: "What care do you need?",
+                doctorHeadline: "Choose your practitioner.",
+                availabilityHeadline: "Find an available time.",
+                bookingHeadline: "Review your request.",
+                bookingSupporting:
+                  "Check your service, practitioner and time before sending.",
+                confirmationHeadline: "Stay informed about your visit.",
+                confirmationSupporting:
+                  "View appointments and request changes where available.",
+                bookingAction: "Request appointment",
+                confirmationLabel: "Awaiting confirmation",
+              },
+            },
+          }}
+        />
+        <Composition
+          id="Grammar-technology-health-split-subtle-Square"
+          component={GrammarPromo}
+          width={1080}
+          height={1080}
+          fps={30}
+          durationInFrames={180}
+          schema={grammarPromoSchema}
+          calculateMetadata={calculateGrammarMetadata}
+          defaultProps={{
+            schemaVersion: 1,
+            familyId: "technology-health",
+            variation: {
+              layoutVariant: "split",
+              typographyScale: 1,
+              imageScale: 1,
+              whitespace: 0.5,
+              shapeDensity: 0.5,
+              depth: 0.5,
+              expressiveness: 0.5,
+            },
+            axes: {
+              expressive: 0.5,
+              friendly: 0.5,
+              dimensional: 0.5,
+              spacious: 0.5,
+              dynamic: 0.5,
+            },
+            motionId: "subtle",
+            content: {
+              schemaVersion: 1,
+              dataMode: "demo",
+              practice: {
+                name: "Grace Doctor Clinic",
+              },
+              doctor: {
+                name: "Dr Naledi Mokoena",
+                speciality: "General Practitioner",
+                imageAssetId: "doctor-demo-01",
+              },
+              service: {
+                name: "General Consultation",
+                description: "Choose a service offered by your connected clinic.",
+              },
+              availability: ["09:00", "11:30", "14:30"],
+              availabilityLabel: "Example appointment times",
+              cta: {
+                title: "Request an appointment",
+                subtitle: "Your clinic. Your next appointment.",
+                destinationLabel: "Choose a service and an available time",
+              },
+              copy: {
+                brandHeadline: "Your next visit starts here.",
+                brandSupporting:
+                  "Choose a service. Find a practitioner. Request a time.",
+                serviceQuestion: "What care do you need?",
+                doctorHeadline: "Choose your practitioner.",
+                availabilityHeadline: "Find an available time.",
+                bookingHeadline: "Review your request.",
+                bookingSupporting:
+                  "Check your service, practitioner and time before sending.",
+                confirmationHeadline: "Stay informed about your visit.",
+                confirmationSupporting:
+                  "View appointments and request changes where available.",
+                bookingAction: "Request appointment",
+                confirmationLabel: "Awaiting confirmation",
+              },
+            },
+          }}
+        />
+        <Composition
+          id="Grammar-technology-health-split-subtle-Landscape"
+          component={GrammarPromo}
+          width={1920}
+          height={1080}
+          fps={30}
+          durationInFrames={180}
+          schema={grammarPromoSchema}
+          calculateMetadata={calculateGrammarMetadata}
+          defaultProps={{
+            schemaVersion: 1,
+            familyId: "technology-health",
+            variation: {
+              layoutVariant: "split",
+              typographyScale: 1,
+              imageScale: 1,
+              whitespace: 0.5,
+              shapeDensity: 0.5,
+              depth: 0.5,
+              expressiveness: 0.5,
+            },
+            axes: {
+              expressive: 0.5,
+              friendly: 0.5,
+              dimensional: 0.5,
+              spacious: 0.5,
+              dynamic: 0.5,
+            },
+            motionId: "subtle",
+            content: {
+              schemaVersion: 1,
+              dataMode: "demo",
+              practice: {
+                name: "Grace Doctor Clinic",
+              },
+              doctor: {
+                name: "Dr Naledi Mokoena",
+                speciality: "General Practitioner",
+                imageAssetId: "doctor-demo-01",
+              },
+              service: {
+                name: "General Consultation",
+                description: "Choose a service offered by your connected clinic.",
+              },
+              availability: ["09:00", "11:30", "14:30"],
+              availabilityLabel: "Example appointment times",
+              cta: {
+                title: "Request an appointment",
+                subtitle: "Your clinic. Your next appointment.",
+                destinationLabel: "Choose a service and an available time",
+              },
+              copy: {
+                brandHeadline: "Your next visit starts here.",
+                brandSupporting:
+                  "Choose a service. Find a practitioner. Request a time.",
+                serviceQuestion: "What care do you need?",
+                doctorHeadline: "Choose your practitioner.",
+                availabilityHeadline: "Find an available time.",
+                bookingHeadline: "Review your request.",
+                bookingSupporting:
+                  "Check your service, practitioner and time before sending.",
+                confirmationHeadline: "Stay informed about your visit.",
+                confirmationSupporting:
+                  "View appointments and request changes where available.",
+                bookingAction: "Request appointment",
+                confirmationLabel: "Awaiting confirmation",
+              },
+            },
+          }}
+        />
+        <Composition
+          id="Grammar-technology-health-split-premium-Vertical"
+          component={GrammarPromo}
+          width={1080}
+          height={1920}
+          fps={30}
+          durationInFrames={180}
+          schema={grammarPromoSchema}
+          calculateMetadata={calculateGrammarMetadata}
+          defaultProps={{
+            schemaVersion: 1,
+            familyId: "technology-health",
+            variation: {
+              layoutVariant: "split",
+              typographyScale: 1,
+              imageScale: 1,
+              whitespace: 0.5,
+              shapeDensity: 0.5,
+              depth: 0.5,
+              expressiveness: 0.5,
+            },
+            axes: {
+              expressive: 0.5,
+              friendly: 0.5,
+              dimensional: 0.5,
+              spacious: 0.5,
+              dynamic: 0.5,
+            },
+            motionId: "premium",
+            content: {
+              schemaVersion: 1,
+              dataMode: "demo",
+              practice: {
+                name: "Grace Doctor Clinic",
+              },
+              doctor: {
+                name: "Dr Naledi Mokoena",
+                speciality: "General Practitioner",
+                imageAssetId: "doctor-demo-01",
+              },
+              service: {
+                name: "General Consultation",
+                description: "Choose a service offered by your connected clinic.",
+              },
+              availability: ["09:00", "11:30", "14:30"],
+              availabilityLabel: "Example appointment times",
+              cta: {
+                title: "Request an appointment",
+                subtitle: "Your clinic. Your next appointment.",
+                destinationLabel: "Choose a service and an available time",
+              },
+              copy: {
+                brandHeadline: "Your next visit starts here.",
+                brandSupporting:
+                  "Choose a service. Find a practitioner. Request a time.",
+                serviceQuestion: "What care do you need?",
+                doctorHeadline: "Choose your practitioner.",
+                availabilityHeadline: "Find an available time.",
+                bookingHeadline: "Review your request.",
+                bookingSupporting:
+                  "Check your service, practitioner and time before sending.",
+                confirmationHeadline: "Stay informed about your visit.",
+                confirmationSupporting:
+                  "View appointments and request changes where available.",
+                bookingAction: "Request appointment",
+                confirmationLabel: "Awaiting confirmation",
+              },
+            },
+          }}
+        />
+        <Composition
+          id="Grammar-technology-health-split-premium-Square"
+          component={GrammarPromo}
+          width={1080}
+          height={1080}
+          fps={30}
+          durationInFrames={180}
+          schema={grammarPromoSchema}
+          calculateMetadata={calculateGrammarMetadata}
+          defaultProps={{
+            schemaVersion: 1,
+            familyId: "technology-health",
+            variation: {
+              layoutVariant: "split",
+              typographyScale: 1,
+              imageScale: 1,
+              whitespace: 0.5,
+              shapeDensity: 0.5,
+              depth: 0.5,
+              expressiveness: 0.5,
+            },
+            axes: {
+              expressive: 0.5,
+              friendly: 0.5,
+              dimensional: 0.5,
+              spacious: 0.5,
+              dynamic: 0.5,
+            },
+            motionId: "premium",
+            content: {
+              schemaVersion: 1,
+              dataMode: "demo",
+              practice: {
+                name: "Grace Doctor Clinic",
+              },
+              doctor: {
+                name: "Dr Naledi Mokoena",
+                speciality: "General Practitioner",
+                imageAssetId: "doctor-demo-01",
+              },
+              service: {
+                name: "General Consultation",
+                description: "Choose a service offered by your connected clinic.",
+              },
+              availability: ["09:00", "11:30", "14:30"],
+              availabilityLabel: "Example appointment times",
+              cta: {
+                title: "Request an appointment",
+                subtitle: "Your clinic. Your next appointment.",
+                destinationLabel: "Choose a service and an available time",
+              },
+              copy: {
+                brandHeadline: "Your next visit starts here.",
+                brandSupporting:
+                  "Choose a service. Find a practitioner. Request a time.",
+                serviceQuestion: "What care do you need?",
+                doctorHeadline: "Choose your practitioner.",
+                availabilityHeadline: "Find an available time.",
+                bookingHeadline: "Review your request.",
+                bookingSupporting:
+                  "Check your service, practitioner and time before sending.",
+                confirmationHeadline: "Stay informed about your visit.",
+                confirmationSupporting:
+                  "View appointments and request changes where available.",
+                bookingAction: "Request appointment",
+                confirmationLabel: "Awaiting confirmation",
+              },
+            },
+          }}
+        />
+        <Composition
+          id="Grammar-technology-health-split-premium-Landscape"
+          component={GrammarPromo}
+          width={1920}
+          height={1080}
+          fps={30}
+          durationInFrames={180}
+          schema={grammarPromoSchema}
+          calculateMetadata={calculateGrammarMetadata}
+          defaultProps={{
+            schemaVersion: 1,
+            familyId: "technology-health",
+            variation: {
+              layoutVariant: "split",
+              typographyScale: 1,
+              imageScale: 1,
+              whitespace: 0.5,
+              shapeDensity: 0.5,
+              depth: 0.5,
+              expressiveness: 0.5,
+            },
+            axes: {
+              expressive: 0.5,
+              friendly: 0.5,
+              dimensional: 0.5,
+              spacious: 0.5,
+              dynamic: 0.5,
+            },
+            motionId: "premium",
+            content: {
+              schemaVersion: 1,
+              dataMode: "demo",
+              practice: {
+                name: "Grace Doctor Clinic",
+              },
+              doctor: {
+                name: "Dr Naledi Mokoena",
+                speciality: "General Practitioner",
+                imageAssetId: "doctor-demo-01",
+              },
+              service: {
+                name: "General Consultation",
+                description: "Choose a service offered by your connected clinic.",
+              },
+              availability: ["09:00", "11:30", "14:30"],
+              availabilityLabel: "Example appointment times",
+              cta: {
+                title: "Request an appointment",
+                subtitle: "Your clinic. Your next appointment.",
+                destinationLabel: "Choose a service and an available time",
+              },
+              copy: {
+                brandHeadline: "Your next visit starts here.",
+                brandSupporting:
+                  "Choose a service. Find a practitioner. Request a time.",
+                serviceQuestion: "What care do you need?",
+                doctorHeadline: "Choose your practitioner.",
+                availabilityHeadline: "Find an available time.",
+                bookingHeadline: "Review your request.",
+                bookingSupporting:
+                  "Check your service, practitioner and time before sending.",
+                confirmationHeadline: "Stay informed about your visit.",
+                confirmationSupporting:
+                  "View appointments and request changes where available.",
+                bookingAction: "Request appointment",
+                confirmationLabel: "Awaiting confirmation",
+              },
+            },
+          }}
+        />
+        <Composition
+          id="Grammar-technology-health-portrait-first-subtle-Vertical"
+          component={GrammarPromo}
+          width={1080}
+          height={1920}
+          fps={30}
+          durationInFrames={180}
+          schema={grammarPromoSchema}
+          calculateMetadata={calculateGrammarMetadata}
+          defaultProps={{
+            schemaVersion: 1,
+            familyId: "technology-health",
+            variation: {
+              layoutVariant: "portrait-first",
+              typographyScale: 1,
+              imageScale: 1,
+              whitespace: 0.5,
+              shapeDensity: 0.5,
+              depth: 0.5,
+              expressiveness: 0.5,
+            },
+            axes: {
+              expressive: 0.5,
+              friendly: 0.5,
+              dimensional: 0.5,
+              spacious: 0.5,
+              dynamic: 0.5,
+            },
+            motionId: "subtle",
+            content: {
+              schemaVersion: 1,
+              dataMode: "demo",
+              practice: {
+                name: "Grace Doctor Clinic",
+              },
+              doctor: {
+                name: "Dr Naledi Mokoena",
+                speciality: "General Practitioner",
+                imageAssetId: "doctor-demo-01",
+              },
+              service: {
+                name: "General Consultation",
+                description: "Choose a service offered by your connected clinic.",
+              },
+              availability: ["09:00", "11:30", "14:30"],
+              availabilityLabel: "Example appointment times",
+              cta: {
+                title: "Request an appointment",
+                subtitle: "Your clinic. Your next appointment.",
+                destinationLabel: "Choose a service and an available time",
+              },
+              copy: {
+                brandHeadline: "Your next visit starts here.",
+                brandSupporting:
+                  "Choose a service. Find a practitioner. Request a time.",
+                serviceQuestion: "What care do you need?",
+                doctorHeadline: "Choose your practitioner.",
+                availabilityHeadline: "Find an available time.",
+                bookingHeadline: "Review your request.",
+                bookingSupporting:
+                  "Check your service, practitioner and time before sending.",
+                confirmationHeadline: "Stay informed about your visit.",
+                confirmationSupporting:
+                  "View appointments and request changes where available.",
+                bookingAction: "Request appointment",
+                confirmationLabel: "Awaiting confirmation",
+              },
+            },
+          }}
+        />
+        <Composition
+          id="Grammar-technology-health-portrait-first-subtle-Square"
+          component={GrammarPromo}
+          width={1080}
+          height={1080}
+          fps={30}
+          durationInFrames={180}
+          schema={grammarPromoSchema}
+          calculateMetadata={calculateGrammarMetadata}
+          defaultProps={{
+            schemaVersion: 1,
+            familyId: "technology-health",
+            variation: {
+              layoutVariant: "portrait-first",
+              typographyScale: 1,
+              imageScale: 1,
+              whitespace: 0.5,
+              shapeDensity: 0.5,
+              depth: 0.5,
+              expressiveness: 0.5,
+            },
+            axes: {
+              expressive: 0.5,
+              friendly: 0.5,
+              dimensional: 0.5,
+              spacious: 0.5,
+              dynamic: 0.5,
+            },
+            motionId: "subtle",
+            content: {
+              schemaVersion: 1,
+              dataMode: "demo",
+              practice: {
+                name: "Grace Doctor Clinic",
+              },
+              doctor: {
+                name: "Dr Naledi Mokoena",
+                speciality: "General Practitioner",
+                imageAssetId: "doctor-demo-01",
+              },
+              service: {
+                name: "General Consultation",
+                description: "Choose a service offered by your connected clinic.",
+              },
+              availability: ["09:00", "11:30", "14:30"],
+              availabilityLabel: "Example appointment times",
+              cta: {
+                title: "Request an appointment",
+                subtitle: "Your clinic. Your next appointment.",
+                destinationLabel: "Choose a service and an available time",
+              },
+              copy: {
+                brandHeadline: "Your next visit starts here.",
+                brandSupporting:
+                  "Choose a service. Find a practitioner. Request a time.",
+                serviceQuestion: "What care do you need?",
+                doctorHeadline: "Choose your practitioner.",
+                availabilityHeadline: "Find an available time.",
+                bookingHeadline: "Review your request.",
+                bookingSupporting:
+                  "Check your service, practitioner and time before sending.",
+                confirmationHeadline: "Stay informed about your visit.",
+                confirmationSupporting:
+                  "View appointments and request changes where available.",
+                bookingAction: "Request appointment",
+                confirmationLabel: "Awaiting confirmation",
+              },
+            },
+          }}
+        />
+        <Composition
+          id="Grammar-technology-health-portrait-first-subtle-Landscape"
+          component={GrammarPromo}
+          width={1920}
+          height={1080}
+          fps={30}
+          durationInFrames={180}
+          schema={grammarPromoSchema}
+          calculateMetadata={calculateGrammarMetadata}
+          defaultProps={{
+            schemaVersion: 1,
+            familyId: "technology-health",
+            variation: {
+              layoutVariant: "portrait-first",
+              typographyScale: 1,
+              imageScale: 1,
+              whitespace: 0.5,
+              shapeDensity: 0.5,
+              depth: 0.5,
+              expressiveness: 0.5,
+            },
+            axes: {
+              expressive: 0.5,
+              friendly: 0.5,
+              dimensional: 0.5,
+              spacious: 0.5,
+              dynamic: 0.5,
+            },
+            motionId: "subtle",
+            content: {
+              schemaVersion: 1,
+              dataMode: "demo",
+              practice: {
+                name: "Grace Doctor Clinic",
+              },
+              doctor: {
+                name: "Dr Naledi Mokoena",
+                speciality: "General Practitioner",
+                imageAssetId: "doctor-demo-01",
+              },
+              service: {
+                name: "General Consultation",
+                description: "Choose a service offered by your connected clinic.",
+              },
+              availability: ["09:00", "11:30", "14:30"],
+              availabilityLabel: "Example appointment times",
+              cta: {
+                title: "Request an appointment",
+                subtitle: "Your clinic. Your next appointment.",
+                destinationLabel: "Choose a service and an available time",
+              },
+              copy: {
+                brandHeadline: "Your next visit starts here.",
+                brandSupporting:
+                  "Choose a service. Find a practitioner. Request a time.",
+                serviceQuestion: "What care do you need?",
+                doctorHeadline: "Choose your practitioner.",
+                availabilityHeadline: "Find an available time.",
+                bookingHeadline: "Review your request.",
+                bookingSupporting:
+                  "Check your service, practitioner and time before sending.",
+                confirmationHeadline: "Stay informed about your visit.",
+                confirmationSupporting:
+                  "View appointments and request changes where available.",
+                bookingAction: "Request appointment",
+                confirmationLabel: "Awaiting confirmation",
+              },
+            },
+          }}
+        />
+        <Composition
+          id="Grammar-technology-health-portrait-first-premium-Vertical"
+          component={GrammarPromo}
+          width={1080}
+          height={1920}
+          fps={30}
+          durationInFrames={180}
+          schema={grammarPromoSchema}
+          calculateMetadata={calculateGrammarMetadata}
+          defaultProps={{
+            schemaVersion: 1,
+            familyId: "technology-health",
+            variation: {
+              layoutVariant: "portrait-first",
+              typographyScale: 1,
+              imageScale: 1,
+              whitespace: 0.5,
+              shapeDensity: 0.5,
+              depth: 0.5,
+              expressiveness: 0.5,
+            },
+            axes: {
+              expressive: 0.5,
+              friendly: 0.5,
+              dimensional: 0.5,
+              spacious: 0.5,
+              dynamic: 0.5,
+            },
+            motionId: "premium",
+            content: {
+              schemaVersion: 1,
+              dataMode: "demo",
+              practice: {
+                name: "Grace Doctor Clinic",
+              },
+              doctor: {
+                name: "Dr Naledi Mokoena",
+                speciality: "General Practitioner",
+                imageAssetId: "doctor-demo-01",
+              },
+              service: {
+                name: "General Consultation",
+                description: "Choose a service offered by your connected clinic.",
+              },
+              availability: ["09:00", "11:30", "14:30"],
+              availabilityLabel: "Example appointment times",
+              cta: {
+                title: "Request an appointment",
+                subtitle: "Your clinic. Your next appointment.",
+                destinationLabel: "Choose a service and an available time",
+              },
+              copy: {
+                brandHeadline: "Your next visit starts here.",
+                brandSupporting:
+                  "Choose a service. Find a practitioner. Request a time.",
+                serviceQuestion: "What care do you need?",
+                doctorHeadline: "Choose your practitioner.",
+                availabilityHeadline: "Find an available time.",
+                bookingHeadline: "Review your request.",
+                bookingSupporting:
+                  "Check your service, practitioner and time before sending.",
+                confirmationHeadline: "Stay informed about your visit.",
+                confirmationSupporting:
+                  "View appointments and request changes where available.",
+                bookingAction: "Request appointment",
+                confirmationLabel: "Awaiting confirmation",
+              },
+            },
+          }}
+        />
+        <Composition
+          id="Grammar-technology-health-portrait-first-premium-Square"
+          component={GrammarPromo}
+          width={1080}
+          height={1080}
+          fps={30}
+          durationInFrames={180}
+          schema={grammarPromoSchema}
+          calculateMetadata={calculateGrammarMetadata}
+          defaultProps={{
+            schemaVersion: 1,
+            familyId: "technology-health",
+            variation: {
+              layoutVariant: "portrait-first",
+              typographyScale: 1,
+              imageScale: 1,
+              whitespace: 0.5,
+              shapeDensity: 0.5,
+              depth: 0.5,
+              expressiveness: 0.5,
+            },
+            axes: {
+              expressive: 0.5,
+              friendly: 0.5,
+              dimensional: 0.5,
+              spacious: 0.5,
+              dynamic: 0.5,
+            },
+            motionId: "premium",
+            content: {
+              schemaVersion: 1,
+              dataMode: "demo",
+              practice: {
+                name: "Grace Doctor Clinic",
+              },
+              doctor: {
+                name: "Dr Naledi Mokoena",
+                speciality: "General Practitioner",
+                imageAssetId: "doctor-demo-01",
+              },
+              service: {
+                name: "General Consultation",
+                description: "Choose a service offered by your connected clinic.",
+              },
+              availability: ["09:00", "11:30", "14:30"],
+              availabilityLabel: "Example appointment times",
+              cta: {
+                title: "Request an appointment",
+                subtitle: "Your clinic. Your next appointment.",
+                destinationLabel: "Choose a service and an available time",
+              },
+              copy: {
+                brandHeadline: "Your next visit starts here.",
+                brandSupporting:
+                  "Choose a service. Find a practitioner. Request a time.",
+                serviceQuestion: "What care do you need?",
+                doctorHeadline: "Choose your practitioner.",
+                availabilityHeadline: "Find an available time.",
+                bookingHeadline: "Review your request.",
+                bookingSupporting:
+                  "Check your service, practitioner and time before sending.",
+                confirmationHeadline: "Stay informed about your visit.",
+                confirmationSupporting:
+                  "View appointments and request changes where available.",
+                bookingAction: "Request appointment",
+                confirmationLabel: "Awaiting confirmation",
+              },
+            },
+          }}
+        />
+        <Composition
+          id="Grammar-technology-health-portrait-first-premium-Landscape"
+          component={GrammarPromo}
+          width={1920}
+          height={1080}
+          fps={30}
+          durationInFrames={180}
+          schema={grammarPromoSchema}
+          calculateMetadata={calculateGrammarMetadata}
+          defaultProps={{
+            schemaVersion: 1,
+            familyId: "technology-health",
+            variation: {
+              layoutVariant: "portrait-first",
+              typographyScale: 1,
+              imageScale: 1,
+              whitespace: 0.5,
+              shapeDensity: 0.5,
+              depth: 0.5,
+              expressiveness: 0.5,
+            },
+            axes: {
+              expressive: 0.5,
+              friendly: 0.5,
+              dimensional: 0.5,
+              spacious: 0.5,
+              dynamic: 0.5,
+            },
+            motionId: "premium",
+            content: {
+              schemaVersion: 1,
+              dataMode: "demo",
+              practice: {
+                name: "Grace Doctor Clinic",
+              },
+              doctor: {
+                name: "Dr Naledi Mokoena",
+                speciality: "General Practitioner",
+                imageAssetId: "doctor-demo-01",
+              },
+              service: {
+                name: "General Consultation",
+                description: "Choose a service offered by your connected clinic.",
+              },
+              availability: ["09:00", "11:30", "14:30"],
+              availabilityLabel: "Example appointment times",
+              cta: {
+                title: "Request an appointment",
+                subtitle: "Your clinic. Your next appointment.",
+                destinationLabel: "Choose a service and an available time",
+              },
+              copy: {
+                brandHeadline: "Your next visit starts here.",
+                brandSupporting:
+                  "Choose a service. Find a practitioner. Request a time.",
+                serviceQuestion: "What care do you need?",
+                doctorHeadline: "Choose your practitioner.",
+                availabilityHeadline: "Find an available time.",
+                bookingHeadline: "Review your request.",
+                bookingSupporting:
+                  "Check your service, practitioner and time before sending.",
+                confirmationHeadline: "Stay informed about your visit.",
+                confirmationSupporting:
+                  "View appointments and request changes where available.",
+                bookingAction: "Request appointment",
+                confirmationLabel: "Awaiting confirmation",
+              },
+            },
+          }}
+        />
+      </Folder>
+    </Folder>
+    {/* Grammar examples end */}
   </>
 );

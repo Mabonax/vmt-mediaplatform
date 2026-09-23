@@ -32,6 +32,8 @@ The existing fictional doctor/practice data and concept-booking labels remain. T
 
 ## Change boundary
 
+The subsequent grammar implementation follows the user's white-background direction: paper and canvas are now `#FFFFFF`, including the legacy end card. Teal and green remain logo, text, CTA and line accents. The legacy `background: paper | mint` values are retained for saved-props compatibility: both render white, while `mint` switches decorative strokes to the original green. This is a real visible accent change, not a colored background. New grammar compositions expose no alternate canvas color. A stray crop-window translation was removed so the original wordmark fits its recorded alpha bounds exactly.
+
 The existing Studio edits in `src/Root.tsx` and the composition's styling were preserved. Default snapshots were not regenerated. The branding commit includes only the footer-label change in the previously dirty composition file; unrelated local edits remain unstaged.
 
 ## Verification

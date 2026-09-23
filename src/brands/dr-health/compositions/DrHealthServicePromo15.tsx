@@ -57,7 +57,7 @@ const Dissolve = ({
 const Chrome = ({ content }: ServicePromoProps) => {
   const { theme, metrics, unit } = useCreative();
   const frame = useCurrentFrame();
-  const inverse = frame >= 420;
+  const inverse = false; // Original logo and white canvas throughout.
   const scene =
     [...promoScenes].reverse().find((item) => frame >= item.from) ??
     promoScenes[0];

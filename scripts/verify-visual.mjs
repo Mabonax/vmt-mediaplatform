@@ -10,7 +10,7 @@ import {
 } from "@remotion/renderer";
 
 const serveUrl = path.resolve("build");
-const output = path.resolve("out/qa");
+const output = path.resolve(process.env.QA_OUTPUT || "out/qa");
 fs.mkdirSync(output, { recursive: true });
 const browserExecutable =
   process.env.REMOTION_BROWSER_EXECUTABLE ||
@@ -41,10 +41,11 @@ const demo = JSON.parse(
   fs.readFileSync("src/brands/dr-health/data/demo.json", "utf8"),
 );
 try {
-  const compositions = await getCompositions(serveUrl, {
+  const allCompositions = await getCompositions(serveUrl, {
     puppeteerInstance: browser,
     onBrowserLog,
   });
+  const compositions = allCompositions.filter((item) => item.id.startsWith("DrHealthServicePromo15-"));
   assert.equal(compositions.length, 3);
   for (const composition of compositions) {
     const suffix = composition.id.split("-").at(-1).toLowerCase();

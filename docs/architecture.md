@@ -16,6 +16,8 @@ Portable tokens + asset manifest + versioned content + design configuration
 
 ## Boundaries
 
+The second-generation grammar layer is introduced alongside this template. `src/engine/grammar/` contains separate schemas, spatial resolution and motion records; `src/brands/dr-health/grammar/` registers original family references. `src/renderers/shared/` implements neutral React artwork; `src/renderers/remotion/` adapts frame-driven motion; `src/renderers/static/` provides a standalone gallery and application experiment. See [reference compositions](reference-compositions.md) for the full contract and provenance boundary.
+
 | Location                                          | Responsibility                                                                                     |
 | ------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
 | `src/engine/themes/types.ts`                      | Portable typed design vocabulary; no React or Remotion                                             |

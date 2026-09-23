@@ -15,6 +15,9 @@
     "src/brands/dr-health/assets/**/*.ts",
     "src/brands/dr-health/theme/**/*.ts",
     "src/brands/dr-health/data/**/*",
-    "src/brands/dr-health/compositions/timeline.ts"
+    "src/brands/dr-health/compositions/timeline.ts",
+    "src/engine/grammar/**/*.ts",
+    "src/brands/dr-health/grammar/**/*.ts",
+    "src/renderers/shared/**/*.tsx"
   ]
 }

@@ -9,7 +9,7 @@ export const drHealthTheme = {
     primary: "#005B6C",
     ink: "#003F4B",
     muted: "#47666B",
-    paper: "#F5FAFA",
+    paper: "#FFFFFF",
     white: "#FFFFFF",
     mint: "#E0F1EF",
     accent: "#10BA31",

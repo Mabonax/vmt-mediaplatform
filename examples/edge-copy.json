@@ -17,22 +17,22 @@
     "availability": ["08:00", "10:30", "13:30", "16:00"],
     "availabilityLabel": "Example appointment times",
     "cta": {
-      "title": "Book with Dr. Health",
-      "subtitle": "Healthcare when you need it.",
-      "destinationLabel": "Find your next moment of care"
+      "title": "Request an appointment",
+      "subtitle": "Your clinic. Your next appointment.",
+      "destinationLabel": "Choose a service and an available time"
     },
     "copy": {
-      "brandHeadline": "Care that fits your day.",
-      "brandSupporting": "Your health. Your time. A simpler way to connect.",
+      "brandHeadline": "Your next visit starts here.",
+      "brandSupporting": "Choose a service. Find a practitioner. Request a time.",
       "serviceQuestion": "What care do you need?",
       "doctorHeadline": "A little more time for a human connection.",
       "availabilityHeadline": "Find a moment in your day to focus on your health.",
       "bookingHeadline": "A thoughtful next step towards your everyday care.",
-      "bookingSupporting": "Choose a time. Review your visit. Take the next step.",
-      "confirmationHeadline": "More clarity. Less effort.",
-      "confirmationSupporting": "A simple journey from finding care to planning your visit.",
+      "bookingSupporting": "Check your service, practitioner and time before sending.",
+      "confirmationHeadline": "Stay informed about your visit.",
+      "confirmationSupporting": "View appointments and request changes where available.",
       "bookingAction": "Request appointment",
-      "confirmationLabel": "Your visit, planned"
+      "confirmationLabel": "Awaiting confirmation"
     }
   },
   "design": {

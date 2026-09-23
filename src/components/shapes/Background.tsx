@@ -28,7 +28,7 @@ export const ShapeLayer = () => {
               height: diameter,
               right: -diameter * 0.45 + drift,
               top: metrics.height * 0.23 + index * theme.spacing.md + drift,
-              border: `${theme.layout.border}px solid ${theme.colors.primary}`,
+              border: `${theme.layout.border}px solid ${design.background === "mint" ? theme.colors.accent : theme.colors.primary}`,
               opacity: theme.opacity.decorative / (index + 1),
               borderRadius:
                 design.shapeStyle === "rings" ? "50%" : "50% 8% 50% 50%",
@@ -41,18 +41,14 @@ export const ShapeLayer = () => {
   );
 };
 export const GradientBackground = () => {
-  const { theme, design } = useCreative();
+  const { theme } = useCreative();
   return (
     <AbsoluteFill
       style={{
-        background: design.background === "paper" ? theme.colors.paper : theme.colors.mint
+        background: theme.colors.white
       }}
+      from={-1}
     >
-      <AbsoluteFill
-        style={{
-          background: `radial-gradient(ellipse at 90% 40%, ${theme.colors.mint}99, transparent 65%)`
-        }}
-      />
       <ShapeLayer />
     </AbsoluteFill>
   );

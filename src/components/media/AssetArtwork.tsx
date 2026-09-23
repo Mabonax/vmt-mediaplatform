@@ -32,7 +32,6 @@ export const AssetArtwork = ({
           maxWidth: "none",
           left: -box.x * scale,
           top: -box.y * scale,
-          translate: "22.6px 0px"
         }}
       />
     </div>

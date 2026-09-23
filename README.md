@@ -6,6 +6,8 @@ Independent, JSON-driven Remotion 4.0.527 / React 19 / strict TypeScript foundat
 
 ## Windows commands
 
+The new [Reference Composition / Design Grammar layer](docs/reference-compositions.md) adds three white-background families, 36 Remotion examples and a standalone React gallery with a booking UI experiment. Start the gallery with `npm.cmd run gallery`, then open `http://127.0.0.1:3101`. Run `npm.cmd run verify:grammar` for its separate outputs under `out/grammar/`.
+
 ```powershell
 npm.cmd ci
 npm.cmd run studio
@@ -66,5 +68,12 @@ The npm wrapper can start slowly on this host. Equivalent direct entry points: `
 - [Template system](docs/template-system.md)
 - [Future ERP integration](docs/erp-integration.md)
 - [Verification evidence](docs/verification.md)
+- [Reference compositions](docs/reference-compositions.md)
+- [DesignDNA and design axes](docs/design-dna.md)
+- [Composition grammar and asset compatibility](docs/composition-grammar.md)
+- [Variation engine](docs/variation-engine.md)
+- [Motion grammar](docs/motion-grammar.md)
+- [Static React and UI translation](docs/ui-translation.md)
+- [Grammar implementation and verification report](docs/grammar-verification.md)
 
 The project remains private/UNLICENSED. Bundled fonts include their licenses; Remotion's [licensing terms](https://www.remotion.dev/docs/license) also apply.
