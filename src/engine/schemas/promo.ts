@@ -1,6 +1,8 @@
 import { z } from "zod";
+import { zColor, zTextarea } from "@remotion/zod-types";
 
 const copy = (max: number) => z.string().trim().min(1).max(max);
+const paragraph = (max: number) => zTextarea().trim().min(1).max(max);
 const assetId = z
   .string()
   .regex(/^[a-z0-9][a-z0-9-]*$/)
@@ -14,7 +16,7 @@ export const promoContentSchema = z.object({
     speciality: copy(44),
     imageAssetId: assetId.optional(),
   }),
-  service: z.object({ name: copy(40), description: copy(90) }),
+  service: z.object({ name: copy(40), description: paragraph(90) }),
   availability: z
     .array(
       z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/, "Use a 24-hour HH:MM time"),
@@ -29,32 +31,67 @@ export const promoContentSchema = z.object({
   }),
   copy: z.object({
     brandHeadline: copy(54),
-    brandSupporting: copy(85),
+    brandSupporting: paragraph(85),
     serviceQuestion: copy(54),
     doctorHeadline: copy(54),
     availabilityHeadline: copy(54),
     bookingHeadline: copy(54),
-    bookingSupporting: copy(80),
+    bookingSupporting: paragraph(80),
     confirmationHeadline: copy(54),
-    confirmationSupporting: copy(85),
+    confirmationSupporting: paragraph(85),
     bookingAction: copy(28),
     confirmationLabel: copy(28),
   }),
 });
 
 export const designConfigSchema = z.object({
-  layout: z.enum(["editorial", "hero"]),
-  typographyStyle: z.enum(["editorial", "clinical"]),
-  typographyScale: z.number().min(0.85).max(1.1),
-  motionStyle: z.enum(["subtle", "smooth"]),
-  motionIntensity: z.number().min(0).max(1),
-  motionSpeed: z.number().min(0.75).max(1.5),
-  imageScale: z.number().min(0.85).max(1.15),
-  imageTreatment: z.enum(["card", "circle"]),
-  shapeStyle: z.enum(["rings", "petals"]),
-  shapeDensity: z.enum(["sparse", "balanced", "rich"]),
-  visualDepth: z.enum(["flat", "layered"]),
-  background: z.enum(["paper", "mint"]),
+  logoVariant: z
+    .enum(["wordmark", "powered-by-gperp"])
+    .describe("Logo: DrHealth wordmark or DrHealth powered by Gperp"),
+  logoPosition: z
+    .enum(["left", "center", "right"])
+    .describe("Logo position in the top header"),
+  logoScale: z.number().min(0.6).max(1.4).describe("Logo size"),
+  headingFont: z.enum(["Montserrat", "Poppins"]).describe("Heading font"),
+  bodyFont: z.enum(["Poppins", "Montserrat"]).describe("Body font"),
+  backgroundColor: zColor(),
+  textColor: zColor(),
+  primaryColor: zColor(),
+  accentColor: zColor(),
+  contentPosition: z
+    .enum(["top", "center", "bottom"])
+    .describe("Vertical position of scene content"),
+  textAlign: z
+    .enum(["left", "center", "right"])
+    .describe("Text alignment"),
+  contentOffsetX: z
+    .number()
+    .min(-180)
+    .max(180)
+    .describe("Move scene content left or right in pixels"),
+  contentOffsetY: z
+    .number()
+    .min(-180)
+    .max(180)
+    .describe("Move scene content up or down in pixels"),
+  layout: z.enum(["editorial", "hero"]).describe("Copy and image order"),
+  typographyStyle: z
+    .enum(["editorial", "clinical"])
+    .describe("Heading weight: editorial is lighter, clinical is stronger"),
+  typographyScale: z.number().min(0.85).max(1.1).describe("Text scale"),
+  motionStyle: z.enum(["subtle", "smooth"]).describe("Animation style"),
+  motionIntensity: z.number().min(0).max(1).describe("Animation intensity"),
+  motionSpeed: z.number().min(0.75).max(1.5).describe("Animation speed"),
+  imageScale: z.number().min(0.85).max(1.15).describe("Image scale"),
+  imageTreatment: z.enum(["card", "circle"]).describe("Portrait treatment"),
+  shapeStyle: z.enum(["rings", "petals"]).describe("Background shape style"),
+  shapeDensity: z
+    .enum(["sparse", "balanced", "rich"])
+    .describe("Number of background shapes"),
+  visualDepth: z.enum(["flat", "layered"]).describe("Card shadow depth"),
+  background: z
+    .enum(["paper", "mint"])
+    .describe("Decorative line colour: teal or green"),
 });
 
 export const servicePromoSchema = z.object({

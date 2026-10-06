@@ -12,6 +12,7 @@ import { servicePromoSchema } from "./engine/schemas/promo";
 
 export const RemotionRoot = () => (
   <>
+    <Folder name="Start-Here">
     <Composition
       id="DrHealthServicePromo15-Vertical"
       component={DrHealthServicePromo15}
@@ -22,8 +23,8 @@ export const RemotionRoot = () => (
       schema={servicePromoSchema}
       defaultProps={{
         content: {
-          schemaVersion: 1,
-          dataMode: "demo",
+          schemaVersion: 1 as const,
+          dataMode: "demo" as const,
           practice: {
             name: "Grace Doctor Clinic",
           },
@@ -34,8 +35,7 @@ export const RemotionRoot = () => (
           },
           service: {
             name: "General Consultation",
-            description:
-              "Choose a service offered by your connected clinic.",
+            description: "Choose a service offered by your connected clinic.",
           },
           availability: ["09:00", "11:30", "14:30"],
           availabilityLabel: "Example appointment times",
@@ -46,34 +46,44 @@ export const RemotionRoot = () => (
           },
           copy: {
             brandHeadline: "Your next visit starts here.",
-            brandSupporting:
-              "Choose a service. Find a practitioner. Request a time.",
+            brandSupporting: "Choose a service. Find a practitioner. Request a time.",
             serviceQuestion: "What care do you need?",
             doctorHeadline: "Choose your practitioner.",
             availabilityHeadline: "Find an available time.",
             bookingHeadline: "Review your request.",
-            bookingSupporting:
-              "Check your service, practitioner and time before sending.",
+            bookingSupporting: "Check your service, practitioner and time before sending.",
             confirmationHeadline: "Stay informed about your visit.",
-            confirmationSupporting:
-              "View appointments and request changes where available.",
+            confirmationSupporting: "View appointments and request changes where available.",
             bookingAction: "Request appointment",
             confirmationLabel: "Awaiting confirmation",
           },
         },
         design: {
-          layout: "editorial",
-          typographyStyle: "editorial",
+          logoVariant: "powered-by-gperp" as const,
+          logoPosition: "left" as const,
+          logoScale: 1,
+          headingFont: "Montserrat" as const,
+          bodyFont: "Poppins" as const,
+          backgroundColor: "#FFFFFF",
+          textColor: "#003F4B",
+          primaryColor: "#005B6C",
+          accentColor: "#10BA31",
+          contentPosition: "center" as const,
+          textAlign: "left" as const,
+          contentOffsetX: 0,
+          contentOffsetY: 0,
+          layout: "editorial" as const,
+          typographyStyle: "editorial" as const,
           typographyScale: 1,
-          motionStyle: "smooth",
+          motionStyle: "smooth" as const,
           motionIntensity: 0.6,
           motionSpeed: 1,
           imageScale: 1,
-          imageTreatment: "card",
-          shapeStyle: "rings",
-          shapeDensity: "balanced",
-          visualDepth: "layered",
-          background: "paper",
+          imageTreatment: "card" as const,
+          shapeStyle: "rings" as const,
+          shapeDensity: "balanced" as const,
+          visualDepth: "layered" as const,
+          background: "paper" as const,
         },
       }}
       calculateMetadata={calculatePromoMetadata}
@@ -128,6 +138,19 @@ export const RemotionRoot = () => (
           },
         },
         design: {
+          logoVariant: "powered-by-gperp",
+          logoPosition: "left",
+          logoScale: 1,
+          headingFont: "Montserrat",
+          bodyFont: "Poppins",
+          backgroundColor: "#FFFFFF",
+          textColor: "#003F4B",
+          primaryColor: "#005B6C",
+          accentColor: "#10BA31",
+          contentPosition: "center",
+          textAlign: "left",
+          contentOffsetX: 0,
+          contentOffsetY: 0,
           layout: "editorial",
           typographyStyle: "editorial",
           typographyScale: 1,
@@ -194,6 +217,19 @@ export const RemotionRoot = () => (
           },
         },
         design: {
+          logoVariant: "powered-by-gperp",
+          logoPosition: "left",
+          logoScale: 1,
+          headingFont: "Montserrat",
+          bodyFont: "Poppins",
+          backgroundColor: "#FFFFFF",
+          textColor: "#003F4B",
+          primaryColor: "#005B6C",
+          accentColor: "#10BA31",
+          contentPosition: "center",
+          textAlign: "left",
+          contentOffsetX: 0,
+          contentOffsetY: 0,
           layout: "editorial",
           typographyStyle: "editorial",
           typographyScale: 1,
@@ -210,6 +246,7 @@ export const RemotionRoot = () => (
       }}
       calculateMetadata={calculatePromoMetadata}
     />
+    </Folder>
     {/* Grammar examples start: explicit sync only */}
     <Folder name="Design-Grammar">
       <Folder name="editorial-health">

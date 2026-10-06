@@ -7,7 +7,7 @@ Source: `C:\xampp\htdocs\gperp-clinic\public\branding\png`, explicitly selected 
 | Source                 | Use                                                  |
 | ---------------------- | ---------------------------------------------------- |
 | `logo.png`             | Header and device wordmark                           |
-| `app-icon.png`         | Brand reveal and service card icon                   |
+| `app-icon.png`         | Preserved original app asset; excluded from compositions |
 | `drhealth.png`         | End-card DrHealth / powered by Gperp lockup          |
 | `logo-icon.png`        | Registered square icon for future templates          |
 | `glass- icon.png`      | Registered glass icon for future templates           |
@@ -28,7 +28,7 @@ PNG exports contain transparent artboard margins. Measured alpha bounds are stor
 
 The source gradient remains in the original logos. Theme shadows, CTA, cards, backgrounds, progress indicators and the original demo clinician illustration follow the supplied palette. The theme is marked `source-aligned`: user-supplied logos and sampled primary colours are distinguished from derived tints, selected fonts and motion styling. Brand-use authorization here does not invent a broader third-party license.
 
-The existing fictional doctor/practice data and concept-booking labels remain. The footer now says `DEMO CAMPAIGN`, since the artwork is supplied branding rather than a proposed logo.
+The existing fictional doctor/practice data and concept-booking labels remain. The footer now says `DEMO CAMPAIGN`, since the artwork is supplied branding rather than a proposed logo. Composition controls expose only the original wordmark and the DrHealth powered-by-Gperp lockup.
 
 ## Change boundary
 

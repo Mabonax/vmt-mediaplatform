@@ -1,6 +1,6 @@
 # Asset guide
 
-The user supplied the existing DrHealth branding from `C:\xampp\htdocs\gperp-clinic\public\branding\png`. All six PNGs are copied byte-for-byte into this project's `logos/` folder and registered with source provenance. The wordmark, round icon and Gperp lockup now replace the development marks; teal `#005B6C` and green `#10BA31` are sampled from the logos. See [branding.md](branding.md). Supporting tints and fonts remain template choices. The original clinician SVG remains a labelled fictional illustration and has been recoloured to match the palette.
+The user supplied the existing DrHealth branding from `C:\xampp\htdocs\gperp-clinic\public\branding\png`. All six PNGs are copied byte-for-byte into this project's `logos/` folder and registered with source provenance. Compositions use the wordmark or Gperp lockup; the round app icon remains preserved but is not offered as a composition logo. Teal `#005B6C` and green `#10BA31` are sampled from the logos. See [branding.md](branding.md). Supporting tints and fonts remain template choices. The original clinician SVG remains a labelled fictional illustration and has been recoloured to match the palette.
 
 ## Organization and production exports
 
@@ -37,6 +37,6 @@ For layered illustrations, export named transparent layers at one shared artboar
 
 ## Fonts and audio
 
-Manrope and DM Serif Display are bundled from the official [Google Fonts repository](https://github.com/google/fonts) with SIL Open Font License files. See `public/brands/dr-health/fonts/README.md` for source URLs and SHA-256 hashes. No external font fetch occurs during rendering. These remain temporary type choices.
+Montserrat and Poppins are bundled from the user's installed Windows fonts with their SIL Open Font License notices and are the Studio defaults. Manrope and DM Serif Display remain available to the experimental grammar families. See `public/brands/dr-health/fonts/README.md` for source details and SHA-256 hashes. No external font fetch occurs during rendering.
 
 Current videos are silent: no music, sound effects or voice assets were supplied. The registry supports audio/video metadata, but this template does not expose inactive playback switches. Add playback only with real licensed media and an editorial requirement.

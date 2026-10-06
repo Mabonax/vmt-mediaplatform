@@ -75,11 +75,33 @@ test("empty copy, excessive content and unsafe configuration fail validation", (
     (p) => {
       p.design.typographyScale = 1.2;
     },
+    (p) => {
+      p.design.logoVariant = "app-icon";
+    },
+    (p) => {
+      p.design.headingFont = "Comic Sans";
+    },
+    (p) => {
+      p.design.primaryColor = "not-a-color";
+    },
+    (p) => {
+      p.design.contentOffsetX = 500;
+    },
   ];
   for (const change of changes) {
     const props = clone();
     change(props);
     assert.throws(() => parseServicePromo(props));
+  }
+});
+test("compositions exclude the round application icon", () => {
+  for (const file of [
+    "src/components/brand/BrandLogo.tsx",
+    "src/components/cards/Cards.tsx",
+    "src/brands/dr-health/scenes/PromoScenes.tsx",
+    "src/brands/dr-health/compositions/DrHealthServicePromo15.tsx",
+  ]) {
+    assert.doesNotMatch(fs.readFileSync(file, "utf8"), /appIcon|app-icon/);
   }
 });
 test("missing optional portrait resolves gracefully and wrong media types never reach Img", () => {
@@ -141,6 +163,13 @@ test("all manifested assets and local fonts exist, with provenance and licenses"
     "Manrope-OFL.txt",
     "DMSerifDisplay-Regular.ttf",
     "DMSerifDisplay-OFL.txt",
+    "Montserrat-Variable.ttf",
+    "Montserrat-OFL.txt",
+    "Poppins-Regular.ttf",
+    "Poppins-Medium.ttf",
+    "Poppins-SemiBold.ttf",
+    "Poppins-Bold.ttf",
+    "Poppins-OFL.txt",
   ]) {
     assert.ok(
       fs.statSync(path.join("public/brands/dr-health/fonts", name)).size > 0,

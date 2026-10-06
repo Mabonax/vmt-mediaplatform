@@ -86,6 +86,19 @@ try {
   );
   // One control at a time, so every exposed switch must visibly affect output.
   const variants = {
+    logoVariant: { logoVariant: "wordmark" },
+    logoPosition: { logoPosition: "right" },
+    logoScale: { logoScale: 1.35 },
+    headingFont: { headingFont: "Poppins" },
+    bodyFont: { bodyFont: "Montserrat" },
+    backgroundColor: { backgroundColor: "#F5FAFA" },
+    textColor: { textColor: "#1A2033" },
+    primaryColor: { primaryColor: "#7A1CAC" },
+    accentColor: { accentColor: "#E66B11" },
+    contentPosition: { contentPosition: "top" },
+    textAlign: { textAlign: "center" },
+    contentOffsetX: { contentOffsetX: 90 },
+    contentOffsetY: { contentOffsetY: 90 },
     layout: { layout: "hero" },
     typographyStyle: { typographyStyle: "clinical" },
     typographyScale: { typographyScale: 0.85 },

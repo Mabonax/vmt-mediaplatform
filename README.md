@@ -18,6 +18,8 @@ npm.cmd run render:square
 npm.cmd run render:landscape
 ```
 
+`npm.cmd run studio` is the single authoring entry point and reserves `http://localhost:3000`; it will not silently start a second Studio on another port. Open the **Start-Here** folder, choose a format, then edit content, approved logos, Montserrat/Poppins, colours, placement and motion in the right-hand Props panel. See [Using the DrHealth motion workspace](docs/studio-workflow.md) for the click-by-click workflow and export instructions.
+
 Outputs: `out/dr-health-vertical.mp4`, `out/dr-health-square.mp4`, `out/dr-health-landscape.mp4`. Each is 450 frames, 30 fps, 15 seconds. Studio registrations end in `-Vertical`, `-Square` and `-Landscape` after `DrHealthServicePromo15`.
 
 Use installed Chrome instead of downloading a managed browser:

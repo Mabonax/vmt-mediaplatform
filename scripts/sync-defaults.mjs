@@ -38,7 +38,9 @@ import { servicePromoSchema } from "./engine/schemas/promo";
 
 export const RemotionRoot = () => (
   <>
+    <Folder name="Start-Here">
 ${registrations}
+    </Folder>
     <GrammarRegistrations />
   </>
 );

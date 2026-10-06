@@ -19,6 +19,31 @@ const loadFonts = () => {
       `url(${staticFile("brands/dr-health/fonts/DMSerifDisplay-Regular.ttf")})`,
       { weight: "400" },
     ).load(),
+    new FontFace(
+      "Montserrat",
+      `url(${staticFile("brands/dr-health/fonts/Montserrat-Variable.ttf")})`,
+      { weight: "100 900" },
+    ).load(),
+    new FontFace(
+      "Poppins",
+      `url(${staticFile("brands/dr-health/fonts/Poppins-Regular.ttf")})`,
+      { weight: "400" },
+    ).load(),
+    new FontFace(
+      "Poppins",
+      `url(${staticFile("brands/dr-health/fonts/Poppins-Medium.ttf")})`,
+      { weight: "500" },
+    ).load(),
+    new FontFace(
+      "Poppins",
+      `url(${staticFile("brands/dr-health/fonts/Poppins-SemiBold.ttf")})`,
+      { weight: "600" },
+    ).load(),
+    new FontFace(
+      "Poppins",
+      `url(${staticFile("brands/dr-health/fonts/Poppins-Bold.ttf")})`,
+      { weight: "700" },
+    ).load(),
   ]).then((faces) => {
     faces.forEach((face) => document.fonts.add(face));
   });

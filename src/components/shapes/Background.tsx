@@ -28,7 +28,11 @@ export const ShapeLayer = () => {
               height: diameter,
               right: -diameter * 0.45 + drift,
               top: metrics.height * 0.23 + index * theme.spacing.md + drift,
-              border: `${theme.layout.border}px solid ${design.background === "mint" ? theme.colors.accent : theme.colors.primary}`,
+              border: `${theme.layout.border}px solid ${
+                design.background === "mint" || index % 2 === 1
+                  ? theme.colors.accent
+                  : theme.colors.primary
+              }`,
               opacity: theme.opacity.decorative / (index + 1),
               borderRadius:
                 design.shapeStyle === "rings" ? "50%" : "50% 8% 50% 50%",
@@ -41,11 +45,11 @@ export const ShapeLayer = () => {
   );
 };
 export const GradientBackground = () => {
-  const { theme } = useCreative();
+  const { design } = useCreative();
   return (
     <AbsoluteFill
       style={{
-        background: theme.colors.white
+        background: design.backgroundColor
       }}
       from={-1}
     >

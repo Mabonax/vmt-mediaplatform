@@ -12,6 +12,11 @@ export const SceneLayout = ({
   const { theme, design, format, metrics } = useCreative();
   const vertical = format === "vertical";
   const hero = design.layout === "hero";
+  const verticalPosition = {
+    top: "flex-start",
+    center: "center",
+    bottom: "flex-end",
+  } as const;
   return (
     <AbsoluteFill
       style={{
@@ -23,9 +28,11 @@ export const SceneLayout = ({
         height: "auto",
         display: "flex",
         flexDirection: vertical ? "column" : hero ? "row-reverse" : "row",
-        alignItems: "center",
-        justifyContent: "center",
+        alignItems: vertical ? "center" : verticalPosition[design.contentPosition],
+        justifyContent: vertical ? verticalPosition[design.contentPosition] : "center",
         gap: vertical ? theme.spacing.xl : theme.spacing.lg,
+        transform: `translate(${design.contentOffsetX}px, ${design.contentOffsetY}px)`,
+        backgroundColor: "rgba(255, 0, 0, 0)"
       }}
     >
       <div
@@ -34,7 +41,7 @@ export const SceneLayout = ({
           width: vertical ? "100%" : undefined,
           flex: vertical ? "0 0 auto" : 1,
           minWidth: 0,
-          textAlign: hero && vertical ? "center" : "left",
+          textAlign: design.textAlign,
         }}
       >
         {copy}

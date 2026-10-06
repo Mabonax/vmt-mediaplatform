@@ -8,6 +8,7 @@
   "dependencies": {
     "@remotion/cli": "4.0.527",
     "@remotion/tailwind-v4": "4.0.527",
+    "@remotion/zod-types": "4.0.527",
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "remotion": "4.0.527",
@@ -26,11 +27,12 @@
     "typescript": "5.9.3"
   },
   "scripts": {
-    "dev": "remotion studio",
+    "dev": "node scripts/start-studio.mjs",
     "build": "remotion bundle",
     "upgrade": "remotion upgrade",
     "lint": "eslint src",
-    "studio": "remotion studio",
+    "studio": "node scripts/start-studio.mjs",
+    "studio:raw": "remotion studio",
     "typecheck": "tsc --noEmit",
     "test": "tsc -p tsconfig.test.json && node --test tests/*.test.cjs",
     "check": "npm run typecheck && npm run lint && npm test",

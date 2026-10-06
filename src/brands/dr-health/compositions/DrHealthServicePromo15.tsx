@@ -51,11 +51,15 @@ const Dissolve = ({
         { extrapolateLeft: "clamp", extrapolateRight: "clamp" },
       );
   return (
-    <AbsoluteFill style={{ opacity: enter * leave }}>{children}</AbsoluteFill>
+    <AbsoluteFill
+      style={{
+        opacity: enter * leave
+      }}
+    >{children}</AbsoluteFill>
   );
 };
 const Chrome = ({ content }: ServicePromoProps) => {
-  const { theme, metrics, unit } = useCreative();
+  const { theme, metrics, unit, design } = useCreative();
   const frame = useCurrentFrame();
   const inverse = false; // Original logo and white canvas throughout.
   const scene =
@@ -74,17 +78,32 @@ const Chrome = ({ content }: ServicePromoProps) => {
           left: metrics.safeX,
           right: metrics.safeX,
           top: metrics.safeTop,
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          gap: theme.spacing.md,
+          height: 170 * unit,
         }}
       >
-        <BrandLogo inverse={inverse} />
         <div
           style={{
+            position: "absolute",
+            left:
+              design.logoPosition === "left"
+                ? 0
+                : design.logoPosition === "center"
+                  ? "50%"
+                  : undefined,
+            right: design.logoPosition === "right" ? 0 : undefined,
+            transform:
+              design.logoPosition === "center" ? "translateX(-50%)" : undefined,
+          }}
+        >
+          <BrandLogo inverse={inverse} />
+        </div>
+        <div
+          style={{
+            position: "absolute",
+            left: design.logoPosition === "right" ? 0 : undefined,
+            right: design.logoPosition === "right" ? undefined : 0,
             fontSize: theme.typography.size.micro * unit,
-            textAlign: "right",
+            textAlign: design.logoPosition === "right" ? "left" : "right",
             color: inverse ? theme.colors.mint : theme.colors.muted,
             lineHeight: theme.typography.lineHeight.body,
           }}
@@ -164,17 +183,36 @@ export const DrHealthServicePromo15 = (input: ServicePromoProps) => {
   useBrandFonts();
   const props = parseServicePromo(input);
   const { width, height } = useVideoConfig();
+  const fontFamily = {
+    Montserrat: '"Montserrat", Arial, sans-serif',
+    Poppins: '"Poppins", Arial, sans-serif',
+  } as const;
+  const theme = {
+    ...drHealthTheme,
+    colors: {
+      ...drHealthTheme.colors,
+      primary: props.design.primaryColor,
+      accent: props.design.accentColor,
+      ink: props.design.textColor,
+    },
+    typography: {
+      ...drHealthTheme.typography,
+      display: fontFamily[props.design.headingFont],
+      body: fontFamily[props.design.bodyFont],
+    },
+  };
   return (
     <CreativeProvider
-      theme={drHealthTheme}
+      theme={theme}
       design={props.design}
       format={getVideoFormat(width, height)}
     >
       <AbsoluteFill
         style={{
-          fontFamily: drHealthTheme.typography.body,
-          color: drHealthTheme.colors.ink,
-          overflow: "hidden"
+          fontFamily: theme.typography.body,
+          color: theme.colors.ink,
+          overflow: "hidden",
+          backgroundColor: props.design.backgroundColor
         }}
       >
         <GradientBackground />

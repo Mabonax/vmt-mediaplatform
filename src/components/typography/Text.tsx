@@ -14,10 +14,7 @@ export const DisplayText = ({
       data-fit-text
       style={{
         margin: 0,
-        fontFamily:
-          design.typographyStyle === "editorial"
-            ? theme.typography.display
-            : theme.typography.body,
+        fontFamily: theme.typography.display,
         fontWeight:
           design.typographyStyle === "editorial"
             ? theme.typography.weight.regular

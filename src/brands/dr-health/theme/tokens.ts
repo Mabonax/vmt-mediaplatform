@@ -17,8 +17,8 @@ export const drHealthTheme = {
     dark: "#00252C",
   },
   typography: {
-    body: '"Manrope", Arial, sans-serif',
-    display: '"DM Serif Display", Georgia, serif',
+    body: '"Poppins", Arial, sans-serif',
+    display: '"Montserrat", Arial, sans-serif',
     weight: { regular: 400, medium: 500, bold: 700 },
     size: { micro: 20, label: 24, body: 32, title: 48, display: 108 },
     lineHeight: { tight: 0.98, heading: 1.08, body: 1.4 },

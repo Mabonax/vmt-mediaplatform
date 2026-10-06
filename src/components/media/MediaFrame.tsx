@@ -40,6 +40,7 @@ export const PersonCutout = ({ asset }: { asset?: CreativeAsset }) => {
             objectPosition: "center bottom",
             transform: `scale(${design.imageScale})`,
             transformOrigin: "center bottom",
+            backgroundColor: "rgba(255, 0, 0, 0)"
           }}
         />
       ) : (

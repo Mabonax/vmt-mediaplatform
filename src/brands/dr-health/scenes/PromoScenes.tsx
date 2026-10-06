@@ -62,7 +62,12 @@ const CopyBlock = ({
   );
 };
 const Center = ({ children }: { children: ReactNode }) => {
-  const { metrics, theme } = useCreative();
+  const { metrics, theme, design } = useCreative();
+  const verticalPosition = {
+    top: "flex-start",
+    center: "center",
+    bottom: "flex-end",
+  } as const;
   return (
     <AbsoluteFill
       style={{
@@ -70,10 +75,11 @@ const Center = ({ children }: { children: ReactNode }) => {
         bottom: metrics.safeBottom + theme.spacing.lg,
         height: "auto",
         padding: `0 ${metrics.safeX}px`,
-        justifyContent: "center",
+        justifyContent: verticalPosition[design.contentPosition],
         alignItems: "center",
-        textAlign: "center",
+        textAlign: design.textAlign,
         gap: theme.spacing.lg,
+        transform: `translate(${design.contentOffsetX}px, ${design.contentOffsetY}px)`,
       }}
     >
       {children}
@@ -318,10 +324,10 @@ const ConfirmationScene = ({ content }: { content: PromoContent }) => {
   );
 };
 const CtaScene = ({ content }: { content: PromoContent }) => {
-  const { theme, metrics, format } = useCreative();
+  const { theme, metrics, format, design } = useCreative();
   return (
     <AbsoluteFill
-      style={{ background: theme.colors.white, color: theme.colors.ink }}
+      style={{ background: design.backgroundColor, color: theme.colors.ink }}
     >
       <div
         style={{
