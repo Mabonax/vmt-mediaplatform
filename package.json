@@ -6,9 +6,9 @@
   "license": "UNLICENSED",
   "private": true,
   "dependencies": {
-    "@remotion/canvas": "^4.0.532",
+    "@remotion/canvas": "4.0.532",
     "@remotion/cli": "4.0.533",
-    "@remotion/player": "^4.0.533",
+    "@remotion/player": "4.0.533",
     "@remotion/tailwind-v4": "4.0.533",
     "@remotion/zod-types": "4.0.533",
     "react": "19.2.3",
