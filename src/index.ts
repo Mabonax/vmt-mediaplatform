@@ -1,4 +1,4 @@
-import { registerRoot } from "remotion";
-import { RemotionRoot } from "./Root";
+import {registerRoot} from "remotion";
+import {AppRoot} from "./AppRoot";
 
-registerRoot(RemotionRoot);
+registerRoot(AppRoot);

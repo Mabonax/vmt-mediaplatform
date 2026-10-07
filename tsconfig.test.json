@@ -18,6 +18,9 @@
     "src/brands/dr-health/compositions/timeline.ts",
     "src/engine/grammar/**/*.ts",
     "src/brands/dr-health/grammar/**/*.ts",
-    "src/renderers/shared/**/*.tsx"
+    "src/renderers/shared/**/*.tsx",
+    "src/workstation/schema.ts",
+    "src/workstation/defaults.ts",
+    "src/workstation/mutations.ts"
   ]
 }

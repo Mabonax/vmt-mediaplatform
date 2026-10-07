@@ -1,43 +1,77 @@
-# Dr. Health Motion & Design Engine
+# VMT Motion Workstation
 
-Independent, JSON-driven Remotion 4.0.527 / React 19 / strict TypeScript foundation. Portable tokens, a typed asset registry and validated content/design configuration feed a reusable 15-second template in three native formats.
+A Remotion-based motion authoring environment for ERP explainers, product walkthroughs, training media, social content and reusable branded compositions.
 
-**Uses the supplied DrHealth logos and their teal/green palette.** See [branding sources](docs/branding.md). Practitioner/practice content remains fictional, the clinician is a labelled illustration, and booking screens are concepts. No appointment is booked, and no ERP or Flutter application is connected or modified.
+The repository began as a Dr Health motion project. Dr Health is now treated as a **sample brand/template**, not as the architectural centre of the system.
 
-## Windows commands
+## Current direction
 
-The new [Reference Composition / Design Grammar layer](docs/reference-compositions.md) adds three white-background families, 36 Remotion examples and a standalone React gallery with a booking UI experiment. Start the gallery with `npm.cmd run gallery`, then open `http://127.0.0.1:3101`. Run `npm.cmd run verify:grammar` for its separate outputs under `out/grammar/`.
+The new `Workstation/VMT-MotionProject` composition introduces a neutral editor-oriented model:
+
+```text
+Project
+  -> Tracks
+    -> Items
+      -> timing
+      -> transform
+      -> motion
+      -> content / style
+```
+
+Current neutral item types:
+
+- text
+- solid
+- image
+- ERP UI card
+- browser/application window
+- cursor + click pulse
+- feature callout
+- process-flow strip
+
+This is the foundation for an After Effects-style authoring model where content is arranged as layers/tracks rather than hard-coded campaign scenes.
+
+See [VMT Motion Workstation roadmap](docs/workstation-roadmap.md).
+
+## Run locally on Windows
 
 ```powershell
 npm.cmd ci
 npm.cmd run studio
-npm.cmd run check
-npm.cmd run build
-npm.cmd run render:vertical
-npm.cmd run render:square
-npm.cmd run render:landscape
 ```
 
-`npm.cmd run studio` is the single authoring entry point and reserves `http://localhost:3000`; it will not silently start a second Studio on another port. Open the **Start-Here** folder, choose a format, then edit content, approved logos, Montserrat/Poppins, colours, placement and motion in the right-hand Props panel. See [Using the DrHealth motion workspace](docs/studio-workflow.md) for the click-by-click workflow and export instructions.
+Open **Workstation → VMT-MotionProject** to inspect the neutral ERP explainer render composition.
 
-Outputs: `out/dr-health-vertical.mp4`, `out/dr-health-square.mp4`, `out/dr-health-landscape.mp4`. Each is 450 frames, 30 fps, 15 seconds. Studio registrations end in `-Vertical`, `-Square` and `-Landscape` after `DrHealthServicePromo15`.
+## VMT Motion Editor
 
-Use installed Chrome instead of downloading a managed browser:
+The workstation now also has a standalone browser authoring shell built with `@remotion/player`.
+
+Run:
 
 ```powershell
-npm.cmd run render:vertical -- --browser-executable="C:\Program Files\Google\Chrome\Application\chrome.exe"
+npm.cmd run editor
 ```
 
-Change content/design through Studio props or JSON:
+Then open:
 
-```powershell
-npm.cmd run render:square -- --props=examples/hero.json
-npx.cmd remotion still src/index.ts DrHealthServicePromo15-Square out/hero.png --frame=165 --props=examples/hero.json
+```text
+http://127.0.0.1:3102
 ```
 
-Studio saves per-format defaults in `src/Root.tsx`. After editing the canonical `demo.json`, run `npm.cmd run sync:defaults` to refresh all three inline snapshots. This explicit command replaces saved Studio defaults; build/start never do so automatically. Use `--props=src/brands/dr-health/data/demo.json` to render directly from the fixture.
+The first editor milestone includes:
 
-Repeated render scripts overwrite their output, matching the existing Remotion config. Use a different CLI output path to preserve comparisons. No dependency upgrades were made. Zod and renderer are explicitly declared at their already installed versions.
+- Remotion Player composition preview
+- track/layer browser
+- layer selection
+- timeline blocks
+- transform inspector for X, Y, width, height, scale, rotation and opacity
+- timing inspector for start frame and duration
+- keyframe summary
+- immutable edits against the same project model used by the renderer
+
+The editor is intentionally separate from Remotion Studio. Studio remains the composition/render development environment; the VMT Motion Editor is the product-facing authoring workspace.
+
+The legacy Dr Health compositions remain available under **Start-Here** and **Design-Grammar** while the workstation matures.
 
 ## Verification
 
@@ -45,37 +79,68 @@ Repeated render scripts overwrite their output, matching the existing Remotion c
 npm.cmd run typecheck
 npm.cmd run lint
 npm.cmd test
-npm.cmd run verify:visual
+npm.cmd run build
 ```
 
-`check` combines TypeScript, ESLint and contract tests. Visual verification builds, samples each scene/transition in all formats, renders alternate JSON, checks all 12 design controls, checks repeated frames, rejects invalid input and captures unexpected browser errors. Results are under `out/qa/`. Installed Chrome/Edge is detected on Windows; `REMOTION_BROWSER_EXECUTABLE` overrides detection. Human review is still required.
+## Remotion version
 
-The npm wrapper can start slowly on this host. Equivalent direct entry points: `node node_modules/typescript/bin/tsc --noEmit`, `node node_modules/eslint/bin/eslint.js src`, `node node_modules/@remotion/cli/remotion-cli.js <command>`. No global npm/Git changes are required.
+The repository is currently pinned to Remotion **4.0.527**. Keep all `remotion` and `@remotion/*` packages on exactly the same version.
 
-## Edit points
+The next upgrade should be performed atomically with the lockfile so the project can adopt newer Studio/canvas features such as richer interactive editing and editable keyframes without leaving `package.json` and `package-lock.json` out of sync.
 
-- Content: `src/brands/dr-health/data/demo.json`
-- Contract: `src/engine/schemas/promo.ts`
-- Theme: `src/brands/dr-health/theme/tokens.ts`
-- Assets: `src/brands/dr-health/assets/manifest.ts` and `public/brands/dr-health/`
-- Timeline/scenes: `src/brands/dr-health/compositions/` and `scenes/`
-- Reusable visuals/motion: `src/components/`
+## Architecture
 
-## Documentation
+### Neutral workstation
 
-- [Baseline audit](docs/baseline.md)
-- [Architecture](docs/architecture.md)
-- [Asset guide](docs/asset-guide.md)
-- [Branding sources and palette](docs/branding.md)
-- [Template system](docs/template-system.md)
-- [Future ERP integration](docs/erp-integration.md)
-- [Verification evidence](docs/verification.md)
-- [Reference compositions](docs/reference-compositions.md)
-- [DesignDNA and design axes](docs/design-dna.md)
-- [Composition grammar and asset compatibility](docs/composition-grammar.md)
-- [Variation engine](docs/variation-engine.md)
-- [Motion grammar](docs/motion-grammar.md)
-- [Static React and UI translation](docs/ui-translation.md)
-- [Grammar implementation and verification report](docs/grammar-verification.md)
+- `src/workstation/schema.ts` — serializable project, track and item contracts
+- `src/workstation/MotionProject.tsx` — generic Remotion renderer
+- `src/workstation/defaults.ts` — ERP explainer starter project
+- `src/AppRoot.tsx` — combines new workstation and legacy compositions
 
-The project remains private/UNLICENSED. Bundled fonts include their licenses; Remotion's [licensing terms](https://www.remotion.dev/docs/license) also apply.
+### Legacy/sample Dr Health system
+
+- `src/brands/dr-health/`
+- `public/brands/dr-health/`
+- `src/engine/grammar/`
+- `src/renderers/`
+
+The long-term goal is to decouple brand-specific assets and design systems from the neutral authoring engine.
+
+## Planned ERP explainer toolkit
+
+The workstation roadmap includes:
+
+- browser / device frames
+- screenshots and screen recordings
+- animated cursors and click indicators
+- zoom-to-feature
+- UI spotlight
+- callout arrows
+- table-row highlighting
+- KPI counters
+- workflow/process diagrams
+- notification/toast animations
+- lower thirds
+- captions
+- logo stings and end cards
+- asset library
+- keyframes
+- multi-track timeline editing
+- undo/redo
+- presets
+- project persistence
+
+## Legacy Dr Health commands
+
+These remain available during migration:
+
+```powershell
+npm.cmd run render:vertical
+npm.cmd run render:square
+npm.cmd run render:landscape
+npm.cmd run verify:visual
+npm.cmd run gallery
+npm.cmd run verify:grammar
+```
+
+The project remains private/UNLICENSED. Bundled fonts include their licenses; Remotion licensing terms also apply.
