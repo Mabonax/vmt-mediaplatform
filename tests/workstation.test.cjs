@@ -8,6 +8,9 @@ const {
   workstationDemoProject,
 } = require("../.cache/tests/workstation/defaults.js");
 const {
+  fitProjectToPreset,
+} = require("../.cache/tests/editor/composition-presets.js");
+const {
   moveItemInTime,
   trimItem,
   updateItemTransform,
@@ -177,4 +180,44 @@ test("anchor points default to center semantics and can be keyframed", () => {
   assert.equal(headline.animation.anchorX[0].value, 120);
   assert.equal(headline.animation.anchorY[0].value, 80);
   assert.doesNotThrow(() => workstationProjectSchema.parse(withY));
+});
+
+test("composition presets produce expected dimensions without mutating source", () => {
+  const source = structuredClone(workstationDemoProject);
+  const square = fitProjectToPreset(source, "square-1080");
+  const vertical = fitProjectToPreset(source, "vertical-1080");
+
+  assert.equal(square.width, 1080);
+  assert.equal(square.height, 1080);
+  assert.equal(vertical.width, 1080);
+  assert.equal(vertical.height, 1920);
+  assert.equal(source.width, 1920);
+  assert.equal(source.height, 1080);
+});
+
+test("composition presets scale position and anchor keyframes", () => {
+  const source = structuredClone(workstationDemoProject);
+  const cursor = source.tracks
+    .flatMap((track) => track.items)
+    .find((item) => item.id === "cursor");
+  cursor.transform.anchorX = 36;
+  cursor.transform.anchorY = 36;
+  cursor.animation.anchorX = [
+    {frame: 0, value: 36, easing: "linear"},
+  ];
+
+  const square = fitProjectToPreset(source, "square-1080");
+  const fittedCursor = square.tracks
+    .flatMap((track) => track.items)
+    .find((item) => item.id === "cursor");
+
+  assert.notEqual(fittedCursor.transform.x, cursor.transform.x);
+  assert.notEqual(
+    fittedCursor.animation.x[0].value,
+    cursor.animation.x[0].value,
+  );
+  assert.notEqual(
+    fittedCursor.animation.anchorX[0].value,
+    cursor.animation.anchorX[0].value,
+  );
 });
