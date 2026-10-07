@@ -118,6 +118,16 @@ const ItemShell: React.FC<{
   const t = item.transform;
   const animatedX = resolveKeyframedValue(local, t.x, item.animation?.x);
   const animatedY = resolveKeyframedValue(local, t.y, item.animation?.y);
+  const animatedAnchorX = resolveKeyframedValue(
+    local,
+    t.anchorX ?? t.width / 2,
+    item.animation?.anchorX,
+  );
+  const animatedAnchorY = resolveKeyframedValue(
+    local,
+    t.anchorY ?? t.height / 2,
+    item.animation?.anchorY,
+  );
   const animatedScale = resolveKeyframedValue(
     local,
     t.scale,
@@ -144,7 +154,7 @@ const ItemShell: React.FC<{
         height: t.height,
         opacity: animatedOpacity * entrance * exit,
         transform: `rotate(${animatedRotation}deg) scale(${animatedScale * scaleEntrance}) translateY(${rise}px)`,
-        transformOrigin: "center center",
+        transformOrigin: `${animatedAnchorX}px ${animatedAnchorY}px`,
       }}
     >
       {children}
