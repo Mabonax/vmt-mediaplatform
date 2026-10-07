@@ -2,6 +2,7 @@ import React, {useEffect, useMemo, useRef, useState} from "react";
 import {createRoot} from "react-dom/client";
 import {Player, type CallbackListener, type PlayerRef} from "@remotion/player";
 import {MotionProject} from "../workstation/MotionProject";
+import {TemplateHome} from "./TemplateHome";
 import {workstationDemoProject} from "../workstation/defaults";
 import {
   moveItemInTime,
@@ -135,9 +136,9 @@ const transformPropertyRows: Array<{
   {id: "opacity", label: "Opacity", channels: ["opacity"]},
 ];
 
-const App: React.FC = () => {
+const EditorWorkspace: React.FC<{initialProject: WorkstationProject; onHome: () => void}> = ({initialProject, onHome}) => {
   const [project, setProject] = useState<WorkstationProject>(
-    () => structuredClone(workstationDemoProject),
+    () => structuredClone(initialProject),
   );
   const [selectedItemId, setSelectedItemId] = useState<string | null>("browser");
   const [currentFrame, setCurrentFrame] = useState(0);
@@ -472,9 +473,19 @@ const App: React.FC = () => {
   return (
     <div className="editor-shell">
       <header className="topbar">
-        <div>
-          <div className="brand-kicker">VMT Motion</div>
-          <div className="project-title">{project.name}</div>
+        <div className="editor-project-heading">
+          <button
+            type="button"
+            className="project-back-button"
+            onClick={onHome}
+            title="Back to Template Studio"
+          >
+            ← Project
+          </button>
+          <div>
+            <div className="brand-kicker">VMT Motion</div>
+            <div className="project-title">{project.name}</div>
+          </div>
         </div>
         <div className="topbar-meta">
           <span>{project.width}×{project.height}</span>
@@ -484,8 +495,11 @@ const App: React.FC = () => {
           <button
             type="button"
             onClick={() => {
-              setProject(structuredClone(workstationDemoProject));
-              setSelectedItemId("browser");
+              setProject(structuredClone(initialProject));
+              setSelectedItemId(
+                initialProject.tracks.flatMap((track) => track.items)[0]?.id ??
+                  null,
+              );
               seekToFrame(0);
             }}
           >
@@ -1212,6 +1226,22 @@ const App: React.FC = () => {
         </div>
       </section>
     </div>
+  );
+};
+
+const App: React.FC = () => {
+  const [activeProject, setActiveProject] =
+    useState<WorkstationProject | null>(null);
+
+  if (!activeProject) {
+    return <TemplateHome onOpenProject={setActiveProject} />;
+  }
+
+  return (
+    <EditorWorkspace
+      initialProject={activeProject}
+      onHome={() => setActiveProject(null)}
+    />
   );
 };
 
