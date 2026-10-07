@@ -83,7 +83,12 @@ test("transform keyframes can be inserted, replaced and removed", () => {
 
   const removed = removeTransformKeyframe(replaced, "headline", "x", 30);
   const after = removed.tracks[1].items.find((item) => item.id === "headline");
-  assert.equal(after.animation.x, undefined);
+  assert.equal(after.animation.x.length, 1);
+  assert.equal(after.animation.x[0].frame, 0);
+
+  const cleared = removeTransformKeyframe(removed, "headline", "x", 0);
+  const clearedHeadline = cleared.tracks[1].items.find((item) => item.id === "headline");
+  assert.equal(clearedHeadline.animation.x, undefined);
 });
 
 test("project validation rejects duplicate ids and out-of-range timeline data", () => {
@@ -102,4 +107,14 @@ test("project validation rejects duplicate ids and out-of-range timeline data", 
     .find((item) => item.id === "cursor");
   cursor.animation.x[2].frame = cursor.timing.durationInFrames;
   assert.throws(() => workstationProjectSchema.parse(badKeyframe), /Keyframe exceeds item duration/);
+});
+
+test("a single transform keyframe is valid for incremental editor authoring", () => {
+  const project = setTransformKeyframe(
+    workstationDemoProject,
+    "headline",
+    "opacity",
+    {frame: 12, value: 0.5, easing: "ease-in-out"},
+  );
+  assert.doesNotThrow(() => workstationProjectSchema.parse(project));
 });
