@@ -46,7 +46,9 @@
     "gallery:build": "node scripts/build-gallery.mjs",
     "gallery": "npm run gallery:build && node scripts/serve-gallery.mjs",
     "sync:grammar": "node scripts/sync-grammar-examples.mjs",
-    "verify:grammar": "npm run build && node scripts/verify-grammar.mjs"
+    "verify:grammar": "npm run build && node scripts/verify-grammar.mjs",
+    "editor:build": "node scripts/build-editor.mjs",
+    "editor": "npm run editor:build && node scripts/serve-editor.mjs"
   },
   "sideEffects": [
     "*.css"
