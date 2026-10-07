@@ -422,6 +422,8 @@ const Flow: React.FC<{
 );
 
 const WorkstationItemView: React.FC<{item: WorkstationItem}> = ({item}) => {
+  if (item.type === "group") return null;
+
   if (item.type === "solid") {
     return (
       <ItemShell item={item}>
@@ -556,27 +558,83 @@ export const calculateWorkstationMetadata: CalculateMetadataFunction<Workstation
     };
   };
 
+const byZIndex = (a: WorkstationItem, b: WorkstationItem) =>
+  (a.zIndex ?? 0) - (b.zIndex ?? 0);
+
+const HierarchyNode: React.FC<{
+  item: WorkstationItem;
+  childrenByParent: Map<string, WorkstationItem[]>;
+  parentStart: number;
+}> = ({item, childrenByParent, parentStart}) => {
+  const relativeFrom = item.timing.from - parentStart;
+
+  return (
+    <Sequence
+      name={item.name}
+      from={relativeFrom}
+      durationInFrames={item.timing.durationInFrames}
+      layout="none"
+    >
+      {item.type === "group" ? (
+        <ItemShell item={item}>
+          <div
+            style={{
+              position: "relative",
+              width: "100%",
+              height: "100%",
+            }}
+          >
+            {(childrenByParent.get(item.id) ?? [])
+              .slice()
+              .sort(byZIndex)
+              .map((child) => (
+                <HierarchyNode
+                  key={child.id}
+                  item={child}
+                  childrenByParent={childrenByParent}
+                  parentStart={item.timing.from}
+                />
+              ))}
+          </div>
+        </ItemShell>
+      ) : (
+        <WorkstationItemView item={item} />
+      )}
+    </Sequence>
+  );
+};
+
 export const MotionProject: React.FC<WorkstationProject> = (input) => {
   const project = workstationProjectSchema.parse(input);
+  const visibleItems = project.tracks
+    .filter((track) => track.visible)
+    .flatMap((track) => track.items);
+
+  const childrenByParent = new Map<string, WorkstationItem[]>();
+  for (const item of visibleItems) {
+    if (!item.parentId) continue;
+    const existing = childrenByParent.get(item.parentId) ?? [];
+    existing.push(item);
+    childrenByParent.set(item.parentId, existing);
+  }
+
+  const roots = visibleItems
+    .filter((item) => !item.parentId)
+    .slice()
+    .sort(byZIndex);
 
   return (
     <AbsoluteFill
       style={{background: project.background, overflow: "hidden"}}
     >
-      {project.tracks
-        .filter((track) => track.visible)
-        .flatMap((track) => track.items)
-        .map((item) => (
-          <Sequence
-            key={item.id}
-            name={item.name}
-            from={item.timing.from}
-            durationInFrames={item.timing.durationInFrames}
-            layout="none"
-          >
-            <WorkstationItemView item={item} />
-          </Sequence>
-        ))}
+      {roots.map((item) => (
+        <HierarchyNode
+          key={item.id}
+          item={item}
+          childrenByParent={childrenByParent}
+          parentStart={0}
+        />
+      ))}
     </AbsoluteFill>
   );
 };
