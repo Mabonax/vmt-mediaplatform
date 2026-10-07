@@ -40,7 +40,36 @@ npm.cmd ci
 npm.cmd run studio
 ```
 
-Open **Workstation → VMT-MotionProject** to inspect the new neutral ERP explainer foundation.
+Open **Workstation → VMT-MotionProject** to inspect the neutral ERP explainer render composition.
+
+## VMT Motion Editor
+
+The workstation now also has a standalone browser authoring shell built with `@remotion/player`.
+
+Run:
+
+```powershell
+npm.cmd run editor
+```
+
+Then open:
+
+```text
+http://127.0.0.1:3102
+```
+
+The first editor milestone includes:
+
+- Remotion Player composition preview
+- track/layer browser
+- layer selection
+- timeline blocks
+- transform inspector for X, Y, width, height, scale, rotation and opacity
+- timing inspector for start frame and duration
+- keyframe summary
+- immutable edits against the same project model used by the renderer
+
+The editor is intentionally separate from Remotion Studio. Studio remains the composition/render development environment; the VMT Motion Editor is the product-facing authoring workspace.
 
 The legacy Dr Health compositions remain available under **Start-Here** and **Design-Grammar** while the workstation matures.
 
