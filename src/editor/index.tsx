@@ -6,6 +6,8 @@ import {workstationDemoProject} from "../workstation/defaults";
 import {
   moveItemInTime,
   removeTransformKeyframe,
+  setItemParent,
+  setItemZIndex,
   setTransformKeyframe,
   trimItem,
   updateItemTransform,
@@ -29,6 +31,45 @@ const numberValue = (value: string, fallback: number) => {
   const parsed = Number(value);
   return Number.isFinite(parsed) ? parsed : fallback;
 };
+
+type HierarchyEntry = {
+  item: WorkstationItem;
+  depth: number;
+};
+
+const flattenHierarchy = (items: WorkstationItem[]): HierarchyEntry[] => {
+  const children = new Map<string, WorkstationItem[]>();
+  const roots: WorkstationItem[] = [];
+
+  for (const item of items) {
+    if (!item.parentId) {
+      roots.push(item);
+      continue;
+    }
+    const list = children.get(item.parentId) ?? [];
+    list.push(item);
+    children.set(item.parentId, list);
+  }
+
+  const sortTopFirst = (a: WorkstationItem, b: WorkstationItem) =>
+    (b.zIndex ?? 0) - (a.zIndex ?? 0);
+
+  const walk = (item: WorkstationItem, depth: number): HierarchyEntry[] => [
+    {item, depth},
+    ...(children.get(item.id) ?? [])
+      .slice()
+      .sort(sortTopFirst)
+      .flatMap((child) => walk(child, depth + 1)),
+  ];
+
+  return roots
+    .slice()
+    .sort(sortTopFirst)
+    .flatMap((item) => walk(item, 0));
+};
+
+const itemLabel = (item: WorkstationItem) =>
+  item.type === "group" ? `▾ ${item.name}` : item.name;
 
 const NumericField: React.FC<{
   label: string;
@@ -380,7 +421,7 @@ const App: React.FC = () => {
                     {track.locked ? "Locked" : track.visible ? "Visible" : "Hidden"}
                   </span>
                 </div>
-                {[...track.items].reverse().map((item) => (
+                {flattenHierarchy(track.items).map(({item, depth}) => (
                   <button
                     type="button"
                     key={item.id}
@@ -389,10 +430,11 @@ const App: React.FC = () => {
                         ? "layer-row selected"
                         : "layer-row"
                     }
+                    style={{paddingLeft: 12 + depth * 16}}
                     onClick={() => setSelectedItemId(item.id)}
                   >
                     <span className="layer-type">{item.type}</span>
-                    <span className="layer-name">{item.name}</span>
+                    <span className="layer-name">{itemLabel(item)}</span>
                   </button>
                 ))}
               </section>
@@ -569,6 +611,58 @@ const App: React.FC = () => {
                       })
                     }
                   />
+                </div>
+              </div>
+
+              <div className="inspector-section">
+                <div className="section-title">Hierarchy</div>
+                <label className="inspector-field hierarchy-field">
+                  <span>Parent group</span>
+                  <select
+                    value={selected.item.parentId ?? ""}
+                    onChange={(event) =>
+                      setProject((current) =>
+                        setItemParent(
+                          current,
+                          selected.item.id,
+                          event.target.value || null,
+                        ),
+                      )
+                    }
+                  >
+                    <option value="">None</option>
+                    {project.tracks
+                      .flatMap((track) => track.items)
+                      .filter(
+                        (item) =>
+                          item.type === "group" &&
+                          item.id !== selected.item.id,
+                      )
+                      .map((group) => (
+                        <option key={group.id} value={group.id}>
+                          {group.name}
+                        </option>
+                      ))}
+                  </select>
+                </label>
+                <NumericField
+                  label="Z order"
+                  value={selected.item.zIndex ?? 0}
+                  step={1}
+                  onChange={(value) =>
+                    setProject((current) =>
+                      setItemZIndex(
+                        current,
+                        selected.item.id,
+                        Math.round(value),
+                      ),
+                    )
+                  }
+                />
+                <div className="hierarchy-help">
+                  Higher Z values render above lower values. Parenting lets the
+                  group transform affect the child while the child keeps its own
+                  animation.
                 </div>
               </div>
 
@@ -777,100 +871,116 @@ const App: React.FC = () => {
               />
             </div>
           </div>
-          {[...project.tracks].reverse().map((track) => (
-            <div className="timeline-track" key={track.id}>
-              <div className="timeline-track-name">{track.name}</div>
-              <div className="timeline-lane">
-                <div
-                  className="timeline-playhead"
-                  style={{
-                    left: `${(currentFrame / project.durationInFrames) * 100}%`,
-                  }}
-                />
-                {track.items.map((item) => {
-                  const left =
-                    (item.timing.from / project.durationInFrames) * 100;
-                  const width =
-                    (item.timing.durationInFrames /
-                      project.durationInFrames) *
-                    100;
-                  return (
-                    <button
-                      key={item.id}
-                      type="button"
-                      title={`${item.name}: ${item.timing.from}f → ${item.timing.from + item.timing.durationInFrames}f`}
-                      className={
-                        selectedItemId === item.id
-                          ? "timeline-item selected"
-                          : "timeline-item"
-                      }
-                      style={{
-                        left: `${left}%`,
-                        width: `${Math.max(width, 1.25)}%`,
-                      }}
-                      onClick={() => {
-                        setSelectedItemId(item.id);
-                        if (
-                          currentFrame < item.timing.from ||
-                          currentFrame >=
-                            item.timing.from + item.timing.durationInFrames
-                        ) {
-                          seekToFrame(item.timing.from);
-                        }
-                      }}
-                      onPointerDown={(event) =>
-                        beginTimelineGesture(event, item, "move")
-                      }
-                      onPointerMove={updateTimelineGesture}
-                      onPointerUp={endTimelineGesture}
-                      onPointerCancel={endTimelineGesture}
+          {[...project.tracks].reverse().flatMap((track) => {
+            const rows = flattenHierarchy(track.items);
+            return [
+              <div className="timeline-section-row" key={`${track.id}-section`}>
+                <div className="timeline-section-name">{track.name}</div>
+                <div className="timeline-section-line" />
+              </div>,
+              ...rows.map(({item, depth}) => {
+                const left =
+                  (item.timing.from / project.durationInFrames) * 100;
+                const width =
+                  (item.timing.durationInFrames /
+                    project.durationInFrames) *
+                  100;
+
+                return (
+                  <div
+                    className={
+                      item.type === "group"
+                        ? "timeline-track timeline-group-row"
+                        : "timeline-track"
+                    }
+                    key={item.id}
+                  >
+                    <div
+                      className="timeline-track-name"
+                      style={{paddingLeft: 12 + depth * 16}}
                     >
-                      <span
-                        className="timeline-trim-handle trim-left"
-                        title="Trim start"
+                      <span className="timeline-layer-type">{item.type}</span>
+                      <span>{itemLabel(item)}</span>
+                    </div>
+                    <div className="timeline-lane">
+                      <div
+                        className="timeline-playhead"
+                        style={{
+                          left: `${(currentFrame / project.durationInFrames) * 100}%`,
+                        }}
+                      />
+                      <button
+                        type="button"
+                        title={`${item.name}: ${item.timing.from}f → ${item.timing.from + item.timing.durationInFrames}f`}
+                        className={
+                          selectedItemId === item.id
+                            ? "timeline-item selected"
+                            : "timeline-item"
+                        }
+                        style={{
+                          left: `${left}%`,
+                          width: `${Math.max(width, 1.25)}%`,
+                        }}
+                        onClick={() => {
+                          setSelectedItemId(item.id);
+                          if (
+                            currentFrame < item.timing.from ||
+                            currentFrame >=
+                              item.timing.from + item.timing.durationInFrames
+                          ) {
+                            seekToFrame(item.timing.from);
+                          }
+                        }}
                         onPointerDown={(event) =>
-                          beginTimelineGesture(event, item, "trim-start")
+                          beginTimelineGesture(event, item, "move")
                         }
                         onPointerMove={updateTimelineGesture}
                         onPointerUp={endTimelineGesture}
                         onPointerCancel={endTimelineGesture}
-                      />
-                      <span className="timeline-item-label">{item.name}</span>
-                      {selectedItemId === item.id
-                        ? Object.entries(item.animation ?? {}).flatMap(
-                            ([property, points]) =>
-                              (points ?? []).map((point, pointIndex) => {
-                                const absoluteFrame =
-                                  item.timing.from + point.frame;
-                                return (
+                      >
+                        <span
+                          className="timeline-trim-handle trim-left"
+                          title="Trim start"
+                          onPointerDown={(event) =>
+                            beginTimelineGesture(event, item, "trim-start")
+                          }
+                          onPointerMove={updateTimelineGesture}
+                          onPointerUp={endTimelineGesture}
+                          onPointerCancel={endTimelineGesture}
+                        />
+                        <span className="timeline-item-label">{item.name}</span>
+                        {selectedItemId === item.id
+                          ? Object.entries(item.animation ?? {}).flatMap(
+                              ([property, points]) =>
+                                (points ?? []).map((point, pointIndex) => (
                                   <span
                                     key={`${property}-${pointIndex}`}
                                     className="timeline-keyframe"
-                                    title={`${property} @ ${absoluteFrame}f`}
+                                    title={`${property} @ ${item.timing.from + point.frame}f`}
                                     style={{
                                       left: `${(point.frame / item.timing.durationInFrames) * 100}%`,
                                     }}
                                   />
-                                );
-                              }),
-                          )
-                        : null}
-                      <span
-                        className="timeline-trim-handle trim-right"
-                        title="Trim end"
-                        onPointerDown={(event) =>
-                          beginTimelineGesture(event, item, "trim-end")
-                        }
-                        onPointerMove={updateTimelineGesture}
-                        onPointerUp={endTimelineGesture}
-                        onPointerCancel={endTimelineGesture}
-                      />
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          ))}
+                                )),
+                            )
+                          : null}
+                        <span
+                          className="timeline-trim-handle trim-right"
+                          title="Trim end"
+                          onPointerDown={(event) =>
+                            beginTimelineGesture(event, item, "trim-end")
+                          }
+                          onPointerMove={updateTimelineGesture}
+                          onPointerUp={endTimelineGesture}
+                          onPointerCancel={endTimelineGesture}
+                        />
+                      </button>
+                    </div>
+                  </div>
+                );
+              }),
+            ];
+          })}
         </div>
       </section>
     </div>
