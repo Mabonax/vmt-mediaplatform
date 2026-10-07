@@ -1,5 +1,5 @@
 import React, {useMemo, useState} from "react";
-import type {WorkstationProject} from "../workstation/schema";
+import type {EditorSession} from "./session";
 import {
   compositionPresets,
   fitProjectToPreset,
@@ -8,7 +8,7 @@ import {
 import {motionTemplates} from "./templates";
 
 export const TemplateHome: React.FC<{
-  onOpenProject: (project: WorkstationProject) => void;
+  onOpenProject: (session: EditorSession) => void;
 }> = ({onOpenProject}) => {
   const [selectedTemplateId, setSelectedTemplateId] =
     useState("erp-explainer");
@@ -49,9 +49,11 @@ export const TemplateHome: React.FC<{
             type="button"
             className="primary-action"
             onClick={() =>
-              onOpenProject(
-                fitProjectToPreset(template.project, selectedPresetId),
-              )
+              onOpenProject({
+                project: fitProjectToPreset(template.project, selectedPresetId),
+                activePresetId: selectedPresetId,
+                exportTargets: batchTargets,
+              })
             }
           >
             Open in Editor
