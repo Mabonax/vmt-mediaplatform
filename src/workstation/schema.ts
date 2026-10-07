@@ -45,6 +45,8 @@ const motionSchema = z.object({
 const baseItem = z.object({
   id: z.string().min(1),
   name: z.string().min(1),
+  parentId: z.string().min(1).nullable().default(null),
+  zIndex: z.number().int().default(0),
   timing: timingSchema,
   transform: transformSchema,
   animation: transformAnimationSchema.optional(),
@@ -123,6 +125,11 @@ const flowItem = baseItem.extend({
   surface: color,
 });
 
+const groupItem = baseItem.extend({
+  type: z.literal("group"),
+  collapsed: z.boolean().default(false),
+});
+
 export const workstationItemSchema = z.discriminatedUnion("type", [
   textItem,
   solidItem,
@@ -132,6 +139,7 @@ export const workstationItemSchema = z.discriminatedUnion("type", [
   cursorItem,
   calloutItem,
   flowItem,
+  groupItem,
 ]);
 
 export const workstationTrackSchema = z.object({
@@ -175,6 +183,14 @@ export const workstationProjectSchema = z.object({
       }
       itemIds.add(item.id);
 
+      if (item.parentId === item.id) {
+        ctx.addIssue({
+          code: "custom",
+          message: `Item cannot parent itself: ${item.id}`,
+          path: ["tracks", trackIndex, "items", itemIndex, "parentId"],
+        });
+      }
+
       if (item.timing.from + item.timing.durationInFrames > project.durationInFrames) {
         ctx.addIssue({
           code: "custom",
@@ -207,6 +223,47 @@ export const workstationProjectSchema = z.object({
         });
       }
     });
+  });
+
+  const allItems = project.tracks.flatMap((track) => track.items);
+  const itemById = new Map(allItems.map((item) => [item.id, item]));
+
+  allItems.forEach((item) => {
+    if (!item.parentId) return;
+    const parent = itemById.get(item.parentId);
+    if (!parent) {
+      ctx.addIssue({
+        code: "custom",
+        message: `Unknown parent id: ${item.parentId}`,
+        path: ["tracks"],
+      });
+      return;
+    }
+    if (parent.type !== "group") {
+      ctx.addIssue({
+        code: "custom",
+        message: `Parent must be a group: ${item.parentId}`,
+        path: ["tracks"],
+      });
+      return;
+    }
+
+    const visited = new Set<string>([item.id]);
+    let cursor = parent;
+    while (cursor.parentId) {
+      if (visited.has(cursor.id)) {
+        ctx.addIssue({
+          code: "custom",
+          message: `Circular parent hierarchy involving: ${item.id}`,
+          path: ["tracks"],
+        });
+        break;
+      }
+      visited.add(cursor.id);
+      const next = itemById.get(cursor.parentId);
+      if (!next || next.type !== "group") break;
+      cursor = next;
+    }
   });
 });
 
