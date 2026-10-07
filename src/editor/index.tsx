@@ -92,7 +92,7 @@ const NumericField: React.FC<{
 
 type CanvasGesture = {
   itemId: string;
-  mode: "move" | "resize";
+  mode: "move" | "resize" | "anchor";
   pointerId: number;
   startClientX: number;
   startClientY: number;
@@ -100,6 +100,8 @@ type CanvasGesture = {
   startY: number;
   startWidth: number;
   startHeight: number;
+  startAnchorX: number;
+  startAnchorY: number;
 };
 
 type TimelineGesture = {
@@ -112,7 +114,26 @@ type TimelineGesture = {
   laneWidth: number;
 };
 
-type KeyframeProperty = "x" | "y" | "scale" | "rotation" | "opacity";
+type KeyframeProperty =
+  | "anchorX"
+  | "anchorY"
+  | "x"
+  | "y"
+  | "scale"
+  | "rotation"
+  | "opacity";
+
+const transformPropertyRows: Array<{
+  id: string;
+  label: string;
+  channels: KeyframeProperty[];
+}> = [
+  {id: "anchor", label: "Anchor Point", channels: ["anchorX", "anchorY"]},
+  {id: "position", label: "Position", channels: ["x", "y"]},
+  {id: "scale", label: "Scale", channels: ["scale"]},
+  {id: "rotation", label: "Rotation", channels: ["rotation"]},
+  {id: "opacity", label: "Opacity", channels: ["opacity"]},
+];
 
 const App: React.FC = () => {
   const [project, setProject] = useState<WorkstationProject>(
@@ -124,6 +145,9 @@ const App: React.FC = () => {
   const [timelineGesture, setTimelineGesture] =
     useState<TimelineGesture | null>(null);
   const [scrubPointerId, setScrubPointerId] = useState<number | null>(null);
+  const [expandedTransforms, setExpandedTransforms] = useState<string[]>([
+    "browser",
+  ]);
   const playerRef = useRef<PlayerRef>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
 
@@ -218,6 +242,8 @@ const App: React.FC = () => {
       startY: item.transform.y,
       startWidth: item.transform.width,
       startHeight: item.transform.height,
+      startAnchorX: item.transform.anchorX ?? item.transform.width / 2,
+      startAnchorY: item.transform.anchorY ?? item.transform.height / 2,
     });
   };
 
@@ -241,6 +267,16 @@ const App: React.FC = () => {
         updateItemTransform(current, gesture.itemId, {
           x: Math.round(gesture.startX + dx),
           y: Math.round(gesture.startY + dy),
+        }),
+      );
+      return;
+    }
+
+    if (gesture.mode === "anchor") {
+      setProject((current) =>
+        updateItemTransform(current, gesture.itemId, {
+          anchorX: Math.round(gesture.startAnchorX + dx),
+          anchorY: Math.round(gesture.startAnchorY + dy),
         }),
       );
       return;
@@ -380,6 +416,59 @@ const App: React.FC = () => {
     );
   };
 
+  const channelValue = (
+    item: WorkstationItem,
+    property: KeyframeProperty,
+  ) => {
+    if (property === "anchorX")
+      return item.transform.anchorX ?? item.transform.width / 2;
+    if (property === "anchorY")
+      return item.transform.anchorY ?? item.transform.height / 2;
+    return item.transform[property];
+  };
+
+  const setPropertyKeyframeAtPlayhead = (
+    item: WorkstationItem,
+    channels: KeyframeProperty[],
+  ) => {
+    const localFrame = currentFrame - item.timing.from;
+    if (localFrame < 0 || localFrame >= item.timing.durationInFrames) return;
+    setProject((current) =>
+      channels.reduce(
+        (next, channel) =>
+          setTransformKeyframe(next, item.id, channel, {
+            frame: localFrame,
+            value: channelValue(item, channel),
+            easing: "ease-in-out",
+          }),
+        current,
+      ),
+    );
+  };
+
+  const removePropertyKeyframeAtPlayhead = (
+    item: WorkstationItem,
+    channels: KeyframeProperty[],
+  ) => {
+    const localFrame = currentFrame - item.timing.from;
+    if (localFrame < 0 || localFrame >= item.timing.durationInFrames) return;
+    setProject((current) =>
+      channels.reduce(
+        (next, channel) =>
+          removeTransformKeyframe(next, item.id, channel, localFrame),
+        current,
+      ),
+    );
+  };
+
+  const toggleTransformDisclosure = (itemId: string) => {
+    setExpandedTransforms((current) =>
+      current.includes(itemId)
+        ? current.filter((id) => id !== itemId)
+        : [...current, itemId],
+    );
+  };
+
   return (
     <div className="editor-shell">
       <header className="topbar">
@@ -492,6 +581,7 @@ const App: React.FC = () => {
                         width: `${(t.width / project.width) * 100}%`,
                         height: `${(t.height / project.height) * 100}%`,
                         transform: `rotate(${t.rotation}deg) scale(${t.scale})`,
+                        transformOrigin: `${t.anchorX ?? t.width / 2}px ${t.anchorY ?? t.height / 2}px`,
                         zIndex: 20 + index,
                       }}
                       onPointerDown={(event) =>
@@ -511,6 +601,22 @@ const App: React.FC = () => {
                             {item.name}
                             {!active ? " · outside playhead" : ""}
                           </span>
+                          <div
+                            className="anchor-handle"
+                            title="Anchor Point"
+                            style={{
+                              left: `${((t.anchorX ?? t.width / 2) / t.width) * 100}%`,
+                              top: `${((t.anchorY ?? t.height / 2) / t.height) * 100}%`,
+                            }}
+                            onPointerDown={(event) =>
+                              beginCanvasGesture(event, item, "anchor")
+                            }
+                            onPointerMove={updateCanvasGesture}
+                            onPointerUp={endCanvasGesture}
+                            onPointerCancel={endCanvasGesture}
+                          >
+                            <span />
+                          </div>
                           <div
                             className="resize-handle resize-se"
                             title="Resize"
@@ -547,6 +653,26 @@ const App: React.FC = () => {
               <div className="inspector-section">
                 <div className="section-title">Transform</div>
                 <div className="field-grid">
+                  <NumericField
+                    label="Anchor X"
+                    value={
+                      selected.item.transform.anchorX ??
+                      selected.item.transform.width / 2
+                    }
+                    onChange={(value) =>
+                      patchTransform(selected.item, {anchorX: value})
+                    }
+                  />
+                  <NumericField
+                    label="Anchor Y"
+                    value={
+                      selected.item.transform.anchorY ??
+                      selected.item.transform.height / 2
+                    }
+                    onChange={(value) =>
+                      patchTransform(selected.item, {anchorY: value})
+                    }
+                  />
                   <NumericField
                     label="X"
                     value={selected.item.transform.x}
