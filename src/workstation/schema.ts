@@ -16,11 +16,22 @@ const timingSchema = z.object({
   durationInFrames: z.number().int().positive(),
 }).strict();
 
+const motionSchema = z.object({
+  entrance: z.enum(["none", "fade", "rise", "scale"]),
+  exit: z.enum(["none", "fade"]),
+  intensity: z.number().min(0).max(1),
+}).strict();
+
 const baseItem = z.object({
   id: z.string().min(1),
   name: z.string().min(1),
   timing: timingSchema,
   transform: transformSchema,
+  motion: motionSchema.default({
+    entrance: "rise",
+    exit: "fade",
+    intensity: 0.6,
+  }),
 }).strict();
 
 const textItem = baseItem.extend({
@@ -58,11 +69,48 @@ const uiCardItem = baseItem.extend({
   foreground: color,
 });
 
+const browserWindowItem = baseItem.extend({
+  type: z.literal("browser-window"),
+  title: z.string(),
+  url: z.string(),
+  screenshotSrc: z.string().optional(),
+  accent: color,
+  chrome: z.enum(["light", "dark"]),
+});
+
+const cursorItem = baseItem.extend({
+  type: z.literal("cursor"),
+  variant: z.enum(["pointer", "hand"]),
+  color,
+  clickAtFrame: z.number().int().min(0).optional(),
+});
+
+const calloutItem = baseItem.extend({
+  type: z.literal("callout"),
+  label: z.string(),
+  accent: color,
+  foreground: color,
+  background: color,
+  direction: z.enum(["left", "right", "up", "down"]),
+});
+
+const flowItem = baseItem.extend({
+  type: z.literal("flow"),
+  steps: z.array(z.string().min(1)).min(2).max(8),
+  accent: color,
+  foreground: color,
+  surface: color,
+});
+
 export const workstationItemSchema = z.discriminatedUnion("type", [
   textItem,
   solidItem,
   imageItem,
   uiCardItem,
+  browserWindowItem,
+  cursorItem,
+  calloutItem,
+  flowItem,
 ]);
 
 export const workstationTrackSchema = z.object({
