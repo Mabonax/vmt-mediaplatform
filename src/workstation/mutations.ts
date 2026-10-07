@@ -123,7 +123,7 @@ export const removeTransformKeyframe = (
   const remaining = item.animation[property]!.filter(
     (point) => point.frame !== frame,
   );
-  if (remaining.length < 2) {
+  if (remaining.length === 0) {
     delete item.animation[property];
   } else {
     item.animation[property] = remaining;
