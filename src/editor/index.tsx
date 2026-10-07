@@ -399,7 +399,7 @@ const App: React.FC = () => {
     setProject((current) =>
       setTransformKeyframe(current, item.id, property, {
         frame: localFrame,
-        value: item.transform[property],
+        value: channelValue(item, property),
         easing: "ease-in-out",
       }),
     );
