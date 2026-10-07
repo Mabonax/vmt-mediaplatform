@@ -838,57 +838,68 @@ const App: React.FC = () => {
               <div className="inspector-section">
                 <div className="section-title">Animation</div>
                 <div className="keyframe-editor">
-                  {(["x", "y", "scale", "rotation", "opacity"] as KeyframeProperty[]).map(
-                    (property) => {
-                      const points = selected.item.animation?.[property] ?? [];
-                      const localFrame =
-                        currentFrame - selected.item.timing.from;
-                      const hasCurrent = points.some(
+                  {transformPropertyRows.map((propertyRow) => {
+                    const localFrame =
+                      currentFrame - selected.item.timing.from;
+                    const inRange =
+                      localFrame >= 0 &&
+                      localFrame < selected.item.timing.durationInFrames;
+                    const pointCount = propertyRow.channels.reduce(
+                      (sum, channel) =>
+                        sum +
+                        (selected.item.animation?.[channel]?.length ?? 0),
+                      0,
+                    );
+                    const hasCurrent = propertyRow.channels.every((channel) =>
+                      (selected.item.animation?.[channel] ?? []).some(
                         (point) => point.frame === localFrame,
-                      );
-                      const inRange =
-                        localFrame >= 0 &&
-                        localFrame < selected.item.timing.durationInFrames;
+                      ),
+                    );
 
-                      return (
-                        <div className="keyframe-property-row" key={property}>
-                          <div>
-                            <strong>{property}</strong>
-                            <span>{points.length} keyframes</span>
-                          </div>
-                          <div className="keyframe-actions">
-                            <button
-                              type="button"
-                              disabled={!inRange}
-                              title="Add or replace keyframe at playhead"
-                              onClick={() =>
-                                setKeyframeAtPlayhead(selected.item, property)
-                              }
-                            >
-                              ◆+
-                            </button>
-                            <button
-                              type="button"
-                              disabled={!inRange || !hasCurrent}
-                              title="Remove keyframe at playhead"
-                              onClick={() =>
-                                removeKeyframeAtPlayhead(
-                                  selected.item,
-                                  property,
-                                )
-                              }
-                            >
-                              ◆−
-                            </button>
-                          </div>
+                    return (
+                      <div
+                        className="keyframe-property-row"
+                        key={propertyRow.id}
+                      >
+                        <div>
+                          <strong>{propertyRow.label}</strong>
+                          <span>{pointCount} channel keyframes</span>
                         </div>
-                      );
-                    },
-                  )}
+                        <div className="keyframe-actions">
+                          <button
+                            type="button"
+                            disabled={!inRange}
+                            title="Add or replace keyframe at playhead"
+                            onClick={() =>
+                              setPropertyKeyframeAtPlayhead(
+                                selected.item,
+                                propertyRow.channels,
+                              )
+                            }
+                          >
+                            ◆+
+                          </button>
+                          <button
+                            type="button"
+                            disabled={!inRange || !hasCurrent}
+                            title="Remove keyframe at playhead"
+                            onClick={() =>
+                              removePropertyKeyframeAtPlayhead(
+                                selected.item,
+                                propertyRow.channels,
+                              )
+                            }
+                          >
+                            ◆−
+                          </button>
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
                 <div className="keyframe-help">
-                  Move the playhead inside the selected layer, change a property,
-                  then press ◆+ to keyframe that value.
+                  The same Transform properties are available directly below
+                  each layer in the timeline.
                 </div>
               </div>
             </div>
@@ -1004,15 +1015,20 @@ const App: React.FC = () => {
                 <div className="timeline-section-name">{track.name}</div>
                 <div className="timeline-section-line" />
               </div>,
-              ...rows.map(({item, depth}) => {
+              ...rows.flatMap(({item, depth}) => {
                 const left =
                   (item.timing.from / project.durationInFrames) * 100;
                 const width =
                   (item.timing.durationInFrames /
                     project.durationInFrames) *
                   100;
+                const expanded = expandedTransforms.includes(item.id);
+                const localFrame = currentFrame - item.timing.from;
+                const inRange =
+                  localFrame >= 0 &&
+                  localFrame < item.timing.durationInFrames;
 
-                return (
+                const layerRow = (
                   <div
                     className={
                       item.type === "group"
@@ -1025,8 +1041,19 @@ const App: React.FC = () => {
                       className="timeline-track-name"
                       style={{paddingLeft: 12 + depth * 16}}
                     >
+                      <button
+                        type="button"
+                        className="timeline-disclosure"
+                        title="Show Transform properties"
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          toggleTransformDisclosure(item.id);
+                        }}
+                      >
+                        {expanded ? "▾" : "▸"}
+                      </button>
                       <span className="timeline-layer-type">{item.type}</span>
-                      <span>{itemLabel(item)}</span>
+                      <span>{item.name}</span>
                     </div>
                     <div className="timeline-lane">
                       <div
@@ -1075,21 +1102,6 @@ const App: React.FC = () => {
                           onPointerCancel={endTimelineGesture}
                         />
                         <span className="timeline-item-label">{item.name}</span>
-                        {selectedItemId === item.id
-                          ? Object.entries(item.animation ?? {}).flatMap(
-                              ([property, points]) =>
-                                (points ?? []).map((point, pointIndex) => (
-                                  <span
-                                    key={`${property}-${pointIndex}`}
-                                    className="timeline-keyframe"
-                                    title={`${property} @ ${item.timing.from + point.frame}f`}
-                                    style={{
-                                      left: `${(point.frame / item.timing.durationInFrames) * 100}%`,
-                                    }}
-                                  />
-                                )),
-                            )
-                          : null}
                         <span
                           className="timeline-trim-handle trim-right"
                           title="Trim end"
@@ -1104,6 +1116,96 @@ const App: React.FC = () => {
                     </div>
                   </div>
                 );
+
+                const propertyRows = expanded
+                  ? transformPropertyRows.map((propertyRow) => {
+                      const allPoints = propertyRow.channels.flatMap(
+                        (channel) =>
+                          (item.animation?.[channel] ?? []).map((point) => ({
+                            channel,
+                            point,
+                          })),
+                      );
+                      const hasCurrent = propertyRow.channels.every((channel) =>
+                        (item.animation?.[channel] ?? []).some(
+                          (point) => point.frame === localFrame,
+                        ),
+                      );
+                      const values = propertyRow.channels
+                        .map((channel) =>
+                          Number(channelValue(item, channel).toFixed(2)),
+                        )
+                        .join(", ");
+
+                      return (
+                        <div
+                          className="timeline-property-row"
+                          key={`${item.id}-${propertyRow.id}`}
+                        >
+                          <div
+                            className="timeline-property-name"
+                            style={{paddingLeft: 42 + depth * 16}}
+                          >
+                            <button
+                              type="button"
+                              className={
+                                hasCurrent
+                                  ? "property-keyframe-button active"
+                                  : "property-keyframe-button"
+                              }
+                              title={
+                                hasCurrent
+                                  ? "Remove keyframe at playhead"
+                                  : "Add keyframe at playhead"
+                              }
+                              disabled={!inRange}
+                              onClick={() =>
+                                hasCurrent
+                                  ? removePropertyKeyframeAtPlayhead(
+                                      item,
+                                      propertyRow.channels,
+                                    )
+                                  : setPropertyKeyframeAtPlayhead(
+                                      item,
+                                      propertyRow.channels,
+                                    )
+                              }
+                            >
+                              ◆
+                            </button>
+                            <span>{propertyRow.label}</span>
+                            <span className="timeline-property-value">
+                              {values}
+                            </span>
+                          </div>
+                          <div className="timeline-property-lane">
+                            <div
+                              className="timeline-playhead"
+                              style={{
+                                left: `${(currentFrame / project.durationInFrames) * 100}%`,
+                              }}
+                            />
+                            {allPoints.map(({channel, point}, pointIndex) => (
+                              <button
+                                type="button"
+                                className="timeline-property-keyframe"
+                                key={`${channel}-${pointIndex}`}
+                                title={`${propertyRow.label} · ${channel} @ ${item.timing.from + point.frame}f`}
+                                style={{
+                                  left: `${((item.timing.from + point.frame) / project.durationInFrames) * 100}%`,
+                                }}
+                                onClick={() =>
+                                  seekToFrame(item.timing.from + point.frame)
+                                }
+                              />
+                            ))}
+                          </div>
+                        </div>
+                      );
+                    })
+                  : [];
+
+                return [layerRow, ...propertyRows];
               }),
             ];
           })}
