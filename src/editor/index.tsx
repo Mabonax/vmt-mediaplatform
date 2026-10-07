@@ -3,6 +3,7 @@ import {createRoot} from "react-dom/client";
 import {Player, type CallbackListener, type PlayerRef} from "@remotion/player";
 import {MotionProject} from "../workstation/MotionProject";
 import {TemplateHome} from "./TemplateHome";
+import type {EditorSession} from "./session";
 import {
   moveItemInTime,
   removeTransformKeyframe,
@@ -135,9 +136,9 @@ const transformPropertyRows: Array<{
   {id: "opacity", label: "Opacity", channels: ["opacity"]},
 ];
 
-const EditorWorkspace: React.FC<{initialProject: WorkstationProject; onHome: () => void}> = ({initialProject, onHome}) => {
+const EditorWorkspace: React.FC<{session: EditorSession; onHome: () => void}> = ({session, onHome}) => {
   const [project, setProject] = useState<WorkstationProject>(
-    () => structuredClone(initialProject),
+    () => structuredClone(session.project),
   );
   const [selectedItemId, setSelectedItemId] = useState<string | null>("browser");
   const [currentFrame, setCurrentFrame] = useState(0);
@@ -148,6 +149,10 @@ const EditorWorkspace: React.FC<{initialProject: WorkstationProject; onHome: () 
   const [expandedTransforms, setExpandedTransforms] = useState<string[]>([
     "browser",
   ]);
+  const [exportStatus, setExportStatus] = useState<
+    "idle" | "starting" | "started" | "error"
+  >("idle");
+  const [exportMessage, setExportMessage] = useState("");
   const playerRef = useRef<PlayerRef>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
 
@@ -169,6 +174,36 @@ const EditorWorkspace: React.FC<{initialProject: WorkstationProject; onHome: () 
   }, []);
 
   const durationSeconds = project.durationInFrames / project.fps;
+
+  const exportAll = async () => {
+    if (session.exportTargets.length === 0 || exportStatus === "starting") return;
+    setExportStatus("starting");
+    setExportMessage("Preparing export…");
+
+    try {
+      const response = await fetch("/api/export", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+          project,
+          targets: session.exportTargets,
+        }),
+      });
+      const payload = await response.json();
+      if (!response.ok || !payload.ok) {
+        throw new Error(payload.error ?? "Could not start export");
+      }
+      setExportStatus("started");
+      setExportMessage(
+        `Rendering ${session.exportTargets.length} format${session.exportTargets.length === 1 ? "" : "s"} to out/vmt-motion/`,
+      );
+    } catch (error) {
+      setExportStatus("error");
+      setExportMessage(
+        error instanceof Error ? error.message : "Could not start export",
+      );
+    }
+  };
 
   const seekToFrame = (frame: number) => {
     const nextFrame = Math.max(
@@ -466,10 +501,23 @@ const EditorWorkspace: React.FC<{initialProject: WorkstationProject; onHome: () 
           <span>{currentFrame}f</span>
           <button
             type="button"
+            className="export-all-button"
+            onClick={exportAll}
+            disabled={
+              exportStatus === "starting" || session.exportTargets.length === 0
+            }
+            title={`Export ${session.exportTargets.length} selected format${session.exportTargets.length === 1 ? "" : "s"}`}
+          >
+            {exportStatus === "starting"
+              ? "Starting…"
+              : `Export All (${session.exportTargets.length})`}
+          </button>
+          <button
+            type="button"
             onClick={() => {
-              setProject(structuredClone(initialProject));
+              setProject(structuredClone(session.project));
               setSelectedItemId(
-                initialProject.tracks.flatMap((track) => track.items)[0]?.id ??
+                session.project.tracks.flatMap((track) => track.items)[0]?.id ??
                   null,
               );
               seekToFrame(0);
@@ -479,6 +527,17 @@ const EditorWorkspace: React.FC<{initialProject: WorkstationProject; onHome: () 
           </button>
         </div>
       </header>
+      {exportMessage ? (
+        <div
+          className={
+            exportStatus === "error"
+              ? "export-status error"
+              : "export-status"
+          }
+        >
+          {exportMessage}
+        </div>
+      ) : null}
 
       <main className="workspace">
         <aside className="layers-panel">
@@ -1202,17 +1261,16 @@ const EditorWorkspace: React.FC<{initialProject: WorkstationProject; onHome: () 
 };
 
 const App: React.FC = () => {
-  const [activeProject, setActiveProject] =
-    useState<WorkstationProject | null>(null);
+  const [session, setSession] = useState<EditorSession | null>(null);
 
-  if (!activeProject) {
-    return <TemplateHome onOpenProject={setActiveProject} />;
+  if (!session) {
+    return <TemplateHome onOpenProject={setSession} />;
   }
 
   return (
     <EditorWorkspace
-      initialProject={activeProject}
-      onHome={() => setActiveProject(null)}
+      session={session}
+      onHome={() => setSession(null)}
     />
   );
 };
