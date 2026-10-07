@@ -121,7 +121,25 @@ export const workstationDemoProject: WorkstationProject = {
           name: "Cursor click",
           type: "cursor",
           timing: {from: 72, durationInFrames: 120},
-          transform: {x: 1286, y: 366, width: 72, height: 72, rotation: 0, opacity: 1, scale: 1},
+          transform: {x: 1110, y: 300, width: 72, height: 72, rotation: 0, opacity: 1, scale: 1},
+          animation: {
+            x: [
+              {frame: 0, value: 1110, easing: "ease-in-out"},
+              {frame: 30, value: 1286, easing: "ease-in-out"},
+              {frame: 72, value: 1470, easing: "ease-in-out"},
+            ],
+            y: [
+              {frame: 0, value: 300, easing: "ease-in-out"},
+              {frame: 30, value: 366, easing: "ease-in-out"},
+              {frame: 72, value: 510, easing: "ease-in-out"},
+            ],
+            scale: [
+              {frame: 0, value: 1, easing: "linear"},
+              {frame: 34, value: 1, easing: "linear"},
+              {frame: 38, value: 0.9, easing: "ease-out"},
+              {frame: 44, value: 1, easing: "ease-out"},
+            ],
+          },
           motion: {entrance: "fade", exit: "fade", intensity: 0.4},
           variant: "pointer",
           color: "#FFFFFF",
