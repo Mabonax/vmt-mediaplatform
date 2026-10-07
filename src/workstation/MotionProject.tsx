@@ -28,18 +28,40 @@ const ItemShell: React.FC<{
   const frame = useCurrentFrame();
   const {fps} = useVideoConfig();
   const local = frame - item.timing.from;
-  const entrance = spring({
+  const intensity = item.motion.intensity;
+  const springValue = spring({
     fps,
     frame: Math.max(0, local),
-    config: {damping: 18, stiffness: 140, mass: 0.9},
+    config: {
+      damping: 18,
+      stiffness: 140 + intensity * 50,
+      mass: 0.9,
+    },
   });
+  const fadeIn = interpolate(local, [0, Math.max(1, Math.round(fps * 0.25))], [0, 1], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+  });
+  const entrance =
+    item.motion.entrance === "none"
+      ? 1
+      : item.motion.entrance === "fade"
+        ? fadeIn
+        : springValue;
+
   const exitStart = Math.max(0, item.timing.durationInFrames - Math.round(fps * 0.35));
-  const exit = interpolate(
-    local,
-    [exitStart, item.timing.durationInFrames],
-    [1, 0],
-    {extrapolateLeft: "clamp", extrapolateRight: "clamp"},
-  );
+  const exit =
+    item.motion.exit === "none"
+      ? 1
+      : interpolate(local, [exitStart, item.timing.durationInFrames], [1, 0], {
+          extrapolateLeft: "clamp",
+          extrapolateRight: "clamp",
+        });
+
+  const rise = item.motion.entrance === "rise" ? (1 - entrance) * (12 + intensity * 26) : 0;
+  const scaleEntrance =
+    item.motion.entrance === "scale" ? 0.9 + entrance * 0.1 : 1;
+
   const t = item.transform;
 
   return (
@@ -51,7 +73,7 @@ const ItemShell: React.FC<{
         width: t.width,
         height: t.height,
         opacity: t.opacity * entrance * exit,
-        transform: `rotate(${t.rotation}deg) scale(${t.scale * (0.96 + entrance * 0.04)}) translateY(${(1 - entrance) * 20}px)`,
+        transform: `rotate(${t.rotation}deg) scale(${t.scale * scaleEntrance}) translateY(${rise}px)`,
         transformOrigin: "center center",
       }}
     >
@@ -59,6 +81,228 @@ const ItemShell: React.FC<{
     </div>
   );
 };
+
+const BrowserWindow: React.FC<{
+  item: Extract<WorkstationItem, {type: "browser-window"}>;
+}> = ({item}) => {
+  const chromeBg = item.chrome === "dark" ? "#151B2B" : "#EEF2F7";
+  const chromeFg = item.chrome === "dark" ? "#D9E1EE" : "#445067";
+
+  return (
+    <ItemShell item={item}>
+      <div
+        style={{
+          width: "100%",
+          height: "100%",
+          borderRadius: 28,
+          overflow: "hidden",
+          background: "#FFFFFF",
+          boxShadow: "0 32px 90px rgba(0,0,0,0.32)",
+          border: "1px solid rgba(148,163,184,0.22)",
+        }}
+      >
+        <div
+          style={{
+            height: 74,
+            display: "flex",
+            alignItems: "center",
+            gap: 16,
+            padding: "0 24px",
+            background: chromeBg,
+            color: chromeFg,
+            fontFamily: "Arial",
+          }}
+        >
+          <div style={{display: "flex", gap: 9}}>
+            {["#FF6B6B", "#FFD166", "#06D6A0"].map((c) => (
+              <div key={c} style={{width: 13, height: 13, borderRadius: "50%", background: c}} />
+            ))}
+          </div>
+          <div
+            style={{
+              flex: 1,
+              height: 38,
+              borderRadius: 12,
+              background: item.chrome === "dark" ? "#20283B" : "#FFFFFF",
+              display: "flex",
+              alignItems: "center",
+              padding: "0 16px",
+              fontSize: 16,
+              overflow: "hidden",
+            }}
+          >
+            {item.url}
+          </div>
+          <div style={{fontSize: 16, fontWeight: 700}}>{item.title}</div>
+        </div>
+        <div style={{position: "relative", width: "100%", height: "calc(100% - 74px)"}}>
+          {item.screenshotSrc ? (
+            <Img
+              src={resolveAsset(item.screenshotSrc)}
+              style={{width: "100%", height: "100%", objectFit: "cover"}}
+            />
+          ) : (
+            <div
+              style={{
+                width: "100%",
+                height: "100%",
+                background: "linear-gradient(135deg,#F8FAFC,#E2E8F0)",
+                padding: 36,
+                boxSizing: "border-box",
+                display: "grid",
+                gridTemplateColumns: "220px 1fr",
+                gap: 26,
+              }}
+            >
+              <div style={{background: "#0F172A", borderRadius: 22}} />
+              <div style={{display: "grid", gridTemplateRows: "150px 1fr", gap: 24}}>
+                <div style={{display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 18}}>
+                  {[0, 1, 2].map((n) => (
+                    <div key={n} style={{borderRadius: 18, background: n === 0 ? item.accent : "#FFFFFF"}} />
+                  ))}
+                </div>
+                <div style={{borderRadius: 22, background: "#FFFFFF"}} />
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </ItemShell>
+  );
+};
+
+const Cursor: React.FC<{item: Extract<WorkstationItem, {type: "cursor"}>}> = ({item}) => {
+  const frame = useCurrentFrame();
+  const local = frame - item.timing.from;
+  const clicking =
+    item.clickAtFrame !== undefined &&
+    Math.abs(local - item.clickAtFrame) <= 4;
+  const scale = clicking ? 0.82 : 1;
+
+  return (
+    <ItemShell item={item}>
+      <div style={{position: "relative", width: "100%", height: "100%"}}>
+        {clicking ? (
+          <div
+            style={{
+              position: "absolute",
+              width: 90,
+              height: 90,
+              borderRadius: "50%",
+              border: `5px solid ${item.color}`,
+              opacity: 0.45,
+              left: -26,
+              top: -26,
+            }}
+          />
+        ) : null}
+        <div
+          style={{
+            width: 0,
+            height: 0,
+            borderLeft: "18px solid transparent",
+            borderRight: "8px solid transparent",
+            borderBottom: `44px solid ${item.color}`,
+            transform: `rotate(-42deg) scale(${scale})`,
+            transformOrigin: "center",
+            filter: "drop-shadow(0 3px 5px rgba(0,0,0,0.35))",
+          }}
+        />
+      </div>
+    </ItemShell>
+  );
+};
+
+const Callout: React.FC<{item: Extract<WorkstationItem, {type: "callout"}>}> = ({item}) => {
+  const horizontal = item.direction === "left" || item.direction === "right";
+  return (
+    <ItemShell item={item}>
+      <div
+        style={{
+          width: "100%",
+          height: "100%",
+          display: "flex",
+          alignItems: "center",
+          flexDirection: horizontal
+            ? item.direction === "left"
+              ? "row-reverse"
+              : "row"
+            : item.direction === "up"
+              ? "column-reverse"
+              : "column",
+          gap: 14,
+        }}
+      >
+        <div
+          style={{
+            flex: 1,
+            minWidth: 0,
+            minHeight: 0,
+            borderRadius: 18,
+            padding: "18px 24px",
+            boxSizing: "border-box",
+            background: item.background,
+            color: item.foreground,
+            border: `2px solid ${item.accent}`,
+            fontFamily: "Arial",
+            fontSize: 24,
+            fontWeight: 700,
+            boxShadow: "0 14px 36px rgba(0,0,0,0.16)",
+          }}
+        >
+          {item.label}
+        </div>
+        <div
+          style={{
+            width: horizontal ? 56 : 4,
+            height: horizontal ? 4 : 56,
+            background: item.accent,
+            borderRadius: 99,
+          }}
+        />
+      </div>
+    </ItemShell>
+  );
+};
+
+const Flow: React.FC<{item: Extract<WorkstationItem, {type: "flow"}>}> = ({item}) => (
+  <ItemShell item={item}>
+    <div
+      style={{
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        alignItems: "center",
+        gap: 16,
+      }}
+    >
+      {item.steps.map((step, index) => (
+        <React.Fragment key={step + index}>
+          <div
+            style={{
+              flex: 1,
+              minWidth: 0,
+              borderRadius: 18,
+              background: item.surface,
+              color: item.foreground,
+              border: `2px solid ${index === item.steps.length - 1 ? item.accent : "#CBD5E1"}`,
+              padding: "20px 18px",
+              fontFamily: "Arial",
+              fontWeight: 700,
+              fontSize: 22,
+              textAlign: "center",
+            }}
+          >
+            {step}
+          </div>
+          {index < item.steps.length - 1 ? (
+            <div style={{fontFamily: "Arial", fontSize: 30, color: item.accent}}>→</div>
+          ) : null}
+        </React.Fragment>
+      ))}
+    </div>
+  </ItemShell>
+);
 
 const WorkstationItemView: React.FC<{item: WorkstationItem}> = ({item}) => {
   if (item.type === "solid") {
@@ -106,6 +350,11 @@ const WorkstationItemView: React.FC<{item: WorkstationItem}> = ({item}) => {
       </ItemShell>
     );
   }
+
+  if (item.type === "browser-window") return <BrowserWindow item={item} />;
+  if (item.type === "cursor") return <Cursor item={item} />;
+  if (item.type === "callout") return <Callout item={item} />;
+  if (item.type === "flow") return <Flow item={item} />;
 
   return (
     <ItemShell item={item}>
