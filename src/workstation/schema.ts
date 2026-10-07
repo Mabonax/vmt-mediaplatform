@@ -248,6 +248,17 @@ export const workstationProjectSchema = z.object({
       return;
     }
 
+    const itemEnd = item.timing.from + item.timing.durationInFrames;
+    const parentEnd =
+      parent.timing.from + parent.timing.durationInFrames;
+    if (item.timing.from < parent.timing.from || itemEnd > parentEnd) {
+      ctx.addIssue({
+        code: "custom",
+        message: `Child timing must fit inside parent group: ${item.id}`,
+        path: ["tracks"],
+      });
+    }
+
     const visited = new Set<string>([item.id]);
     let cursor = parent;
     while (cursor.parentId) {
