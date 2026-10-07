@@ -1,7 +1,7 @@
 {
-  "name": "drhealth-motion",
+  "name": "vmt-motion",
   "version": "1.0.0",
-  "description": "Dr. Health programmable motion and design engine",
+  "description": "VMT Motion Studio - template-driven motion design, multi-format editing and Remotion rendering",
   "repository": {},
   "license": "UNLICENSED",
   "private": true,
