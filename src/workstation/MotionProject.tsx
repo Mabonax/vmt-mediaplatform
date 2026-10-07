@@ -13,6 +13,7 @@ import {
 import {
   workstationProjectSchema,
   type WorkstationItem,
+  type WorkstationKeyframePoint,
   type WorkstationProject,
 } from "./schema";
 
@@ -21,13 +22,49 @@ const resolveAsset = (src: string) => {
   return staticFile(src.replace(/^\//, ""));
 };
 
+const applyEasing = (
+  value: number,
+  easing: WorkstationKeyframePoint["easing"],
+) => {
+  if (easing === "linear") return value;
+  if (easing === "ease-in") return value * value;
+  if (easing === "ease-out") return 1 - (1 - value) * (1 - value);
+  return value < 0.5
+    ? 2 * value * value
+    : 1 - Math.pow(-2 * value + 2, 2) / 2;
+};
+
+const resolveKeyframedValue = (
+  frame: number,
+  fallback: number,
+  points: WorkstationKeyframePoint[] | undefined,
+) => {
+  if (!points || points.length === 0) return fallback;
+  if (frame <= points[0].frame) return points[0].value;
+  if (frame >= points[points.length - 1].frame)
+    return points[points.length - 1].value;
+
+  const nextIndex = points.findIndex((point) => point.frame >= frame);
+  const next = points[nextIndex];
+  const previous = points[nextIndex - 1];
+
+  const rawProgress =
+    (frame - previous.frame) / Math.max(1, next.frame - previous.frame);
+  const progress = applyEasing(rawProgress, next.easing);
+
+  return previous.value + (next.value - previous.value) * progress;
+};
+
 const ItemShell: React.FC<{
   item: WorkstationItem;
   children: React.ReactNode;
 }> = ({item, children}) => {
   const frame = useCurrentFrame();
   const {fps} = useVideoConfig();
-  const local = frame - item.timing.from;
+
+  // Sequence shifts the frame clock for children, so this frame is already
+  // relative to item.timing.from.
+  const local = frame;
   const intensity = item.motion.intensity;
   const springValue = spring({
     fps,
@@ -38,10 +75,15 @@ const ItemShell: React.FC<{
       mass: 0.9,
     },
   });
-  const fadeIn = interpolate(local, [0, Math.max(1, Math.round(fps * 0.25))], [0, 1], {
-    extrapolateLeft: "clamp",
-    extrapolateRight: "clamp",
-  });
+  const fadeIn = interpolate(
+    local,
+    [0, Math.max(1, Math.round(fps * 0.25))],
+    [0, 1],
+    {
+      extrapolateLeft: "clamp",
+      extrapolateRight: "clamp",
+    },
+  );
   const entrance =
     item.motion.entrance === "none"
       ? 1
@@ -49,31 +91,59 @@ const ItemShell: React.FC<{
         ? fadeIn
         : springValue;
 
-  const exitStart = Math.max(0, item.timing.durationInFrames - Math.round(fps * 0.35));
+  const exitStart = Math.max(
+    0,
+    item.timing.durationInFrames - Math.round(fps * 0.35),
+  );
   const exit =
     item.motion.exit === "none"
       ? 1
-      : interpolate(local, [exitStart, item.timing.durationInFrames], [1, 0], {
-          extrapolateLeft: "clamp",
-          extrapolateRight: "clamp",
-        });
+      : interpolate(
+          local,
+          [exitStart, item.timing.durationInFrames],
+          [1, 0],
+          {
+            extrapolateLeft: "clamp",
+            extrapolateRight: "clamp",
+          },
+        );
 
-  const rise = item.motion.entrance === "rise" ? (1 - entrance) * (12 + intensity * 26) : 0;
+  const rise =
+    item.motion.entrance === "rise"
+      ? (1 - entrance) * (12 + intensity * 26)
+      : 0;
   const scaleEntrance =
     item.motion.entrance === "scale" ? 0.9 + entrance * 0.1 : 1;
 
   const t = item.transform;
+  const animatedX = resolveKeyframedValue(local, t.x, item.animation?.x);
+  const animatedY = resolveKeyframedValue(local, t.y, item.animation?.y);
+  const animatedScale = resolveKeyframedValue(
+    local,
+    t.scale,
+    item.animation?.scale,
+  );
+  const animatedRotation = resolveKeyframedValue(
+    local,
+    t.rotation,
+    item.animation?.rotation,
+  );
+  const animatedOpacity = resolveKeyframedValue(
+    local,
+    t.opacity,
+    item.animation?.opacity,
+  );
 
   return (
     <div
       style={{
         position: "absolute",
-        left: t.x,
-        top: t.y,
+        left: animatedX,
+        top: animatedY,
         width: t.width,
         height: t.height,
-        opacity: t.opacity * entrance * exit,
-        transform: `rotate(${t.rotation}deg) scale(${t.scale * scaleEntrance}) translateY(${rise}px)`,
+        opacity: animatedOpacity * entrance * exit,
+        transform: `rotate(${animatedRotation}deg) scale(${animatedScale * scaleEntrance}) translateY(${rise}px)`,
         transformOrigin: "center center",
       }}
     >
@@ -115,7 +185,15 @@ const BrowserWindow: React.FC<{
         >
           <div style={{display: "flex", gap: 9}}>
             {["#FF6B6B", "#FFD166", "#06D6A0"].map((c) => (
-              <div key={c} style={{width: 13, height: 13, borderRadius: "50%", background: c}} />
+              <div
+                key={c}
+                style={{
+                  width: 13,
+                  height: 13,
+                  borderRadius: "50%",
+                  background: c,
+                }}
+              />
             ))}
           </div>
           <div
@@ -135,7 +213,13 @@ const BrowserWindow: React.FC<{
           </div>
           <div style={{fontSize: 16, fontWeight: 700}}>{item.title}</div>
         </div>
-        <div style={{position: "relative", width: "100%", height: "calc(100% - 74px)"}}>
+        <div
+          style={{
+            position: "relative",
+            width: "100%",
+            height: "calc(100% - 74px)",
+          }}
+        >
           {item.screenshotSrc ? (
             <Img
               src={resolveAsset(item.screenshotSrc)}
@@ -155,10 +239,28 @@ const BrowserWindow: React.FC<{
               }}
             >
               <div style={{background: "#0F172A", borderRadius: 22}} />
-              <div style={{display: "grid", gridTemplateRows: "150px 1fr", gap: 24}}>
-                <div style={{display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 18}}>
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateRows: "150px 1fr",
+                  gap: 24,
+                }}
+              >
+                <div
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "repeat(3,1fr)",
+                    gap: 18,
+                  }}
+                >
                   {[0, 1, 2].map((n) => (
-                    <div key={n} style={{borderRadius: 18, background: n === 0 ? item.accent : "#FFFFFF"}} />
+                    <div
+                      key={n}
+                      style={{
+                        borderRadius: 18,
+                        background: n === 0 ? item.accent : "#FFFFFF",
+                      }}
+                    />
                   ))}
                 </div>
                 <div style={{borderRadius: 22, background: "#FFFFFF"}} />
@@ -171,9 +273,11 @@ const BrowserWindow: React.FC<{
   );
 };
 
-const Cursor: React.FC<{item: Extract<WorkstationItem, {type: "cursor"}>}> = ({item}) => {
+const Cursor: React.FC<{
+  item: Extract<WorkstationItem, {type: "cursor"}>;
+}> = ({item}) => {
   const frame = useCurrentFrame();
-  const local = frame - item.timing.from;
+  const local = frame;
   const clicking =
     item.clickAtFrame !== undefined &&
     Math.abs(local - item.clickAtFrame) <= 4;
@@ -213,8 +317,11 @@ const Cursor: React.FC<{item: Extract<WorkstationItem, {type: "cursor"}>}> = ({i
   );
 };
 
-const Callout: React.FC<{item: Extract<WorkstationItem, {type: "callout"}>}> = ({item}) => {
-  const horizontal = item.direction === "left" || item.direction === "right";
+const Callout: React.FC<{
+  item: Extract<WorkstationItem, {type: "callout"}>;
+}> = ({item}) => {
+  const horizontal =
+    item.direction === "left" || item.direction === "right";
   return (
     <ItemShell item={item}>
       <div
@@ -265,7 +372,9 @@ const Callout: React.FC<{item: Extract<WorkstationItem, {type: "callout"}>}> = (
   );
 };
 
-const Flow: React.FC<{item: Extract<WorkstationItem, {type: "flow"}>}> = ({item}) => (
+const Flow: React.FC<{
+  item: Extract<WorkstationItem, {type: "flow"}>;
+}> = ({item}) => (
   <ItemShell item={item}>
     <div
       style={{
@@ -296,7 +405,15 @@ const Flow: React.FC<{item: Extract<WorkstationItem, {type: "flow"}>}> = ({item}
             {step}
           </div>
           {index < item.steps.length - 1 ? (
-            <div style={{fontFamily: "Arial", fontSize: 30, color: item.accent}}>→</div>
+            <div
+              style={{
+                fontFamily: "Arial",
+                fontSize: 30,
+                color: item.accent,
+              }}
+            >
+              →
+            </div>
           ) : null}
         </React.Fragment>
       ))}
@@ -308,7 +425,14 @@ const WorkstationItemView: React.FC<{item: WorkstationItem}> = ({item}) => {
   if (item.type === "solid") {
     return (
       <ItemShell item={item}>
-        <div style={{width: "100%", height: "100%", background: item.color, borderRadius: item.radius}} />
+        <div
+          style={{
+            width: "100%",
+            height: "100%",
+            background: item.color,
+            borderRadius: item.radius,
+          }}
+        />
       </ItemShell>
     );
   }
@@ -373,9 +497,29 @@ const WorkstationItemView: React.FC<{item: WorkstationItem}> = ({item}) => {
           gap: 32,
         }}
       >
-        <div style={{height: 10, width: 96, borderRadius: 99, background: item.accent}} />
-        <div style={{fontSize: 48, fontWeight: 700, fontFamily: "Arial"}}>{item.title}</div>
-        <div style={{fontSize: 28, lineHeight: 1.45, color: "#475569", fontFamily: "Arial"}}>{item.body}</div>
+        <div
+          style={{
+            height: 10,
+            width: 96,
+            borderRadius: 99,
+            background: item.accent,
+          }}
+        />
+        <div
+          style={{fontSize: 48, fontWeight: 700, fontFamily: "Arial"}}
+        >
+          {item.title}
+        </div>
+        <div
+          style={{
+            fontSize: 28,
+            lineHeight: 1.45,
+            color: "#475569",
+            fontFamily: "Arial",
+          }}
+        >
+          {item.body}
+        </div>
         <div
           style={{
             marginTop: "auto",
@@ -400,22 +544,25 @@ const WorkstationItemView: React.FC<{item: WorkstationItem}> = ({item}) => {
   );
 };
 
-export const calculateWorkstationMetadata: CalculateMetadataFunction<WorkstationProject> = ({props}) => {
-  const project = workstationProjectSchema.parse(props);
-  return {
-    durationInFrames: project.durationInFrames,
-    fps: project.fps,
-    width: project.width,
-    height: project.height,
-    props: project,
+export const calculateWorkstationMetadata: CalculateMetadataFunction<WorkstationProject> =
+  ({props}) => {
+    const project = workstationProjectSchema.parse(props);
+    return {
+      durationInFrames: project.durationInFrames,
+      fps: project.fps,
+      width: project.width,
+      height: project.height,
+      props: project,
+    };
   };
-};
 
 export const MotionProject: React.FC<WorkstationProject> = (input) => {
   const project = workstationProjectSchema.parse(input);
 
   return (
-    <AbsoluteFill style={{background: project.background, overflow: "hidden"}}>
+    <AbsoluteFill
+      style={{background: project.background, overflow: "hidden"}}
+    >
       {project.tracks
         .filter((track) => track.visible)
         .flatMap((track) => track.items)
