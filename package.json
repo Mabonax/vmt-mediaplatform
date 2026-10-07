@@ -48,7 +48,8 @@
     "sync:grammar": "node scripts/sync-grammar-examples.mjs",
     "verify:grammar": "npm run build && node scripts/verify-grammar.mjs",
     "editor:build": "node scripts/build-editor.mjs",
-    "editor": "npm run editor:build && node scripts/serve-editor.mjs"
+    "editor": "npm run editor:build && node scripts/serve-editor.mjs",
+    "render:workstation-batch": "node scripts/render-workstation-batch.mjs"
   },
   "sideEffects": [
     "*.css"
