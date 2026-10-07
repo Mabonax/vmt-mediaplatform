@@ -21,6 +21,7 @@
     "src/renderers/shared/**/*.tsx",
     "src/workstation/schema.ts",
     "src/workstation/defaults.ts",
-    "src/workstation/mutations.ts"
+    "src/workstation/mutations.ts",
+    "src/editor/composition-presets.ts"
   ]
 }
