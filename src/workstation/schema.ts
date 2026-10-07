@@ -8,7 +8,7 @@ const keyframePointSchema = z.object({
   easing: z.enum(["linear", "ease-in", "ease-out", "ease-in-out"]).default("ease-in-out"),
 }).strict();
 
-const keyframeTrackSchema = z.array(keyframePointSchema).min(2).refine(
+const keyframeTrackSchema = z.array(keyframePointSchema).min(1).refine(
   (points) => points.every((point, index) => index === 0 || point.frame > points[index - 1].frame),
   "Keyframes must be strictly increasing by frame",
 );
