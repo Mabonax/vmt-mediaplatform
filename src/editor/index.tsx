@@ -82,6 +82,7 @@ const App: React.FC = () => {
   const [gesture, setGesture] = useState<CanvasGesture | null>(null);
   const [timelineGesture, setTimelineGesture] =
     useState<TimelineGesture | null>(null);
+  const [scrubPointerId, setScrubPointerId] = useState<number | null>(null);
   const playerRef = useRef<PlayerRef>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
 
@@ -103,6 +104,27 @@ const App: React.FC = () => {
   }, []);
 
   const durationSeconds = project.durationInFrames / project.fps;
+
+  const seekToFrame = (frame: number) => {
+    const nextFrame = Math.max(
+      0,
+      Math.min(project.durationInFrames - 1, Math.round(frame)),
+    );
+    playerRef.current?.pause();
+    playerRef.current?.seekTo(nextFrame);
+    setCurrentFrame(nextFrame);
+  };
+
+  const seekFromRulerPointer = (
+    event: React.PointerEvent<HTMLDivElement>,
+  ) => {
+    const bounds = event.currentTarget.getBoundingClientRect();
+    const ratio = Math.max(
+      0,
+      Math.min(1, (event.clientX - bounds.left) / Math.max(1, bounds.width)),
+    );
+    seekToFrame(ratio * (project.durationInFrames - 1));
+  };
 
   const patchTransform = (
     item: WorkstationItem,
@@ -334,8 +356,7 @@ const App: React.FC = () => {
             onClick={() => {
               setProject(structuredClone(workstationDemoProject));
               setSelectedItemId("browser");
-              setCurrentFrame(0);
-              playerRef.current?.seekTo(0);
+              seekToFrame(0);
             }}
           >
             Reset demo
@@ -439,8 +460,7 @@ const App: React.FC = () => {
                       onPointerCancel={endCanvasGesture}
                       onDoubleClick={(event) => {
                         event.stopPropagation();
-                        playerRef.current?.seekTo(item.timing.from);
-                        setCurrentFrame(item.timing.from);
+                        seekToFrame(item.timing.from);
                       }}
                     >
                       {selectedNow ? (
@@ -588,8 +608,7 @@ const App: React.FC = () => {
                   className="seek-layer-button"
                   type="button"
                   onClick={() => {
-                    playerRef.current?.seekTo(selected.item.timing.from);
-                    setCurrentFrame(selected.item.timing.from);
+                    seekToFrame(selected.item.timing.from);
                   }}
                 >
                   Go to layer start
@@ -662,12 +681,102 @@ const App: React.FC = () => {
       <section className="timeline-panel">
         <div className="timeline-toolbar">
           <strong>Timeline</strong>
-          <span>
-            {currentFrame}f — {project.durationInFrames}f
-          </span>
+          <div className="timeline-transport">
+            <button
+              type="button"
+              title="Previous frame"
+              onClick={() => seekToFrame(currentFrame - 1)}
+            >
+              −1f
+            </button>
+            <label className="frame-field">
+              <span>Frame</span>
+              <input
+                type="number"
+                min={0}
+                max={project.durationInFrames - 1}
+                value={currentFrame}
+                onChange={(event) =>
+                  seekToFrame(numberValue(event.target.value, currentFrame))
+                }
+              />
+            </label>
+            <button
+              type="button"
+              title="Next frame"
+              onClick={() => seekToFrame(currentFrame + 1)}
+            >
+              +1f
+            </button>
+            <span>{(currentFrame / project.fps).toFixed(2)} sec</span>
+          </div>
         </div>
 
         <div className="timeline-scroll">
+          <div className="timeline-ruler-row">
+            <div className="timeline-ruler-label">Playhead</div>
+            <div
+              className="timeline-ruler"
+              role="slider"
+              aria-label="Timeline playhead"
+              aria-valuemin={0}
+              aria-valuemax={project.durationInFrames - 1}
+              aria-valuenow={currentFrame}
+              tabIndex={0}
+              onKeyDown={(event) => {
+                if (event.key === "ArrowLeft") {
+                  event.preventDefault();
+                  seekToFrame(currentFrame - (event.shiftKey ? 10 : 1));
+                }
+                if (event.key === "ArrowRight") {
+                  event.preventDefault();
+                  seekToFrame(currentFrame + (event.shiftKey ? 10 : 1));
+                }
+              }}
+              onPointerDown={(event) => {
+                event.preventDefault();
+                playerRef.current?.pause();
+                event.currentTarget.setPointerCapture(event.pointerId);
+                setScrubPointerId(event.pointerId);
+                seekFromRulerPointer(event);
+              }}
+              onPointerMove={(event) => {
+                if (scrubPointerId === event.pointerId) {
+                  seekFromRulerPointer(event);
+                }
+              }}
+              onPointerUp={(event) => {
+                if (scrubPointerId !== event.pointerId) return;
+                seekFromRulerPointer(event);
+                if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+                  event.currentTarget.releasePointerCapture(event.pointerId);
+                }
+                setScrubPointerId(null);
+              }}
+              onPointerCancel={() => setScrubPointerId(null)}
+            >
+              {Array.from({length: 13}, (_, index) => {
+                const frame = Math.round(
+                  (index / 12) * (project.durationInFrames - 1),
+                );
+                return (
+                  <div
+                    className="timeline-ruler-tick"
+                    key={index}
+                    style={{left: `${(index / 12) * 100}%`}}
+                  >
+                    <span>{frame}</span>
+                  </div>
+                );
+              })}
+              <div
+                className="timeline-ruler-playhead"
+                style={{
+                  left: `${(currentFrame / (project.durationInFrames - 1)) * 100}%`,
+                }}
+              />
+            </div>
+          </div>
           {[...project.tracks].reverse().map((track) => (
             <div className="timeline-track" key={track.id}>
               <div className="timeline-track-name">{track.name}</div>
@@ -706,8 +815,7 @@ const App: React.FC = () => {
                           currentFrame >=
                             item.timing.from + item.timing.durationInFrames
                         ) {
-                          playerRef.current?.seekTo(item.timing.from);
-                          setCurrentFrame(item.timing.from);
+                          seekToFrame(item.timing.from);
                         }
                       }}
                       onPointerDown={(event) =>
