@@ -151,7 +151,64 @@ export const workstationProjectSchema = z.object({
   durationInFrames: z.number().int().positive(),
   background: color,
   tracks: z.array(workstationTrackSchema),
-}).strict();
+}).strict().superRefine((project, ctx) => {
+  const trackIds = new Set<string>();
+  const itemIds = new Set<string>();
+
+  project.tracks.forEach((track, trackIndex) => {
+    if (trackIds.has(track.id)) {
+      ctx.addIssue({
+        code: "custom",
+        message: `Duplicate track id: ${track.id}`,
+        path: ["tracks", trackIndex, "id"],
+      });
+    }
+    trackIds.add(track.id);
+
+    track.items.forEach((item, itemIndex) => {
+      if (itemIds.has(item.id)) {
+        ctx.addIssue({
+          code: "custom",
+          message: `Duplicate item id: ${item.id}`,
+          path: ["tracks", trackIndex, "items", itemIndex, "id"],
+        });
+      }
+      itemIds.add(item.id);
+
+      if (item.timing.from + item.timing.durationInFrames > project.durationInFrames) {
+        ctx.addIssue({
+          code: "custom",
+          message: `Item exceeds project duration: ${item.id}`,
+          path: ["tracks", trackIndex, "items", itemIndex, "timing"],
+        });
+      }
+
+      if (item.animation) {
+        Object.entries(item.animation).forEach(([property, points]) => {
+          if (!points) return;
+          points.forEach((point, pointIndex) => {
+            if (point.frame >= item.timing.durationInFrames) {
+              ctx.addIssue({
+                code: "custom",
+                message: `Keyframe exceeds item duration: ${item.id}.${property}`,
+                path: [
+                  "tracks",
+                  trackIndex,
+                  "items",
+                  itemIndex,
+                  "animation",
+                  property,
+                  pointIndex,
+                  "frame",
+                ],
+              });
+            }
+          });
+        });
+      }
+    });
+  });
+});
 
 export type WorkstationProject = z.infer<typeof workstationProjectSchema>;
 export type WorkstationItem = z.infer<typeof workstationItemSchema>;
