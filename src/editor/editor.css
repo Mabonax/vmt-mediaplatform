@@ -775,3 +775,149 @@ button {
   font-size: 9px;
   text-transform: uppercase;
 }
+
+
+.anchor-handle {
+  position: absolute;
+  z-index: 30;
+  width: 18px;
+  height: 18px;
+  transform: translate(-50%, -50%);
+  cursor: crosshair;
+  touch-action: none;
+}
+
+.anchor-handle::before,
+.anchor-handle::after {
+  content: "";
+  position: absolute;
+  background: #ffd166;
+  box-shadow: 0 0 0 1px rgba(5, 7, 11, 0.8);
+}
+
+.anchor-handle::before {
+  left: 8px;
+  top: 0;
+  width: 2px;
+  height: 18px;
+}
+
+.anchor-handle::after {
+  left: 0;
+  top: 8px;
+  width: 18px;
+  height: 2px;
+}
+
+.anchor-handle span {
+  position: absolute;
+  left: 5px;
+  top: 5px;
+  width: 8px;
+  height: 8px;
+  border: 1px solid #ffd166;
+  border-radius: 50%;
+  background: #0d121c;
+}
+
+.timeline-ruler-row {
+  position: sticky;
+  top: 0;
+  z-index: 80;
+  box-shadow: 0 2px 0 #273044;
+}
+
+.timeline-scroll {
+  position: relative;
+  overscroll-behavior: contain;
+}
+
+.timeline-disclosure {
+  flex: 0 0 20px;
+  width: 20px;
+  height: 24px;
+  margin-right: 2px;
+  border: 0;
+  background: transparent;
+  color: #a9b4c7;
+  cursor: pointer;
+  font-size: 12px;
+  padding: 0;
+}
+
+.timeline-disclosure:hover {
+  color: #55e6c1;
+}
+
+.timeline-property-row {
+  height: 32px;
+  display: grid;
+  grid-template-columns: 180px minmax(900px, 1fr);
+  border-bottom: 1px solid #182130;
+  background: #0b111a;
+}
+
+.timeline-property-name {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-width: 0;
+  border-right: 1px solid #273044;
+  color: #91a0b6;
+  font-size: 10px;
+}
+
+.timeline-property-value {
+  margin-left: auto;
+  padding-right: 8px;
+  color: #627188;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.property-keyframe-button {
+  width: 18px;
+  height: 18px;
+  border: 0;
+  background: transparent;
+  color: #56647a;
+  cursor: pointer;
+  padding: 0;
+  font-size: 11px;
+}
+
+.property-keyframe-button:hover:not(:disabled),
+.property-keyframe-button.active {
+  color: #f8c95c;
+}
+
+.property-keyframe-button:disabled {
+  opacity: 0.25;
+  cursor: default;
+}
+
+.timeline-property-lane {
+  position: relative;
+  margin: 0 10px;
+  background-image: linear-gradient(to right, #182130 1px, transparent 1px);
+  background-size: 5% 100%;
+}
+
+.timeline-property-keyframe {
+  position: absolute;
+  z-index: 12;
+  top: 50%;
+  width: 9px;
+  height: 9px;
+  border: 1px solid #151109;
+  background: #f8c95c;
+  transform: translate(-50%, -50%) rotate(45deg);
+  cursor: pointer;
+  padding: 0;
+}
+
+.timeline-property-keyframe:hover {
+  width: 11px;
+  height: 11px;
+  background: #ffe08a;
+}
