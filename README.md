@@ -42,9 +42,42 @@ npm.cmd run studio
 
 Open **Workstation → VMT-MotionProject** to inspect the neutral ERP explainer render composition.
 
-## VMT Motion Editor
+## Product model
 
-The workstation now also has a standalone browser authoring shell built with `@remotion/player`.
+The product now has three explicit stages:
+
+```text
+Template Studio
+      ↓
+Motion Editor
+      ↓
+Multi-format Export
+```
+
+### Template Studio
+
+The first screen is a template/style engine inspired by modern creative tools rather than a raw timeline.
+
+It is responsible for:
+
+- choosing a reusable motion template
+- choosing the active composition format
+- selecting several export targets at once
+- starting from a blank project
+- describing or referencing a visual style for future AI-assisted generation
+- opening the result in the detailed motion editor
+
+Built-in composition presets currently include:
+
+- Landscape Full HD — 1920×1080 — 16:9
+- Square — 1080×1080 — 1:1
+- Vertical Full HD — 1080×1920 — 9:16
+
+A project may target several formats. The long-term layout model is format-aware rather than requiring three separately maintained projects.
+
+### Motion Editor
+
+The workstation also has a standalone browser authoring shell built with `@remotion/player`.
 
 Run:
 
@@ -58,15 +91,18 @@ Then open:
 http://127.0.0.1:3102
 ```
 
-The first editor milestone includes:
+The editor now includes:
 
 - Remotion Player composition preview
-- track/layer browser
-- layer selection
-- timeline blocks
-- transform inspector for X, Y, width, height, scale, rotation and opacity
-- timing inspector for start frame and duration
-- keyframe summary
+- direct canvas selection, move, resize and anchor-point editing
+- hierarchical parent/child groups and explicit z-order
+- one timeline row per visual layer
+- AE-style Transform disclosure under each layer
+- Anchor Point, Position, Scale, Rotation and Opacity property rows
+- per-property keyframes
+- independent playhead ruler and frame stepping
+- timeline clip move and trim
+- sticky timeline ruler while layer/property rows scroll
 - immutable edits against the same project model used by the renderer
 
 The editor is intentionally separate from Remotion Studio. Studio remains the composition/render development environment; the VMT Motion Editor is the product-facing authoring workspace.
@@ -84,7 +120,7 @@ npm.cmd run build
 
 ## Remotion version
 
-The repository is currently pinned to Remotion **4.0.527**. Keep all `remotion` and `@remotion/*` packages on exactly the same version.
+The repository has been upgraded to Remotion **4.0.533** for the core runtime/editor packages used by the current branch. Keep all `remotion` and `@remotion/*` packages on exactly the same version.
 
 The next upgrade should be performed atomically with the lockfile so the project can adopt newer Studio/canvas features such as richer interactive editing and editable keyframes without leaving `package.json` and `package-lock.json` out of sync.
 
