@@ -1,6 +1,6 @@
 import React, {useEffect, useMemo, useRef, useState} from "react";
 import {createRoot} from "react-dom/client";
-import {Player, type PlayerRef} from "@remotion/player";
+import {Player, type CallbackListener, type PlayerRef} from "@remotion/player";
 import {MotionProject} from "../workstation/MotionProject";
 import {workstationDemoProject} from "../workstation/defaults";
 import {
@@ -78,7 +78,7 @@ const App: React.FC = () => {
     const player = playerRef.current;
     if (!player) return;
 
-    const onFrameUpdate = (event: {detail: {frame: number}}) => {
+    const onFrameUpdate: CallbackListener<"frameupdate"> = (event) => {
       setCurrentFrame(event.detail.frame);
     };
 
