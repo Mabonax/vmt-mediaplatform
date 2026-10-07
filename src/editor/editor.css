@@ -693,3 +693,85 @@ button {
   border-radius: 2px;
   background: #ff5f6d;
 }
+
+
+.inspector-field select {
+  width: 100%;
+  border: 1px solid #2b3548;
+  border-radius: 7px;
+  outline: none;
+  background: #111824;
+  color: #e9eef7;
+  padding: 7px 8px;
+}
+
+.inspector-field select:focus {
+  border-color: #55e6c1;
+}
+
+.hierarchy-field {
+  margin-bottom: 9px;
+}
+
+.hierarchy-help {
+  margin-top: 9px;
+  color: #6f7d92;
+  font-size: 10px;
+  line-height: 1.45;
+}
+
+.timeline-section-row {
+  height: 28px;
+  display: grid;
+  grid-template-columns: 180px minmax(900px, 1fr);
+  background: #0a0f17;
+  border-bottom: 1px solid #1b2432;
+}
+
+.timeline-section-name {
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  border-right: 1px solid #273044;
+  color: #8190a7;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.timeline-section-line {
+  position: relative;
+}
+
+.timeline-section-line::after {
+  content: "";
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  top: 50%;
+  height: 1px;
+  background: #1d2736;
+}
+
+.timeline-track {
+  height: 42px;
+}
+
+.timeline-group-row {
+  background: #0f1722;
+}
+
+.timeline-group-row .timeline-track-name {
+  color: #55e6c1;
+  font-weight: 700;
+}
+
+.timeline-layer-type {
+  display: inline-block;
+  min-width: 58px;
+  margin-right: 8px;
+  color: #65758c;
+  font-size: 9px;
+  text-transform: uppercase;
+}
