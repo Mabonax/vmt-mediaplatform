@@ -80,7 +80,21 @@ export const fitProjectToPreset = (
         (item.transform.anchorX ?? item.transform.width / (2 * scale)) * scale;
       item.transform.anchorY =
         (item.transform.anchorY ?? item.transform.height / (2 * scale)) * scale;
-      item.transform.scale *= 1;
+
+      if (item.animation) {
+        for (const point of item.animation.x ?? []) {
+          point.value = offsetX + point.value * scale;
+        }
+        for (const point of item.animation.y ?? []) {
+          point.value = offsetY + point.value * scale;
+        }
+        for (const point of item.animation.anchorX ?? []) {
+          point.value *= scale;
+        }
+        for (const point of item.animation.anchorY ?? []) {
+          point.value *= scale;
+        }
+      }
     }
   }
 
