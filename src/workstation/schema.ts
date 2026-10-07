@@ -16,6 +16,8 @@ const keyframeTrackSchema = z.array(keyframePointSchema).min(1).refine(
 const transformAnimationSchema = z.object({
   x: keyframeTrackSchema.optional(),
   y: keyframeTrackSchema.optional(),
+  anchorX: keyframeTrackSchema.optional(),
+  anchorY: keyframeTrackSchema.optional(),
   scale: keyframeTrackSchema.optional(),
   rotation: keyframeTrackSchema.optional(),
   opacity: keyframeTrackSchema.optional(),
@@ -26,6 +28,8 @@ const transformSchema = z.object({
   y: z.number(),
   width: z.number().positive(),
   height: z.number().positive(),
+  anchorX: z.number().optional(),
+  anchorY: z.number().optional(),
   rotation: z.number(),
   opacity: z.number().min(0).max(1),
   scale: z.number().positive(),
