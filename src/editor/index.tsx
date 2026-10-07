@@ -5,6 +5,8 @@ import {MotionProject} from "../workstation/MotionProject";
 import {workstationDemoProject} from "../workstation/defaults";
 import {
   moveItemInTime,
+  removeTransformKeyframe,
+  setTransformKeyframe,
   trimItem,
   updateItemTransform,
 } from "../workstation/mutations";
@@ -59,6 +61,18 @@ type CanvasGesture = {
   startHeight: number;
 };
 
+type TimelineGesture = {
+  itemId: string;
+  mode: "move" | "trim-start" | "trim-end";
+  pointerId: number;
+  startClientX: number;
+  startFrom: number;
+  startDuration: number;
+  laneWidth: number;
+};
+
+type KeyframeProperty = "x" | "y" | "scale" | "rotation" | "opacity";
+
 const App: React.FC = () => {
   const [project, setProject] = useState<WorkstationProject>(
     () => structuredClone(workstationDemoProject),
@@ -66,6 +80,8 @@ const App: React.FC = () => {
   const [selectedItemId, setSelectedItemId] = useState<string | null>("browser");
   const [currentFrame, setCurrentFrame] = useState(0);
   const [gesture, setGesture] = useState<CanvasGesture | null>(null);
+  const [timelineGesture, setTimelineGesture] =
+    useState<TimelineGesture | null>(null);
   const playerRef = useRef<PlayerRef>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
 
@@ -183,6 +199,122 @@ const App: React.FC = () => {
       event.currentTarget.releasePointerCapture(event.pointerId);
     }
     setGesture(null);
+  };
+
+  const beginTimelineGesture = (
+    event: React.PointerEvent<HTMLElement>,
+    item: WorkstationItem,
+    mode: TimelineGesture["mode"],
+  ) => {
+    event.preventDefault();
+    event.stopPropagation();
+    const lane = event.currentTarget.closest(".timeline-lane");
+    if (!(lane instanceof HTMLElement)) return;
+
+    playerRef.current?.pause();
+    setSelectedItemId(item.id);
+    event.currentTarget.setPointerCapture(event.pointerId);
+    setTimelineGesture({
+      itemId: item.id,
+      mode,
+      pointerId: event.pointerId,
+      startClientX: event.clientX,
+      startFrom: item.timing.from,
+      startDuration: item.timing.durationInFrames,
+      laneWidth: Math.max(1, lane.getBoundingClientRect().width),
+    });
+  };
+
+  const updateTimelineGesture = (
+    event: React.PointerEvent<HTMLElement>,
+  ) => {
+    if (!timelineGesture || event.pointerId !== timelineGesture.pointerId) return;
+
+    const deltaFrames = Math.round(
+      ((event.clientX - timelineGesture.startClientX) /
+        timelineGesture.laneWidth) *
+        project.durationInFrames,
+    );
+
+    if (timelineGesture.mode === "move") {
+      const maxFrom = Math.max(
+        0,
+        project.durationInFrames - timelineGesture.startDuration,
+      );
+      const nextFrom = Math.max(
+        0,
+        Math.min(maxFrom, timelineGesture.startFrom + deltaFrames),
+      );
+      setProject((current) =>
+        moveItemInTime(current, timelineGesture.itemId, nextFrom),
+      );
+      return;
+    }
+
+    if (timelineGesture.mode === "trim-end") {
+      const maxDuration =
+        project.durationInFrames - timelineGesture.startFrom;
+      const nextDuration = Math.max(
+        1,
+        Math.min(
+          maxDuration,
+          timelineGesture.startDuration + deltaFrames,
+        ),
+      );
+      setProject((current) =>
+        trimItem(current, timelineGesture.itemId, nextDuration),
+      );
+      return;
+    }
+
+    const originalEnd =
+      timelineGesture.startFrom + timelineGesture.startDuration;
+    const nextFrom = Math.max(
+      0,
+      Math.min(originalEnd - 1, timelineGesture.startFrom + deltaFrames),
+    );
+    const nextDuration = originalEnd - nextFrom;
+    setProject((current) => {
+      const moved = moveItemInTime(current, timelineGesture.itemId, nextFrom);
+      return trimItem(moved, timelineGesture.itemId, nextDuration);
+    });
+  };
+
+  const endTimelineGesture = (
+    event: React.PointerEvent<HTMLElement>,
+  ) => {
+    if (!timelineGesture || event.pointerId !== timelineGesture.pointerId) return;
+    if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+      event.currentTarget.releasePointerCapture(event.pointerId);
+    }
+    setTimelineGesture(null);
+  };
+
+  const setKeyframeAtPlayhead = (
+    item: WorkstationItem,
+    property: KeyframeProperty,
+  ) => {
+    const localFrame = currentFrame - item.timing.from;
+    if (localFrame < 0 || localFrame >= item.timing.durationInFrames) return;
+
+    setProject((current) =>
+      setTransformKeyframe(current, item.id, property, {
+        frame: localFrame,
+        value: item.transform[property],
+        easing: "ease-in-out",
+      }),
+    );
+  };
+
+  const removeKeyframeAtPlayhead = (
+    item: WorkstationItem,
+    property: KeyframeProperty,
+  ) => {
+    const localFrame = currentFrame - item.timing.from;
+    if (localFrame < 0 || localFrame >= item.timing.durationInFrames) return;
+    setProject((current) =>
+      removeTransformKeyframe(current, item.id, property, localFrame),
+    );
   };
 
   return (
@@ -466,17 +598,58 @@ const App: React.FC = () => {
 
               <div className="inspector-section">
                 <div className="section-title">Animation</div>
-                <div className="animation-summary">
-                  {selected.item.animation
-                    ? Object.entries(selected.item.animation)
-                        .filter(([, points]) => points && points.length)
-                        .map(([property, points]) => (
-                          <div key={property} className="animation-row">
-                            <span>{property}</span>
-                            <strong>{points?.length ?? 0} keyframes</strong>
+                <div className="keyframe-editor">
+                  {(["x", "y", "scale", "rotation", "opacity"] as KeyframeProperty[]).map(
+                    (property) => {
+                      const points = selected.item.animation?.[property] ?? [];
+                      const localFrame =
+                        currentFrame - selected.item.timing.from;
+                      const hasCurrent = points.some(
+                        (point) => point.frame === localFrame,
+                      );
+                      const inRange =
+                        localFrame >= 0 &&
+                        localFrame < selected.item.timing.durationInFrames;
+
+                      return (
+                        <div className="keyframe-property-row" key={property}>
+                          <div>
+                            <strong>{property}</strong>
+                            <span>{points.length} keyframes</span>
                           </div>
-                        ))
-                    : "No keyframes on this layer"}
+                          <div className="keyframe-actions">
+                            <button
+                              type="button"
+                              disabled={!inRange}
+                              title="Add or replace keyframe at playhead"
+                              onClick={() =>
+                                setKeyframeAtPlayhead(selected.item, property)
+                              }
+                            >
+                              ◆+
+                            </button>
+                            <button
+                              type="button"
+                              disabled={!inRange || !hasCurrent}
+                              title="Remove keyframe at playhead"
+                              onClick={() =>
+                                removeKeyframeAtPlayhead(
+                                  selected.item,
+                                  property,
+                                )
+                              }
+                            >
+                              ◆−
+                            </button>
+                          </div>
+                        </div>
+                      );
+                    },
+                  )}
+                </div>
+                <div className="keyframe-help">
+                  Move the playhead inside the selected layer, change a property,
+                  then press ◆+ to keyframe that value.
                 </div>
               </div>
             </div>
@@ -537,8 +710,53 @@ const App: React.FC = () => {
                           setCurrentFrame(item.timing.from);
                         }
                       }}
+                      onPointerDown={(event) =>
+                        beginTimelineGesture(event, item, "move")
+                      }
+                      onPointerMove={updateTimelineGesture}
+                      onPointerUp={endTimelineGesture}
+                      onPointerCancel={endTimelineGesture}
                     >
-                      {item.name}
+                      <span
+                        className="timeline-trim-handle trim-left"
+                        title="Trim start"
+                        onPointerDown={(event) =>
+                          beginTimelineGesture(event, item, "trim-start")
+                        }
+                        onPointerMove={updateTimelineGesture}
+                        onPointerUp={endTimelineGesture}
+                        onPointerCancel={endTimelineGesture}
+                      />
+                      <span className="timeline-item-label">{item.name}</span>
+                      {selectedItemId === item.id
+                        ? Object.entries(item.animation ?? {}).flatMap(
+                            ([property, points]) =>
+                              (points ?? []).map((point, pointIndex) => {
+                                const absoluteFrame =
+                                  item.timing.from + point.frame;
+                                return (
+                                  <span
+                                    key={`${property}-${pointIndex}`}
+                                    className="timeline-keyframe"
+                                    title={`${property} @ ${absoluteFrame}f`}
+                                    style={{
+                                      left: `${(point.frame / item.timing.durationInFrames) * 100}%`,
+                                    }}
+                                  />
+                                );
+                              }),
+                          )
+                        : null}
+                      <span
+                        className="timeline-trim-handle trim-right"
+                        title="Trim end"
+                        onPointerDown={(event) =>
+                          beginTimelineGesture(event, item, "trim-end")
+                        }
+                        onPointerMove={updateTimelineGesture}
+                        onPointerUp={endTimelineGesture}
+                        onPointerCancel={endTimelineGesture}
+                      />
                     </button>
                   );
                 })}
