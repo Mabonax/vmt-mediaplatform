@@ -344,3 +344,128 @@ button {
   background: #245b50;
   color: #ffffff;
 }
+
+
+.player-editor-wrap {
+  position: relative;
+  width: 100%;
+  max-height: 100%;
+  overflow: visible;
+  background: #05070b;
+  box-shadow: 0 28px 90px rgba(0, 0, 0, 0.55);
+  border: 1px solid #323a49;
+}
+
+.player-editor-wrap > div:first-child {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.canvas-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.canvas-hitbox {
+  position: absolute;
+  pointer-events: auto;
+  border: 1px solid transparent;
+  cursor: move;
+  transform-origin: center center;
+  touch-action: none;
+}
+
+.canvas-hitbox:hover {
+  border-color: rgba(85, 230, 193, 0.5);
+}
+
+.canvas-hitbox.selected {
+  border: 2px solid #55e6c1;
+  box-shadow:
+    0 0 0 1px rgba(9, 15, 25, 0.85),
+    0 0 0 3px rgba(85, 230, 193, 0.12);
+}
+
+.canvas-hitbox.selected.inactive {
+  border-style: dashed;
+  border-color: #f8c95c;
+}
+
+.canvas-selection-label {
+  position: absolute;
+  left: -2px;
+  top: -26px;
+  max-width: 240px;
+  overflow: hidden;
+  border-radius: 5px 5px 5px 0;
+  background: #55e6c1;
+  color: #07110e;
+  padding: 4px 7px;
+  font-size: 10px;
+  font-weight: 800;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  pointer-events: none;
+}
+
+.canvas-hitbox.inactive .canvas-selection-label {
+  background: #f8c95c;
+  color: #151109;
+}
+
+.resize-handle {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border: 2px solid #07110e;
+  border-radius: 2px;
+  background: #55e6c1;
+  box-shadow: 0 0 0 1px #55e6c1;
+  touch-action: none;
+}
+
+.resize-se {
+  right: -7px;
+  bottom: -7px;
+  cursor: nwse-resize;
+}
+
+.seek-layer-button {
+  width: 100%;
+  margin-top: 10px;
+  border: 1px solid #31415a;
+  border-radius: 7px;
+  background: #151d2a;
+  color: #b8c6da;
+  padding: 8px 10px;
+  cursor: pointer;
+  font-size: 11px;
+}
+
+.seek-layer-button:hover {
+  border-color: #55e6c1;
+  color: #ffffff;
+}
+
+.timeline-playhead {
+  position: absolute;
+  z-index: 20;
+  top: -7px;
+  bottom: -7px;
+  width: 1px;
+  background: #ff5f6d;
+  pointer-events: none;
+}
+
+.timeline-playhead::before {
+  content: "";
+  position: absolute;
+  left: -4px;
+  top: -1px;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #ff5f6d;
+}
