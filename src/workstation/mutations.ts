@@ -130,3 +130,51 @@ export const removeTransformKeyframe = (
   }
   return next;
 };
+
+
+export const setItemParent = (
+  project: WorkstationProject,
+  itemId: string,
+  parentId: string | null,
+) => {
+  const next = cloneProject(project);
+  const {item} = findItem(next, itemId);
+
+  if (parentId === itemId) {
+    throw new Error("Item cannot parent itself");
+  }
+
+  if (parentId !== null) {
+    const parent = findItem(next, parentId).item;
+    if (parent.type !== "group") {
+      throw new Error(`Parent must be a group: ${parentId}`);
+    }
+
+    let cursor: WorkstationItem | null = parent;
+    const visited = new Set<string>([itemId]);
+    while (cursor) {
+      if (visited.has(cursor.id)) {
+        throw new Error("Circular parent hierarchy");
+      }
+      visited.add(cursor.id);
+      cursor = cursor.parentId ? findItem(next, cursor.parentId).item : null;
+    }
+  }
+
+  item.parentId = parentId;
+  return next;
+};
+
+export const setItemZIndex = (
+  project: WorkstationProject,
+  itemId: string,
+  zIndex: number,
+) => {
+  if (!Number.isInteger(zIndex)) {
+    throw new Error("zIndex must be an integer");
+  }
+  const next = cloneProject(project);
+  const {item} = findItem(next, itemId);
+  item.zIndex = zIndex;
+  return next;
+};
