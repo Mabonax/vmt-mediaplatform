@@ -3,7 +3,6 @@ import {createRoot} from "react-dom/client";
 import {Player, type CallbackListener, type PlayerRef} from "@remotion/player";
 import {MotionProject} from "../workstation/MotionProject";
 import {TemplateHome} from "./TemplateHome";
-import {workstationDemoProject} from "../workstation/defaults";
 import {
   moveItemInTime,
   removeTransformKeyframe,
@@ -388,33 +387,6 @@ const EditorWorkspace: React.FC<{initialProject: WorkstationProject; onHome: () 
       event.currentTarget.releasePointerCapture(event.pointerId);
     }
     setTimelineGesture(null);
-  };
-
-  const setKeyframeAtPlayhead = (
-    item: WorkstationItem,
-    property: KeyframeProperty,
-  ) => {
-    const localFrame = currentFrame - item.timing.from;
-    if (localFrame < 0 || localFrame >= item.timing.durationInFrames) return;
-
-    setProject((current) =>
-      setTransformKeyframe(current, item.id, property, {
-        frame: localFrame,
-        value: channelValue(item, property),
-        easing: "ease-in-out",
-      }),
-    );
-  };
-
-  const removeKeyframeAtPlayhead = (
-    item: WorkstationItem,
-    property: KeyframeProperty,
-  ) => {
-    const localFrame = currentFrame - item.timing.from;
-    if (localFrame < 0 || localFrame >= item.timing.durationInFrames) return;
-    setProject((current) =>
-      removeTransformKeyframe(current, item.id, property, localFrame),
-    );
   };
 
   const channelValue = (
