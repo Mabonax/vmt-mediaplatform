@@ -1371,3 +1371,37 @@ button {
   padding: 7px 9px;
   cursor: pointer;
 }
+
+
+.export-all-button {
+  border-color: #55e6c1 !important;
+  background: #21463e !important;
+  color: #ffffff !important;
+  font-weight: 800;
+}
+
+.export-all-button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.export-status {
+  position: fixed;
+  z-index: 200;
+  top: 72px;
+  right: 18px;
+  max-width: 440px;
+  border: 1px solid #2a6c5e;
+  border-radius: 8px;
+  background: #11251f;
+  color: #bff5e8;
+  padding: 9px 12px;
+  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.32);
+  font-size: 11px;
+}
+
+.export-status.error {
+  border-color: #8d3942;
+  background: #2a1518;
+  color: #ffc0c6;
+}
