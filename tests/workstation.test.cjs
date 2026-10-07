@@ -12,6 +12,8 @@ const {
   trimItem,
   updateItemTransform,
   moveItemToTrack,
+  setItemParent,
+  setItemZIndex,
   setTransformKeyframe,
   removeTransformKeyframe,
 } = require("../.cache/tests/workstation/mutations.js");
@@ -117,4 +119,34 @@ test("a single transform keyframe is valid for incremental editor authoring", ()
     {frame: 12, value: 0.5, easing: "ease-in-out"},
   );
   assert.doesNotThrow(() => workstationProjectSchema.parse(project));
+});
+
+test("group parenting preserves independent child layers and rejects invalid parents", () => {
+  const grouped = setItemParent(
+    workstationDemoProject,
+    "browser",
+    "title-group",
+  );
+  const browser = grouped.tracks
+    .flatMap((track) => track.items)
+    .find((item) => item.id === "browser");
+  assert.equal(browser.parentId, "title-group");
+
+  assert.throws(
+    () => setItemParent(workstationDemoProject, "browser", "headline"),
+    /Parent must be a group/,
+  );
+  assert.throws(
+    () => setItemParent(workstationDemoProject, "title-group", "title-group"),
+    /cannot parent itself/,
+  );
+});
+
+test("z order is independently editable from parenting", () => {
+  const changed = setItemZIndex(workstationDemoProject, "headline", 99);
+  const headline = changed.tracks
+    .flatMap((track) => track.items)
+    .find((item) => item.id === "headline");
+  assert.equal(headline.parentId, "title-group");
+  assert.equal(headline.zIndex, 99);
 });
