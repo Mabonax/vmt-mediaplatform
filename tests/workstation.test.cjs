@@ -85,3 +85,21 @@ test("transform keyframes can be inserted, replaced and removed", () => {
   const after = removed.tracks[1].items.find((item) => item.id === "headline");
   assert.equal(after.animation.x, undefined);
 });
+
+test("project validation rejects duplicate ids and out-of-range timeline data", () => {
+  const duplicate = structuredClone(workstationDemoProject);
+  duplicate.tracks[1].items[1].id = duplicate.tracks[1].items[0].id;
+  assert.throws(() => workstationProjectSchema.parse(duplicate), /Duplicate item id/);
+
+  const overflow = structuredClone(workstationDemoProject);
+  overflow.tracks[1].items[0].timing.from = overflow.durationInFrames - 5;
+  overflow.tracks[1].items[0].timing.durationInFrames = 20;
+  assert.throws(() => workstationProjectSchema.parse(overflow), /exceeds project duration/);
+
+  const badKeyframe = structuredClone(workstationDemoProject);
+  const cursor = badKeyframe.tracks
+    .flatMap((track) => track.items)
+    .find((item) => item.id === "cursor");
+  cursor.animation.x[2].frame = cursor.timing.durationInFrames;
+  assert.throws(() => workstationProjectSchema.parse(badKeyframe), /Keyframe exceeds item duration/);
+});
