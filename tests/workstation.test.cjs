@@ -150,3 +150,31 @@ test("z order is independently editable from parenting", () => {
   assert.equal(headline.parentId, "title-group");
   assert.equal(headline.zIndex, 99);
 });
+
+test("anchor points default to center semantics and can be keyframed", () => {
+  const project = updateItemTransform(workstationDemoProject, "headline", {
+    anchorX: 120,
+    anchorY: 80,
+  });
+  const withX = setTransformKeyframe(
+    project,
+    "headline",
+    "anchorX",
+    {frame: 20, value: 120, easing: "ease-in-out"},
+  );
+  const withY = setTransformKeyframe(
+    withX,
+    "headline",
+    "anchorY",
+    {frame: 20, value: 80, easing: "ease-in-out"},
+  );
+  const headline = withY.tracks
+    .flatMap((track) => track.items)
+    .find((item) => item.id === "headline");
+
+  assert.equal(headline.transform.anchorX, 120);
+  assert.equal(headline.transform.anchorY, 80);
+  assert.equal(headline.animation.anchorX[0].value, 120);
+  assert.equal(headline.animation.anchorY[0].value, 80);
+  assert.doesNotThrow(() => workstationProjectSchema.parse(withY));
+});
