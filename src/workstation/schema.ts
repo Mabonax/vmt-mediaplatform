@@ -1,6 +1,26 @@
 import {z} from "zod";
 
 const color = z.string().regex(/^#(?:[0-9a-fA-F]{3}){1,2}$/);
+
+const keyframePointSchema = z.object({
+  frame: z.number().int().min(0),
+  value: z.number(),
+  easing: z.enum(["linear", "ease-in", "ease-out", "ease-in-out"]).default("ease-in-out"),
+}).strict();
+
+const keyframeTrackSchema = z.array(keyframePointSchema).min(2).refine(
+  (points) => points.every((point, index) => index === 0 || point.frame > points[index - 1].frame),
+  "Keyframes must be strictly increasing by frame",
+);
+
+const transformAnimationSchema = z.object({
+  x: keyframeTrackSchema.optional(),
+  y: keyframeTrackSchema.optional(),
+  scale: keyframeTrackSchema.optional(),
+  rotation: keyframeTrackSchema.optional(),
+  opacity: keyframeTrackSchema.optional(),
+}).strict();
+
 const transformSchema = z.object({
   x: z.number(),
   y: z.number(),
@@ -27,6 +47,7 @@ const baseItem = z.object({
   name: z.string().min(1),
   timing: timingSchema,
   transform: transformSchema,
+  animation: transformAnimationSchema.optional(),
   motion: motionSchema.default({
     entrance: "rise",
     exit: "fade",
@@ -134,3 +155,4 @@ export const workstationProjectSchema = z.object({
 
 export type WorkstationProject = z.infer<typeof workstationProjectSchema>;
 export type WorkstationItem = z.infer<typeof workstationItemSchema>;
+export type WorkstationKeyframePoint = z.infer<typeof keyframePointSchema>;
